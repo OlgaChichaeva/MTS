@@ -2,8 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Traffic;
+package oracle;
 
+import Traffic.Traffic;
+import Traffic.TrafficDao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,7 +21,7 @@ import pack.Abstract;
  *
  * @author Ольга
  */
-public class TrafficDaoImp extends Abstract implements TrafficDao {
+ class TrafficDaoImp extends Abstract implements TrafficDao {
 
     public TrafficDaoImp(DataSource sour){
    super(sour);

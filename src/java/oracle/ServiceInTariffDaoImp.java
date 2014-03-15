@@ -2,8 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package ServiceInTariff;
+package oracle;
 
+import ServiceInTariff.ServiceInTariff;
+import ServiceInTariff.ServiceInTariffDao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,7 +22,7 @@ import pack.Abstract;
  *
  * @author Ольга
  */
-public class ServiceInTariffDaoImp extends Abstract implements ServiceInTariffDao {
+ class ServiceInTariffDaoImp extends Abstract implements ServiceInTariffDao {
 
    public ServiceInTariffDaoImp(DataSource sour) {
     super(sour);

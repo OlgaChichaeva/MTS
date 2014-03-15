@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package TariffList;
+package oracle;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import Service.Service;
+import TariffList.TariffList;
+import TariffList.TariffListDao;
 import javax.sql.DataSource;
 import pack.Abstract;
 
@@ -22,7 +24,7 @@ import pack.Abstract;
  *
  * @author Ольга
  */
-public class TariffListDaoImp extends Abstract implements TariffListDao {
+ class TariffListDaoImp extends Abstract implements TariffListDao {
 
   
 

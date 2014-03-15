@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Service;
+package oracle;
 
 import Service.ServiceDao;
 import Service.Service;
@@ -22,7 +22,7 @@ import pack.Abstract;
  *
  * @author Ольга
  */
-public class ServiceDaoImp extends Abstract implements ServiceDao {
+class ServiceDaoImp extends Abstract implements ServiceDao {
 
     public ServiceDaoImp(DataSource sour) {
         super(sour);

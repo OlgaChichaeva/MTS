@@ -2,8 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Sim;
+package oracle;
 
+import Sim.Sim;
+import Sim.SimDao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,7 +21,7 @@ import pack.Abstract;
  *
  * @author Ольга
  */
-public class SimDaoImp extends Abstract implements SimDao {
+ class SimDaoImp extends Abstract implements SimDao {
 
     public SimDaoImp(DataSource sour){
    super(sour);

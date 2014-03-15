@@ -2,8 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package TypeService;
+package oracle;
 
+import TypeService.TypeService;
+import TypeService.TypeServiceDao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,7 +21,7 @@ import pack.Abstract;
  *
  * @author Ольга
  */
-public class TypeServiceDaoImp  extends Abstract implements TypeServiceDao  {
+ class TypeServiceDaoImp  extends Abstract implements TypeServiceDao  {
    
 public TypeServiceDaoImp(DataSource sour){
    super(sour);
