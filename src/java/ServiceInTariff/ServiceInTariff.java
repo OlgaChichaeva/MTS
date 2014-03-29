@@ -4,39 +4,76 @@
  */
 package ServiceInTariff;
 
+import Service.Service;
+import Tariff.Tariff;
+
 /**
  *
  * @author Ольга
  */
 public class ServiceInTariff {
-  private int idTariff;    //ID_tariff;
-   private int idService;  // ID_service
+    private Tariff tariff;
+    private Service service;
 
     /**
      * @return the idTariff
      */
     public int getIdTariff() {
-        return idTariff;
+        return getTariff().getIdTariff();
     }
 
     /**
      * @param idTariff the idTariff to set
      */
     public void setIdTariff(int idTariff) {
-        this.idTariff = idTariff;
+        if (getTariff() == null) {
+            setTariff(new Tariff());
+        }
+        getTariff().setIdTariff(idTariff);
     }
 
     /**
      * @return the idService
      */
     public int getIdService() {
-        return idService;
+        return getService().getIdService();
     }
 
     /**
      * @param idService the idService to set
      */
     public void setIdService(int idService) {
-        this.idService = idService;
+        if (getService() == null) {
+            setService(new Service());
+        }
+        getService().setIdService(idService);
+    }
+
+    /**
+     * @return the tariff
+     */
+    public Tariff getTariff() {
+        return tariff;
+    }
+
+    /**
+     * @param tariff the tariff to set
+     */
+    public void setTariff(Tariff tariff) {
+        this.tariff = tariff;
+    }
+
+    /**
+     * @return the service
+     */
+    public Service getService() {
+        return service;
+    }
+
+    /**
+     * @param service the service to set
+     */
+    public void setService(Service service) {
+        this.service = service;
     }
 }

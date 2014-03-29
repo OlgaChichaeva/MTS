@@ -11,7 +11,7 @@ import java.util.List;
  * @author Ольга
  */
 public interface ServiceInTariffDao {
-    public ServiceInTariff getIdTariff(int idTariff);
+    public List<ServiceInTariff> getIdTariff(int idTariff);
     public void update(ServiceInTariff sInT);
     public void delete(int idTariff);
     public void insert(ServiceInTariff sInT);
