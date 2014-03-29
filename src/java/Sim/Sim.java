@@ -4,6 +4,8 @@
  */
 package Sim;
 
+import Tariff.Tariff;
+
 /**
  *create table sim
 (
@@ -15,8 +17,8 @@ package Sim;
  */
 public class Sim {
         private int simId;
-        private int tariffId;
-        private int account;
+        private Tariff tariff;
+        private double account;
 
     /**
      * @return the simId
@@ -36,28 +38,42 @@ public class Sim {
      * @return the tariffId
      */
     public int getTariffId() {
-        return tariffId;
+        return tariff.getIdTariff();
     }
 
     /**
      * @param tariffId the tariffId to set
      */
-    public void setTariffId(int tariffId) {
+    /*public void setTariffId(int tariffId) {
         this.tariffId = tariffId;
-    }
+    }*/
 
     /**
      * @return the account
      */
-    public int getAccount() {
+    public double getAccount() {
         return account;
     }
 
     /**
      * @param account the account to set
      */
-    public void setAccount(int account) {
+    public void setAccount(double account) {
         this.account = account;
+    }
+
+    /**
+     * @return the tariff
+     */
+    public Tariff getTariff() {
+        return tariff;
+    }
+
+    /**
+     * @param tariff the tariff to set
+     */
+    public void setTariff(Tariff tariff) {
+        this.tariff = tariff;
     }
 
 }
