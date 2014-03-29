@@ -11,7 +11,7 @@ package TypeService;
 public class TypeService {
     private int idType;
     private String nameType;
-    private String measua;
+    private String measure;
 
     /**
      * @return the idType
@@ -44,15 +44,15 @@ public class TypeService {
     /**
      * @return the measua
      */
-    public String getMeasua() {
-        return measua;
+    public String getMeasure() {
+        return measure;
     }
 
     /**
-     * @param measua the measua to set
+     * @param measure the measua to set
      */
-    public void setMeasua(String measua) {
-        this.measua = measua;
+    public void setMeasure(String measure) {
+        this.measure = measure;
     }
 
 

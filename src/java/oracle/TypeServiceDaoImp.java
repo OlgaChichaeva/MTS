@@ -29,16 +29,13 @@ public TypeServiceDaoImp(DataSource sour){
     @Override
     public TypeService getIdType(int idType) {
         try (Connection con = getConn()) {
-
+            System.out.println("123");
             PreparedStatement ps = con.prepareStatement("Select * from type_service where ID_type =?");// Connection con = getCon();
            ps.setInt(1,idType );
             ResultSet rs = ps.executeQuery();
             
             rs.next();
-            TypeService type = new TypeService();
-            type.setIdType(idType);
-            type.setNameType(rs.getString("name_type"));
-            type.setMeasua(rs.getString("measure"));
+            TypeService type = makeTypeService(rs);
             return type;
         } catch (SQLException ex) {
             Logger.getLogger(TypeServiceDaoImp.class.getName()).log(Level.SEVERE, null, ex);
@@ -52,7 +49,7 @@ public TypeServiceDaoImp(DataSource sour){
         try (Connection con = getConn()){
             PreparedStatement ps = con.prepareStatement("Update  type_service set(name_type,measure) =?,? where ID_type = ?");
               ps.setString(1, type.getNameType());
-            ps.setString(2, type.getMeasua());   
+            ps.setString(2, type.getMeasure());   
             ResultSet rs = ps.executeQuery();
             ps.executeUpdate();
         } catch (SQLException ex) {
@@ -78,7 +75,7 @@ public TypeServiceDaoImp(DataSource sour){
         try (Connection con = getConn()){
             PreparedStatement ps = con.prepareStatement("INSERT INto (name_type,measure) values (?,?)");
             ps.setString(1, type.getNameType());
-            ps.setString(2, type.getMeasua());
+            ps.setString(2, type.getMeasure());
             ResultSet rs = ps.executeQuery();
         } catch (SQLException ex) {
             Logger.getLogger(TypeServiceDaoImp.class.getName()).log(Level.SEVERE, null, ex);
@@ -94,10 +91,7 @@ public TypeServiceDaoImp(DataSource sour){
             ResultSet rs = ps.executeQuery();
             List<TypeService> types = new ArrayList<TypeService>();
             while (rs.next()) {
-                TypeService type = new TypeService();
-                type.setIdType(rs.getInt("ID_type"));
-                type.setNameType(rs.getString("name_type"));
-                type.setMeasua(rs.getString("measure"));
+                TypeService type = makeTypeService(rs);
                 types.add(type);
             }
 
