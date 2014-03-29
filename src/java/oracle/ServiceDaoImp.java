@@ -6,6 +6,7 @@ package oracle;
 
 import Service.ServiceDao;
 import Service.Service;
+import TypeService.TypeService;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,8 +14,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.sql.DataSource;
 import pack.Abstract;
 
@@ -34,23 +33,19 @@ class ServiceDaoImp extends Abstract implements ServiceDao {
 
             List<Service> services = new ArrayList<Service>();
             Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery("select * from Service");
+            ResultSet rs = st.executeQuery("select s.*,t.name_type, t.measure from Service s "
+                    + " INNER JOIN   type_service t on s.ID_type = t.ID_type ");
             while (rs.next()) {
-                int IdType = rs.getInt("ID_type");
-                String nameService = rs.getString("name_service");
-                double cost = rs.getDouble("cost");
-                int idService = rs.getInt("ID_Service");
-                Service service = new Service();
-                service.setCost(cost);
-                service.setIdService(idService);
-                service.setIdType(IdType);
-                service.setNameService(nameService);
+                TypeService type = makeTypeService(rs);
+                Service service = makeService(rs, type);
                 services.add(service);
             }
 
             return services;
 
         } catch (SQLException ex) {
+            //System.out.println("DAO Exception");
+            ex.printStackTrace();
         }
         return null;
 
@@ -59,22 +54,15 @@ class ServiceDaoImp extends Abstract implements ServiceDao {
     @Override
     public Service getService(int idService) {
         try (Connection con = getConn()) {
-            PreparedStatement ps = con.prepareStatement("select * from Service where ID_Service=?");
+            PreparedStatement ps = con.prepareStatement("select s.*,t.name_type, t.measure from Service s "
+                    + " INNER JOIN   type_service t on s.ID_type = t.ID_type  where ID_Service=?");
 
             ps.setInt(1, idService);
             ResultSet rs = ps.executeQuery();
 
             rs.next();
-            int IdType = rs.getInt("ID_type");
-            String nameService = rs.getString("name_service");
-            double cost = rs.getDouble("cost");
-
-            Service service = new Service();
-
-            service.setCost(cost);
-            service.setIdService(idService);
-            service.setIdType(IdType);
-            service.setNameService(nameService);
+            TypeService type = makeTypeService(rs);
+            Service service = makeService(rs, type);
 
             return service;
         } catch (SQLException ex) {

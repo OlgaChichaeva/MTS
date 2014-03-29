@@ -5,6 +5,8 @@
 
 package Service;
 
+import TypeService.TypeService;
+
 /**
  *
  * @author Ольга
@@ -12,7 +14,7 @@ package Service;
 public class Service {
 
     private int idService;
-    private int idType;
+    private TypeService typeService;
     private String nameService;
     private double cost;
     
@@ -23,24 +25,24 @@ public class Service {
       this.cost = cost;
    }*/
   
+   public void setIdType(int idType)  {
+       if (typeService == null) {
+           typeService = new TypeService();
+       }
+       typeService.setIdType(idType);
+   }
+   
+   public int getIdType() {
+       return typeService.getIdType();
+   }
+    
    public int getIdService() {
       return idService;
    }
 
    public void setIdService(int idService) {
       this.idService = idService;
-   } 
-
-   
-    public int getIdType() {
-        return idType;
-    }
-
-
-    public void setIdType(int idType) {
-        this.idType = idType;
-    }
-
+   }
     
     public String getNameService() {
         return nameService;
@@ -57,5 +59,19 @@ public class Service {
 
     public void setCost(double cost) {
         this.cost = cost;
+    }
+
+    /**
+     * @return the typeService
+     */
+    public TypeService getTypeService() {
+        return typeService;
+    }
+
+    /**
+     * @param typeService the typeService to set
+     */
+    public void setTypeService(TypeService typeService) {
+        this.typeService = typeService;
     }
 }
