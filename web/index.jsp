@@ -12,6 +12,9 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <jsp:include page="header.jsp" flush="true"/>
+        <h1>Service</h1>
+       
+        <%-- <a href="SelectAllService/">select all</a> --%>
     </body>
 </html>
