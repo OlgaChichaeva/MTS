@@ -34,8 +34,8 @@ class OracleClientDAO extends OracleUniversalDAO<Client> implements ClientDAO {
     private final StringConditionCreator firstnameConditionCreator;
     private final StringConditionCreator lastnameConditionCreator;
     private final StringConditionCreator middlenameConditionCreator;
-    private final PassportConditionCreator passportConditionCreator;
-    private final FullnameConditionCreator fullnameConditionCreator;
+    private final OracleClientDAO.PassportConditionCreator passportConditionCreator;
+    private final OracleClientDAO.FullnameConditionCreator fullnameConditionCreator;
     
     public OracleClientDAO(DataSource dataSource) {
         super(dataSource);
@@ -43,8 +43,8 @@ class OracleClientDAO extends OracleUniversalDAO<Client> implements ClientDAO {
         firstnameConditionCreator = new StringConditionCreator(TABLE_NAME, FIRSTNAME_COL);
         lastnameConditionCreator = new StringConditionCreator(TABLE_NAME, LASTNAME_COL);
         middlenameConditionCreator = new StringConditionCreator(TABLE_NAME, MIDDLENAME_COL);
-        passportConditionCreator = new PassportConditionCreator();
-        fullnameConditionCreator = new FullnameConditionCreator();
+        passportConditionCreator = new OracleClientDAO.PassportConditionCreator();
+        fullnameConditionCreator = new OracleClientDAO.FullnameConditionCreator();
     }
     
     @Override
@@ -147,14 +147,7 @@ class OracleClientDAO extends OracleUniversalDAO<Client> implements ClientDAO {
 
     @Override
     protected Client makeObject(ResultSet rs) throws SQLException {
-        Client newClient = new Client();
-        newClient.setСlientID(rs.getInt(ID_COL));
-        newClient.setPassportSeries(rs.getInt(SERIES_COL));
-        newClient.setPassportNumber(rs.getInt(NUMBER_COL));
-        newClient.setFirstname(rs.getString(FIRSTNAME_COL));
-        newClient.setLastname(rs.getString(LASTNAME_COL));
-        newClient.setMiddlename(rs.getString(MIDDLENAME_COL));
-        newClient.setTelephoneNumber(rs.getLong(PHONE_COL));
+        Client newClient = makeClient(rs);
         return newClient;
     }
     
