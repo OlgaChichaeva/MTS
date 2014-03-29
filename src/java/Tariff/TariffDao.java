@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package TariffList;
+package Tariff;
 
 import java.util.List;
 import Service.Service;
@@ -11,15 +11,15 @@ import Service.Service;
  *
  * @author Ольга
  */
-public interface TariffListDao {
+public interface TariffDao {
     
-    public List<TariffList> getAllTariffList();
+    public List<Tariff> getAllTariffList();
 
-    public TariffList getTariffList(int idTariff);
+    public Tariff getTariffList(int idTariff);
 
-    public void updateTariffList(TariffList tariff);
+    public void updateTariffList(Tariff tariff);
 
     public void deleteTariffList(int idTariff);
     
-    public void addSTariffList(TariffList tariff);
+    public void addSTariffList(Tariff tariff);
 }

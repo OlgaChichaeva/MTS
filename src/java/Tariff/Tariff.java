@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package TariffList;
+package Tariff;
 
 /**
 Create table tariff_list(
@@ -14,7 +14,7 @@ Create table tariff_list(
  *
  * @author Ольга
  */
-public class TariffList {
+public class Tariff {
    
     private int idTariff;
     private String nameTariff;

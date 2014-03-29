@@ -14,8 +14,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import Service.Service;
-import TariffList.TariffList;
-import TariffList.TariffListDao;
+import Tariff.Tariff;
+import Tariff.TariffDao;
 import javax.sql.DataSource;
 import pack.Abstract;
 
@@ -24,27 +24,27 @@ import pack.Abstract;
  *
  * @author Ольга
  */
- class TariffListDaoImp extends Abstract implements TariffListDao {
+ class TariffDaoImp extends Abstract implements TariffDao {
 
   
 
-    public TariffListDaoImp(DataSource sour) {
+    public TariffDaoImp(DataSource sour) {
         super(sour);
 
     }
 
     @Override
-    public List<TariffList> getAllTariffList() {
+    public List<Tariff> getAllTariffList() {
        try (Connection con = getConn()) {
 
-            List<TariffList> tariffs = new ArrayList<TariffList>();
+            List<Tariff> tariffs = new ArrayList<Tariff>();
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery("select * from tariff_list");
             while (rs.next()) {
                 int IdTariff = rs.getInt(" ID_tariff");
                 String nameTariff = rs.getString("name_tariff");
                 String description = rs.getString("description");
-                TariffList tariff= new TariffList();
+                Tariff tariff= new Tariff();
                 tariff.setIdTariff(IdTariff);
                 tariff.setNameTariff(nameTariff);
                 tariff.setDescription(description);                
@@ -60,7 +60,7 @@ import pack.Abstract;
     }
 
     @Override
-    public TariffList getTariffList(int idTariff) {
+    public Tariff getTariffList(int idTariff) {
         try (Connection con = getConn()){
             PreparedStatement ps = con.prepareStatement("select * from tariff_list where ID_tariff=?");
                         ps.setInt(1, idTariff);
@@ -70,7 +70,7 @@ import pack.Abstract;
                             String nameTariff = rs.getString("name_tariff");
                             String description = rs.getString("description");
                             
-                            TariffList tariff= new TariffList();
+                            Tariff tariff= new Tariff();
                             tariff.setIdTariff(IdTariff);
                             tariff.setNameTariff(nameTariff);
                             tariff.setDescription(description);                                  
@@ -78,13 +78,13 @@ import pack.Abstract;
 
                         return  tariff;
         } catch (SQLException ex) {
-            Logger.getLogger(TariffListDaoImp.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TariffDaoImp.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
 
     @Override
-    public void updateTariffList(TariffList tariff) {
+    public void updateTariffList(Tariff tariff) {
     try (Connection con = getConn()) {
         PreparedStatement ps = con.prepareStatement("update tariff_list set ID_tariff=?,name_tariff=?,description = ? where ID_tariff = ? "); 
         ps.setInt(1,tariff.getIdTariff() );
@@ -107,7 +107,7 @@ import pack.Abstract;
     }
 
     @Override
-    public void addSTariffList(TariffList tariff) {
+    public void addSTariffList(Tariff tariff) {
          try (Connection con = getConn()) {
             PreparedStatement ps = con.prepareStatement("INSERT INTO tariff_list (name_tariff,description ) VALUES (?,?)");
              ps.setString(1, tariff.getNameTariff());
