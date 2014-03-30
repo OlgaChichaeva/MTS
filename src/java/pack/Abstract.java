@@ -79,7 +79,14 @@ public abstract class Abstract {
         return newClient;
     }
 
-    protected ClientContr makeClientContr(ResultSet rs, Client client, Sim sim) {
+    protected ClientContr makeClientContr(ResultSet rs, Client client, Sim sim) throws SQLException {
+        ClientContr newContr = new ClientContr();
+        newContr.setContrID(rs.getInt("contr_id"));
+        newContr.setClient(client);
+        newContr.setSim(sim);
+        newContr.setContrDoc(rs.getString("contr_doc"));
+        newContr.setBeginDate(rs.getDate("begin_date"));
+        return newContr;
     }
 
     protected LegalContr makeLegalContr(ResultSet rs, LegalEntity legalEntity) {

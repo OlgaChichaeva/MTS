@@ -4,6 +4,8 @@
  */
 package clientcontr;
 
+import Sim.Sim;
+import client.Client;
 import java.util.Date;
 
 /**
@@ -11,9 +13,9 @@ import java.util.Date;
  * @author Ivan
  */
 public class ClientContr {
-    private int clientID;
+    private Client client;
     private int contrID;
-    private int simID;
+    private Sim sim;
     private String contrDoc;
     private Date beginDate;
 
@@ -21,14 +23,17 @@ public class ClientContr {
      * @return the clientID
      */
     public int getClientID() {
-        return clientID;
+        return getClient().getСlientID();
     }
 
     /**
      * @param clientID the clientID to set
      */
     public void setClientID(int clientID) {
-        this.clientID = clientID;
+        if (getClient() == null) {
+            setClient(new Client());
+        }
+        getClient().setСlientID(clientID);
     }
 
     /**
@@ -49,14 +54,17 @@ public class ClientContr {
      * @return the simID
      */
     public int getSimID() {
-        return simID;
+        return getSim().getSimId();
     }
 
     /**
      * @param simID the simID to set
      */
     public void setSimID(int simID) {
-        this.simID = simID;
+        if (getSim() == null) {
+            setSim(new Sim());
+        }
+        getSim().setSimId(simID);
     }
 
     /**
@@ -85,5 +93,33 @@ public class ClientContr {
      */
     public void setBeginDate(Date beginDate) {
         this.beginDate = beginDate;
+    }
+
+    /**
+     * @return the client
+     */
+    public Client getClient() {
+        return client;
+    }
+
+    /**
+     * @param client the client to set
+     */
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    /**
+     * @return the sim
+     */
+    public Sim getSim() {
+        return sim;
+    }
+
+    /**
+     * @param sim the sim to set
+     */
+    public void setSim(Sim sim) {
+        this.sim = sim;
     }
 }

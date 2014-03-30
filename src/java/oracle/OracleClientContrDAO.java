@@ -4,6 +4,9 @@
  */
 package oracle;
 
+import Sim.Sim;
+import Tariff.Tariff;
+import client.Client;
 import clientcontr.ClientContr;
 import clientcontr.ClientContrDAO;
 import java.sql.PreparedStatement;
@@ -25,6 +28,12 @@ class OracleClientContrDAO extends OracleUniversalDAO<ClientContr> implements Cl
     private static final String SIM_ID_COL = "sim_id";
     private static final String DOC_COL = "contr_doc";
     private static final String DATE_COL = "begin_date";
+    private static final String SELECT_FOR_ALL = "SELECT con.contr_id, con.contr_doc, con.begin_date,"
+                + " cl.*, sim.*, tar.name_tariff, tar.description"
+                + " FROM " + TABLE_NAME + " con"
+                + " INNER JOIN client.cl on con.client_id=cl.client_id"
+                + " INNER JOIN sim on con.sim_id=sim.sim_id"
+                + " INNER JOIN tariff_list tar on sim.ID_tariff=tar.ID_tariff";
     
     private final IntegerConditionCreator contrIDConditionCreator;
     private final IntegerConditionCreator clientIDConditionCreator;
@@ -32,9 +41,10 @@ class OracleClientContrDAO extends OracleUniversalDAO<ClientContr> implements Cl
 
     public OracleClientContrDAO(DataSource dataSource) {
         super(dataSource);
-        contrIDConditionCreator = new IntegerConditionCreator(TABLE_NAME, CONTR_ID_COL);
-        clientIDConditionCreator = new IntegerConditionCreator(TABLE_NAME, CLIENT_ID_COL);
-        simIDConditionCreator = new IntegerConditionCreator(TABLE_NAME, SIM_ID_COL);
+        
+        contrIDConditionCreator = new IntegerConditionCreator(SELECT_FOR_ALL + " WHERE " + CONTR_ID_COL + " = ?");
+        clientIDConditionCreator = new IntegerConditionCreator(SELECT_FOR_ALL + " WHERE " + CLIENT_ID_COL + " = ?");
+        simIDConditionCreator = new IntegerConditionCreator(SELECT_FOR_ALL + " WHERE " + SIM_ID_COL + " = ?");
     }
     
     @Override
@@ -54,7 +64,7 @@ class OracleClientContrDAO extends OracleUniversalDAO<ClientContr> implements Cl
 
     @Override
     public List<ClientContr> getAllContrs() {
-        return getAllObjects(TABLE_NAME);
+        return getAllObjectsByCustomQuery(SELECT_FOR_ALL);
     }
 
     @Override
@@ -114,12 +124,11 @@ class OracleClientContrDAO extends OracleUniversalDAO<ClientContr> implements Cl
 
     @Override
     protected ClientContr makeObject(ResultSet rs) throws SQLException {
-        ClientContr newContr = new ClientContr();
-        newContr.setContrID(rs.getInt(CONTR_ID_COL));
-        newContr.setClientID(rs.getInt(CLIENT_ID_COL));
-        newContr.setSimID(rs.getInt(SIM_ID_COL));
-        newContr.setContrDoc(rs.getString(DOC_COL));
-        newContr.setBeginDate(rs.getDate(DATE_COL));
+        Client client = makeClient(rs);
+        Tariff tariff = makeTariff(rs);
+        Sim sim = makeSim(rs, tariff);
+        
+        ClientContr newContr = makeClientContr(rs, client, sim);
         return newContr;
     }
 }
