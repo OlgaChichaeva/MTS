@@ -4,8 +4,12 @@
  */
 package oracle;
 
+import Service.Service;
+import Sim.Sim;
+import Tariff.Tariff;
 import Traffic.Traffic;
 import Traffic.TrafficDao;
+import TypeService.TypeService;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,97 +25,120 @@ import pack.Abstract;
  *
  * @author Ольга
  */
- class TrafficDaoImp extends Abstract implements TrafficDao {
+class TrafficDaoImp extends Abstract implements TrafficDao {
 
-    public TrafficDaoImp(DataSource sour){
-   super(sour);
-} 
-    @Override
-    public Traffic getIdService(int idService) {
-    try (Connection con = getConn()){
-        PreparedStatement ps = con.prepareStatement("Select * from traffic where ID_service =?");
-       ps.setInt(1,idService );
-        ResultSet rs = ps.executeQuery();
-        
-        rs.next();
-        Traffic traffic = new Traffic();
-        traffic.setIdService(idService);
-        traffic.setIdSim(rs.getInt("sim_id"));
-        traffic.setAmount(rs.getDouble("amount"));
-        traffic.setCost(rs.getDouble("cost"));
-        traffic.setDate(rs.getString("time"));
-        return traffic;
-    } catch (SQLException ex) {
-        Logger.getLogger(TrafficDaoImp.class.getName()).log(Level.SEVERE, null, ex);
+    public TrafficDaoImp(DataSource sour) {
+        super(sour);
     }
-    return null;
+
+    @Override
+    public List<Traffic> getBySimId(int simId) {
+        try (Connection con = getConn()) {
+            PreparedStatement ps = con.prepareStatement("SELECT tr.amount, tr.cost, tr.time,"
+                    + " sim.*, serv.*, tar.name_tariff, tar.description,"
+                    + " type.name_type, type.measure"
+                    + " FROM traffic tr"
+                    + " INNER JOIN sim on tr.sim_id=sim.sim_id"
+                    + " INNER JOIN tariff_list tar on sim.id_tariff=tar.id_tariff"
+                    + " INNER JOIN service serv on tr.ID_service=serv.ID_service"
+                    + " INNER JOIN type_service type on serv.ID_type=type.ID_type"
+                    + " where tr.sim_id =?");
+            ps.setInt(1, simId);
+            ResultSet rs = ps.executeQuery();
+            List<Traffic> traffics = new ArrayList<Traffic>();
+            while (rs.next()) {
+                Traffic traffic = makeTraffic(rs);
+                traffics.add(traffic);
+            }
+            return traffics;
+        } catch (SQLException ex) {
+            Logger.getLogger(TrafficDaoImp.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     @Override
     public void update(Traffic traffic) {
-    try (Connection con = getConn()) {
-        PreparedStatement ps = con.prepareStatement("Update  traffic set(sim_id,ID_service,amount,cost,time) =?,?,?,?,? where ID_service = ?");
-               ps.setInt(1, traffic.getIdSim());
-             ps.setInt(2, traffic.getIdService());  
-             ps.setDouble(3, traffic.getAmount());
-             ps.setDouble(4, traffic.getCost());
-             ps.setString(5, traffic.getDate());
-             ResultSet rs = ps.executeQuery();
-             ps.executeUpdate();
-    } catch (SQLException ex) {
-        Logger.getLogger(TrafficDaoImp.class.getName()).log(Level.SEVERE, null, ex);
-    }
-    }
-
-    @Override
-    public void delete(int idService) {
-    try (Connection con = getConn()) {
-        PreparedStatement ps = con.prepareStatement("Delete nameType where idService = ? ");
-              
-              ps.setInt(1,idService );
-              ResultSet rs = ps.executeQuery();
-              ps.executeUpdate();
-    } catch (SQLException ex) {
-        Logger.getLogger(TrafficDaoImp.class.getName()).log(Level.SEVERE, null, ex);
-    }
-    }
-
-    @Override
-    public void insert(Traffic traffic) {
-    try (Connection con = getConn()){
-        PreparedStatement ps = con.prepareStatement("INSERT INto (sim_id,ID_service,amount,cost,time) values (?,?,?,?,?)");
+        try (Connection con = getConn()) {
+            PreparedStatement ps = con.prepareStatement("Update  traffic set(sim_id,ID_service,amount,cost,time) =?,?,?,?,? where ID_service = ?");
             ps.setInt(1, traffic.getIdSim());
             ps.setInt(2, traffic.getIdService());
             ps.setDouble(3, traffic.getAmount());
             ps.setDouble(4, traffic.getCost());
-            ps.setString(5, traffic.getDate());
+            ps.setDate(5, new java.sql.Date(traffic.getDate().getTime()));
             ResultSet rs = ps.executeQuery();
-    } catch (SQLException ex) {
-        Logger.getLogger(TrafficDaoImp.class.getName()).log(Level.SEVERE, null, ex);
-    }
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(TrafficDaoImp.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
-    public List<Traffic> getAllType() {
-    try (Connection con = getConn()) {
-        PreparedStatement ps = con.prepareStatement("Select * from traffic where ID_service =?");
-           ResultSet rs = ps.executeQuery();
-           List<Traffic> traffics = new ArrayList<Traffic>();
-           while(rs.next());
-           {
-           Traffic traffic = new Traffic();
-           traffic.setIdService(rs.getInt("ID_service"));
-           traffic.setIdSim(rs.getInt("sim_id"));
-           traffic.setAmount(rs.getDouble("amount"));
-           traffic.setCost(rs.getDouble("cost"));
-           traffic.setDate(rs.getString("time"));
-          traffics.add(traffic);
-           }
-           return traffics;
-    } catch (SQLException ex) {
-        Logger.getLogger(TrafficDaoImp.class.getName()).log(Level.SEVERE, null, ex);
+    public void delete(int idService) {
+        try (Connection con = getConn()) {
+            PreparedStatement ps = con.prepareStatement("Delete nameType where idService = ? ");
+
+            ps.setInt(1, idService);
+            ResultSet rs = ps.executeQuery();
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(TrafficDaoImp.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-    return null;
+
+    @Override
+    public void insert(Traffic traffic) {
+        try (Connection con = getConn()) {
+            PreparedStatement ps = con.prepareStatement("INSERT INto (sim_id,ID_service,amount,cost,time) values (?,?,?,?,?)");
+            ps.setInt(1, traffic.getIdSim());
+            ps.setInt(2, traffic.getIdService());
+            ps.setDouble(3, traffic.getAmount());
+            ps.setDouble(4, traffic.getCost());
+            ps.setDate(5, new java.sql.Date(traffic.getDate().getTime()));
+            ResultSet rs = ps.executeQuery();
+        } catch (SQLException ex) {
+            Logger.getLogger(TrafficDaoImp.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-    
+
+    @Override
+    public List<Traffic> getByIDService(int idService) {
+        try (Connection con = getConn()) {
+            PreparedStatement ps = con.prepareStatement("SELECT tr.amount, tr.cost, tr.time,"
+                    + " sim.*, serv.*, tar.name_tariff, tar.description,"
+                    + " type.name_type, type.measure"
+                    + " FROM traffic tr"
+                    + " INNER JOIN sim on tr.sim_id=sim.sim_id"
+                    + " INNER JOIN tariff_list tar on sim.id_tariff=tar.id_tariff"
+                    + " INNER JOIN service serv on tr.ID_service=serv.ID_service"
+                    + " INNER JOIN type_service type on serv.ID_type=type.ID_type"
+                    + " where tr.ID_service =?");
+            ps.setInt(1, idService);
+            ResultSet rs = ps.executeQuery();
+            List<Traffic> traffics = new ArrayList<Traffic>();
+            while (rs.next()) {
+                Traffic traffic = makeTraffic(rs);
+                traffics.add(traffic);
+            }
+            return traffics;
+        } catch (SQLException ex) {
+            Logger.getLogger(TrafficDaoImp.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    private Traffic makeTraffic(ResultSet rs) throws SQLException {
+        Tariff tariff = makeTariff(rs);
+        Sim sim = makeSim(rs, tariff);
+        TypeService type = makeTypeService(rs);
+        Service service = makeService(rs, type);
+
+        Traffic traffic = new Traffic();
+        traffic.setService(service);
+        traffic.setSim(sim);
+        traffic.setAmount(rs.getDouble("amount"));
+        traffic.setCost(rs.getDouble("cost"));
+        traffic.setDate(rs.getDate("time"));
+        return traffic;
+    }
 }

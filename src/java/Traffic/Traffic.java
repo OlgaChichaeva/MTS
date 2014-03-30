@@ -4,6 +4,10 @@
  */
 package Traffic;
 
+import Service.Service;
+import Sim.Sim;
+import java.util.Date;
+
 /**
  *create table traffic(
   sim_id    number NOT NULL CONSTRAINT traffic_fk_sim_id REFERENCES sim(sim_id)
@@ -17,38 +21,44 @@ package Traffic;
  * @author Ольга
  */
 public class Traffic {
- private int idSim;
-    private int idService;
+    private Sim sim;;
+    private Service service;;
     private double amount;  
     private double cost; 
-    private String date;
+    private Date date;
 
     /**
      * @return the idSim
      */
     public int getIdSim() {
-        return idSim;
+        return getSim().getSimId();
     }
 
     /**
      * @param idSim the idSim to set
      */
     public void setIdSim(int idSim) {
-        this.idSim = idSim;
+        if (getSim() == null) {
+            setSim(new Sim());
+        }
+        getSim().setSimId(idSim);
     }
 
     /**
      * @return the idService
      */
     public int getIdService() {
-        return idService;
+        return getService().getIdService();
     }
 
     /**
      * @param idService the idService to set
      */
     public void setIdService(int idService) {
-        this.idService = idService;
+        if (getService() == null) {
+            setService(new Service());
+        }
+        getService().setIdService(idService);
     }
 
     /**
@@ -82,14 +92,42 @@ public class Traffic {
     /**
      * @return the date
      */
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
     /**
      * @param date the date to set
      */
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
+    }
+
+    /**
+     * @return the sim
+     */
+    public Sim getSim() {
+        return sim;
+    }
+
+    /**
+     * @param sim the sim to set
+     */
+    public void setSim(Sim sim) {
+        this.sim = sim;
+    }
+
+    /**
+     * @return the service
+     */
+    public Service getService() {
+        return service;
+    }
+
+    /**
+     * @param service the service to set
+     */
+    public void setService(Service service) {
+        this.service = service;
     }
 }

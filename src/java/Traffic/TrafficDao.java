@@ -11,9 +11,9 @@ import java.util.List;
  * @author Ольга
  */
 public interface TrafficDao {
-     public Traffic getIdService(int idService);
+     public List<Traffic> getBySimId(int simID);
     public void update(Traffic traffic);
     public void delete(int idService);
     public void insert(Traffic traffic);
-    public List<Traffic> getAllType();
+    public List<Traffic> getByIDService(int idService);
 }
