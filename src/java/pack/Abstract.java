@@ -89,7 +89,13 @@ public abstract class Abstract {
         return newContr;
     }
 
-    protected LegalContr makeLegalContr(ResultSet rs, LegalEntity legalEntity) {
+    protected LegalContr makeLegalContr(ResultSet rs, LegalEntity legalEntity) throws SQLException {
+        LegalContr newContr = new LegalContr();
+        newContr.setLegalEntity(legalEntity);
+        newContr.setContrID(rs.getInt("contr_id"));
+        newContr.setContrDoc(rs.getString("contr_doc"));
+        newContr.setBeginDate(rs.getDate("begin_date"));
+        return newContr;
     }
 
     protected LegalEntity makeLegalEntity(ResultSet rs) throws SQLException {

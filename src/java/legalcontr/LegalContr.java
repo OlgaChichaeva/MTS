@@ -5,6 +5,7 @@
 package legalcontr;
 
 import java.util.Date;
+import legalentity.LegalEntity;
 
 /**
  *
@@ -12,7 +13,7 @@ import java.util.Date;
  */
 public class LegalContr {
     private int contrID;
-    private int companyID;
+    private LegalEntity legalEntity;
     private String contrDoc;
     private Date beginDate;
 
@@ -34,14 +35,17 @@ public class LegalContr {
      * @return the companyID
      */
     public int getCompanyID() {
-        return companyID;
+        return getLegalEntity().getCompanyID();
     }
 
     /**
      * @param companyID the companyID to set
      */
     public void setCompanyID(int companyID) {
-        this.companyID = companyID;
+        if (getLegalEntity() == null) {
+            setLegalEntity(new LegalEntity());
+        }
+        getLegalEntity().setCompanyID(companyID);
     }
 
     /**
@@ -70,5 +74,19 @@ public class LegalContr {
      */
     public void setBeginDate(Date beginDate) {
         this.beginDate = beginDate;
+    }
+
+    /**
+     * @return the legalEntity
+     */
+    public LegalEntity getLegalEntity() {
+        return legalEntity;
+    }
+
+    /**
+     * @param legalEntity the legalEntity to set
+     */
+    public void setLegalEntity(LegalEntity legalEntity) {
+        this.legalEntity = legalEntity;
     }
 }

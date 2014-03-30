@@ -11,6 +11,7 @@ import java.util.List;
 import javax.sql.DataSource;
 import legalcontr.LegalContr;
 import legalcontr.LegalContrDAO;
+import legalentity.LegalEntity;
 import oracle.conditions.IntegerConditionCreator;
 
 /**
@@ -24,14 +25,18 @@ class OracleLegalContrDAO extends OracleUniversalDAO<LegalContr> implements Lega
     private static final String COMP_ID_COL = "company_id";
     private static final String DOC_COL = "contr_doc";
     private static final String DATE_COL = "begin_date";
+    private static final String SELECT_FOR_ALL = "SELECT con.contr_id, con.contr_doc, con.begin_date,"
+                + " ent.*"
+                + " FROM " + TABLE_NAME + " con"
+                + " INNER JOIN legal_entity ent on con.company_id=ent.company_id";
 
     private final IntegerConditionCreator contrIDConditionCreator;
     private final IntegerConditionCreator companyIDConditionCreator;
     
     public OracleLegalContrDAO(DataSource dataSource) {
         super(dataSource);
-        contrIDConditionCreator = new IntegerConditionCreator(TABLE_NAME, CONTR_ID_COL);
-        companyIDConditionCreator = new IntegerConditionCreator(TABLE_NAME, COMP_ID_COL);
+        contrIDConditionCreator = new IntegerConditionCreator(SELECT_FOR_ALL + " WHERE " + CONTR_ID_COL + " = ?");
+        companyIDConditionCreator = new IntegerConditionCreator(SELECT_FOR_ALL + " WHERE " + COMP_ID_COL + " = ?");
     }
     
     @Override
@@ -51,7 +56,7 @@ class OracleLegalContrDAO extends OracleUniversalDAO<LegalContr> implements Lega
 
     @Override
     public List<LegalContr> getAllContracts() {
-        return getAllObjects(TABLE_NAME);
+        return getAllObjectsByCustomQuery(SELECT_FOR_ALL);
     }
 
     @Override
@@ -104,11 +109,8 @@ class OracleLegalContrDAO extends OracleUniversalDAO<LegalContr> implements Lega
 
     @Override
     protected LegalContr makeObject(ResultSet rs) throws SQLException {
-        LegalContr newContr = new LegalContr();
-        newContr.setCompanyID(rs.getInt(COMP_ID_COL));
-        newContr.setContrID(rs.getInt(CONTR_ID_COL));
-        newContr.setContrDoc(rs.getString(DOC_COL));
-        newContr.setBeginDate(rs.getDate(DATE_COL));
+        LegalEntity legalEntity = makeLegalEntity(rs);
+        LegalContr newContr = makeLegalContr(rs, legalEntity);
         return newContr;
     }
 }
