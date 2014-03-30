@@ -12,17 +12,19 @@ public abstract class AbstractOneConditionCreator<T> extends ConditionCreator {
     
     protected T value;
     
-    private final String tableName;
-    private final String columnName;
+    private final String query;
     
     public AbstractOneConditionCreator(String tableName, String columnName) {
-        this.tableName = tableName;
-        this.columnName = columnName;
+        query = "SELECT * FROM " + tableName + " WHERE " + columnName + " = ?";
+    }
+    
+    public AbstractOneConditionCreator(String query) {
+        this.query = query;
     }
 
     @Override
     public String createSelect() {
-        return "SELECT * FROM " + tableName + " WHERE " + columnName + " = ?";
+        return query;
     }
 
 

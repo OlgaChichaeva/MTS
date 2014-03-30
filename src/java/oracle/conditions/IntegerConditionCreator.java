@@ -16,6 +16,10 @@ public class IntegerConditionCreator extends AbstractOneConditionCreator<Integer
     public IntegerConditionCreator(String tableName, String columnName) {
         super(tableName, columnName);
     }
+    
+    public IntegerConditionCreator(String query) {
+        super(query);
+    }
 
     @Override
     public void prepareSelectStatement(PreparedStatement ps) throws SQLException {

@@ -16,6 +16,10 @@ public class StringConditionCreator extends AbstractOneConditionCreator<String> 
     public StringConditionCreator(String tableName, String columnName) {
         super(tableName, columnName);
     }
+    
+    public StringConditionCreator(String query) {
+        super(query);
+    }
 
     @Override
     public void prepareSelectStatement(PreparedStatement ps) throws SQLException {
