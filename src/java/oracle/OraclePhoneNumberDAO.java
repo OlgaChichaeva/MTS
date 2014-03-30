@@ -4,6 +4,8 @@
  */
 package oracle;
 
+import Sim.Sim;
+import Tariff.Tariff;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,13 +25,17 @@ class OraclePhoneNumberDAO extends OracleUniversalDAO<PhoneNumber> implements Ph
     private static final String TABLE_NAME = "numbers";
     private static final String SIM_ID_COL = "sim_id";
     private static final String NUMBER_COL = "phone_number";
+    private static final String SELECT_FOR_ALL = "SELECT num.phone_number, sim.*"
+            + " FROM " + TABLE_NAME + " num"
+            + " INNER JOIN sim on num.sim_id=sim.sim_id"
+            + " INNER JOIN tariff_list tar on sim.ID_tariff=tar.ID_tariff";
     private final NumberConditionCreator numberConditionCreator;
     private final IntegerConditionCreator simIDConditionCreator;
 
     public OraclePhoneNumberDAO(DataSource datasource) {
         super(datasource);
-        numberConditionCreator = new NumberConditionCreator(TABLE_NAME, NUMBER_COL);
-        simIDConditionCreator = new IntegerConditionCreator(TABLE_NAME, SIM_ID_COL);
+        numberConditionCreator = new NumberConditionCreator(SELECT_FOR_ALL + " WHERE " + NUMBER_COL + " = ?");
+        simIDConditionCreator = new IntegerConditionCreator(SELECT_FOR_ALL + " WHERE " + SIM_ID_COL + " = ?");
     }
 
     @Override
@@ -82,8 +88,8 @@ class OraclePhoneNumberDAO extends OracleUniversalDAO<PhoneNumber> implements Ph
     @Override
     protected String makeUpdateStatement() {
         final String UPDATE = "UPDATE " + TABLE_NAME + " SET "
-                    + SIM_ID_COL + "=?"
-                    + " WHERE " + NUMBER_COL + " = ?";
+                + SIM_ID_COL + "=?"
+                + " WHERE " + NUMBER_COL + " = ?";
         return UPDATE;
     }
 
@@ -100,10 +106,10 @@ class OraclePhoneNumberDAO extends OracleUniversalDAO<PhoneNumber> implements Ph
 
     @Override
     protected PhoneNumber makeObject(ResultSet rs) throws SQLException {
-        PhoneNumber newSimContr = new PhoneNumber();
-        newSimContr.setSimID(rs.getInt(SIM_ID_COL));
-        newSimContr.setNumber(rs.getLong(NUMBER_COL));
-        return newSimContr;
+        Tariff tariff = makeTariff(rs);
+        Sim sim = makeSim(rs, tariff);
+        PhoneNumber phoneNumber = makePhoneNumber(rs, sim);
+        return phoneNumber;
     }
 
     // --- Классы ConditionCreator ----------
@@ -111,6 +117,10 @@ class OraclePhoneNumberDAO extends OracleUniversalDAO<PhoneNumber> implements Ph
 
         public NumberConditionCreator(String tableName, String columnName) {
             super(tableName, columnName);
+        }
+
+        public NumberConditionCreator(String query) {
+            super(query);
         }
 
         @Override

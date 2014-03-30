@@ -109,6 +109,10 @@ public abstract class Abstract {
         return newEntity;
     }
 
-    protected PhoneNumber makePhoneNumber(ResultSet rs, Sim sim) {
+    protected PhoneNumber makePhoneNumber(ResultSet rs, Sim sim) throws SQLException {
+        PhoneNumber phoneNumber = new PhoneNumber();
+        phoneNumber.setSim(sim);
+        phoneNumber.setNumber(rs.getLong("phone_number"));
+        return phoneNumber;
     }
 }

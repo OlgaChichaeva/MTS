@@ -4,26 +4,31 @@
  */
 package phonenumber;
 
+import Sim.Sim;
+
 /**
  *
  * @author Ivan
  */
 public class PhoneNumber {
-    private int simID;
+    private Sim sim;
     private long number;
 
     /**
      * @return the simID
      */
     public int getSimID() {
-        return simID;
+        return getSim().getSimId();
     }
 
     /**
      * @param simID the simID to set
      */
     public void setSimID(int simID) {
-        this.simID = simID;
+        if(getSim() == null) {
+            setSim(new Sim());
+        }
+        getSim().setSimId(simID);
     }
 
     /**
@@ -38,5 +43,19 @@ public class PhoneNumber {
      */
     public void setNumber(long number) {
         this.number = number;
+    }
+
+    /**
+     * @return the sim
+     */
+    public Sim getSim() {
+        return sim;
+    }
+
+    /**
+     * @param sim the sim to set
+     */
+    public void setSim(Sim sim) {
+        this.sim = sim;
     }
 }
