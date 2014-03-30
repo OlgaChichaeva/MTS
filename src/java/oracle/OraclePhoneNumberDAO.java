@@ -27,7 +27,7 @@ class OraclePhoneNumberDAO extends OracleUniversalDAO<PhoneNumber> implements Ph
     private static final String NUMBER_COL = "phone_number";
     private static final String SELECT_FOR_ALL = "SELECT num.phone_number, sim.*"
             + " FROM " + TABLE_NAME + " num"
-            + " INNER JOIN sim on num.sim_id=sim.sim_id"
+            + " LEFT JOIN sim on num.sim_id=sim.sim_id"
             + " INNER JOIN tariff_list tar on sim.ID_tariff=tar.ID_tariff";
     private final NumberConditionCreator numberConditionCreator;
     private final IntegerConditionCreator simIDConditionCreator;
