@@ -24,6 +24,14 @@ class OracleSimContrDAO extends OracleUniversalDAO<SimContr> implements SimContr
     private static final String TABLE_NAME = "sim_contr";
     private static final String SIM_ID_COL = "sim_id";
     private static final String CONTR_ID_COL = "contr_id";
+    private static final String SELECT_FOR_ALL = "SELECT sim.*, tar.name_tariff, tar.description,"
+            + " con.contr_id, con.contr_doc, con.begin_date, ent.*"
+            + " FROM sim_contr sc"
+            + " INNER JOIN sim ON sc.sim_id=sim.sim_id"
+            + " INNER JOIN tariff_list tar ON sim.ID_tariff=tar.ID_tariff"
+            + " INNER JOIN legal_contr con ON sc.contr_id=con.contr_id"
+            + " INNER JOIN legal_entity ent ON con.company_id=ent.company_id";
+    
     private final IntegerConditionCreator simIDConditionCreator;
     private final IntegerConditionCreator contrIDConditionCreator;
     private final SimContrConditionCreator simContrConditionCreator;
@@ -32,8 +40,8 @@ class OracleSimContrDAO extends OracleUniversalDAO<SimContr> implements SimContr
 
     public OracleSimContrDAO(DataSource dataSource) {
         super(dataSource);
-        simIDConditionCreator = new IntegerConditionCreator(TABLE_NAME, SIM_ID_COL);
-        contrIDConditionCreator = new IntegerConditionCreator(TABLE_NAME, CONTR_ID_COL);
+        simIDConditionCreator = new IntegerConditionCreator(SELECT_FOR_ALL + " WHERE " + SIM_ID_COL + " = ?");
+        contrIDConditionCreator = new IntegerConditionCreator(SELECT_FOR_ALL + " WHERE " + CONTR_ID_COL + " = ?");
         simContrConditionCreator = new SimContrConditionCreator();
     }
 
@@ -148,7 +156,7 @@ class OracleSimContrDAO extends OracleUniversalDAO<SimContr> implements SimContr
 
         @Override
         public String createSelect() {
-            final String SELECT = "SELECT * FROM " + TABLE_NAME + " WHERE "
+            final String SELECT = SELECT_FOR_ALL + " WHERE "
                     + SIM_ID_COL + "=? AND " + CONTR_ID_COL + "=?";
             return SELECT;
         }

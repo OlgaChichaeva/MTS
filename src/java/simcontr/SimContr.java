@@ -4,39 +4,48 @@
  */
 package simcontr;
 
+import Sim.Sim;
+import legalcontr.LegalContr;
+
 /**
  *
  * @author Ivan
  */
 public class SimContr {
-    private int simID;
-    private int contrID;
+    private Sim sim;
+    private LegalContr legalContr;
 
     /**
      * @return the simID
      */
     public int getSimID() {
-        return simID;
+        return sim.getSimId();
     }
 
     /**
      * @param simID the simID to set
      */
     public void setSimID(int simID) {
-        this.simID = simID;
+        if (sim == null) {
+            sim = new Sim();
+        }
+        sim.setSimId(simID);
     }
 
     /**
      * @return the contrID
      */
     public int getContrID() {
-        return contrID;
+        return legalContr.getContrID();
     }
 
     /**
      * @param contrID the contrID to set
      */
     public void setContrID(int contrID) {
-        this.contrID = contrID;
+        if (legalContr == null) {
+            legalContr = new LegalContr();
+        }
+        legalContr.setContrID(contrID);
     }
 }
