@@ -74,8 +74,12 @@ abstract class OracleUniversalDAO<T> extends Abstract {
      */
     protected final List<T> getAllObjects(String tableName) {
         final String SELECT = "SELECT * FROM " + tableName;
+        return getAllObjectsByCustomQuery(SELECT);
+    }
+    
+    protected final List<T> getAllObjectsByCustomQuery(String query) {
         try (Connection con = getConn()) {
-            PreparedStatement ps = con.prepareStatement(SELECT);
+            PreparedStatement ps = con.prepareStatement(query);
             List<T> entityList = selectObjects(ps);
             return entityList;
         } catch (SQLException ex) {
