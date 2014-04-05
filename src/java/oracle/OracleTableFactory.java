@@ -5,28 +5,10 @@
 package oracle;
 
 import factory.*;
-import objects.Service;
-import dao.ServiceDao;
-import objects.ServiceInTariff;
-import dao.ServiceInTariffDao;
-import dao.SimDao;
-import dao.TariffDao;
-import dao.TrafficDao;
-import dao.TypeServiceDao;
-import dao.ClientDAO;
-import dao.ClientContrDAO;
-import java.sql.Connection;
+import dao.*;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.sql.DataSource;
-import dao.LegalContrDAO;
-import dao.LegalEntityDAO;
 import oracle.jdbc.pool.OracleDataSource;
-import dao.PhoneNumberDAO;
-import dao.SimContrDAO;
 
 /**
  *
@@ -53,7 +35,7 @@ public class OracleTableFactory extends TableFactory {
             sour.setPassword(pass);
 
         } catch (SQLException ex) {
-            Logger.getLogger(OracleTableFactory.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(OracleTableFactory.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
