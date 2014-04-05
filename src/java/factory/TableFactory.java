@@ -4,31 +4,7 @@
  */
 package factory;
 
-import objects.Service;
-import dao.ServiceDao;
-import objects.ServiceInTariff;
-import dao.ServiceInTariffDao;
-import objects.Sim;
-import dao.SimDao;
-import objects.Tariff;
-import dao.TariffDao;
-import objects.Traffic;
-import dao.TrafficDao;
-import objects.TypeService;
-import dao.TypeServiceDao;
-import objects.Client;
-import dao.ClientDAO;
-import objects.ClientContr;
-import dao.ClientContrDAO;
-import java.util.Date;
-import objects.LegalContr;
-import dao.LegalContrDAO;
-import objects.LegalEntity;
-import dao.LegalEntityDAO;
-import objects.PhoneNumber;
-import dao.PhoneNumberDAO;
-import objects.SimContr;
-import dao.SimContrDAO;
+import dao.*;
 
 /**
  *
