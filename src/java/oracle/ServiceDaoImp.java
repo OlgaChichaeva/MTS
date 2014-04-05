@@ -6,6 +6,7 @@ package oracle;
 
 import Service.ServiceDao;
 import Service.Service;
+import Service.ServiceFilter;
 import TypeService.TypeService;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -107,5 +108,34 @@ class ServiceDaoImp extends Abstract implements ServiceDao {
         } catch (SQLException ex) {
         }
 
+    }
+
+    @Override
+    public List<Service> getFilteredServices(ServiceFilter service) {
+        try (Connection con = getConn()) {
+
+            List<Service> services = new ArrayList<>();
+            PreparedStatement ps = con.prepareStatement("select s.*,t.name_type, t.measure from Service s "
+                    + " INNER JOIN   type_service t on s.ID_type = t.ID_type "
+                    + " WHERE t.name_type LIKE ?"
+                    + " AND s.name_service LIKE ?"
+                    + " AND s.cost LIKE ?");
+            ps.setString(1, "%" + service.getTypeService() + "%");
+            ps.setString(2, "%" + service.getNameService() + "%");
+            ps.setString(3, "%" + service.getCost() + "%");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                TypeService type = makeTypeService(rs);
+                Service newService = makeService(rs, type);
+                services.add(newService);
+            }
+
+            return services;
+
+        } catch (SQLException ex) {
+            //System.out.println("DAO Exception");
+            ex.printStackTrace();
+        }
+        return null;
     }
 }

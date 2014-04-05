@@ -22,4 +22,6 @@ public interface ServiceDao {
     public void deleteService(int idService);
     
     public void addService(Service service);
+    
+    List<Service> getFilteredServices(ServiceFilter service);
 }
