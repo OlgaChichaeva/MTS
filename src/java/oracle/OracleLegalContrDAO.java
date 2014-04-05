@@ -11,7 +11,9 @@ import java.util.List;
 import javax.sql.DataSource;
 import legalcontr.LegalContr;
 import legalcontr.LegalContrDAO;
+import legalcontr.LegalContrFilter;
 import legalentity.LegalEntity;
+import oracle.conditions.ConditionCreator;
 import oracle.conditions.IntegerConditionCreator;
 
 /**
@@ -32,11 +34,13 @@ class OracleLegalContrDAO extends OracleUniversalDAO<LegalContr> implements Lega
 
     private final IntegerConditionCreator contrIDConditionCreator;
     private final IntegerConditionCreator companyIDConditionCreator;
+    private final FilteredConditionCreator filteredConditionCreator;
     
     public OracleLegalContrDAO(DataSource dataSource) {
         super(dataSource);
         contrIDConditionCreator = new IntegerConditionCreator(SELECT_FOR_ALL + " WHERE " + CONTR_ID_COL + " = ?");
         companyIDConditionCreator = new IntegerConditionCreator(SELECT_FOR_ALL + " WHERE " + COMP_ID_COL + " = ?");
+        filteredConditionCreator = new FilteredConditionCreator();
     }
     
     @Override
@@ -69,6 +73,12 @@ class OracleLegalContrDAO extends OracleUniversalDAO<LegalContr> implements Lega
     public List<LegalContr> getContractsByCompanyID(int companyID) {
         companyIDConditionCreator.setValue(companyID);
         return getObjectsWithConditions(companyIDConditionCreator);
+    }
+    
+    @Override
+    public List<LegalContr> getFilteredContracts(LegalContrFilter legalContr) {
+        filteredConditionCreator.setFilter(legalContr);
+        return getObjectsWithConditions(filteredConditionCreator);
     }
 
     @Override
@@ -112,5 +122,43 @@ class OracleLegalContrDAO extends OracleUniversalDAO<LegalContr> implements Lega
         LegalEntity legalEntity = makeLegalEntity(rs);
         LegalContr newContr = makeLegalContr(rs, legalEntity);
         return newContr;
+    }
+    
+    // Классы ConditionCreator
+    private static class FilteredConditionCreator extends ConditionCreator {
+        
+        private LegalContrFilter filter;
+
+        @Override
+        public String createSelect() {
+            final String SEP = " = %?%";
+            final String SELECT = SELECT_FOR_ALL 
+                    + " WHERE ent.name_company" + SEP
+                    + " AND con." + DOC_COL + SEP
+                    + " AND con." + DATE_COL + SEP;
+            return SELECT;
+        }
+
+        @Override
+        public void prepareSelectStatement(PreparedStatement ps) throws SQLException {
+            ps.setString(1, filter.getLegalEntity());
+            ps.setString(2, filter.getContrDoc());
+            ps.setString(3, filter.getBeginDate());
+        }
+
+        /**
+         * @return the filter
+         */
+        public LegalContrFilter getFilter() {
+            return filter;
+        }
+
+        /**
+         * @param filter the filter to set
+         */
+        public void setFilter(LegalContrFilter filter) {
+            this.filter = filter;
+        }
+        
     }
 }

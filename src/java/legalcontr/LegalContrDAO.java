@@ -17,4 +17,5 @@ public interface LegalContrDAO {
     List<LegalContr> getAllContracts();
     LegalContr getContrByID(int contrID);
     List<LegalContr> getContractsByCompanyID(int companyID);
+    List<LegalContr> getFilteredContracts(LegalContrFilter legalContr);
 }
