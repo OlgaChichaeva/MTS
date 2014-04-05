@@ -4,8 +4,8 @@
  */
 package oracle;
 
-import TypeService.TypeService;
-import TypeService.TypeServiceDao;
+import objects.TypeService;
+import dao.TypeServiceDao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

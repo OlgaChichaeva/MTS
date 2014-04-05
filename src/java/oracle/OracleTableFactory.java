@@ -5,16 +5,16 @@
 package oracle;
 
 import factory.*;
-import Service.Service;
-import Service.ServiceDao;
-import ServiceInTariff.ServiceInTariff;
-import ServiceInTariff.ServiceInTariffDao;
-import Sim.SimDao;
-import Tariff.TariffDao;
-import Traffic.TrafficDao;
-import TypeService.TypeServiceDao;
-import client.ClientDAO;
-import clientcontr.ClientContrDAO;
+import objects.Service;
+import dao.ServiceDao;
+import objects.ServiceInTariff;
+import dao.ServiceInTariffDao;
+import dao.SimDao;
+import dao.TariffDao;
+import dao.TrafficDao;
+import dao.TypeServiceDao;
+import dao.ClientDAO;
+import dao.ClientContrDAO;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -22,11 +22,11 @@ import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sql.DataSource;
-import legalcontr.LegalContrDAO;
-import legalentity.LegalEntityDAO;
+import dao.LegalContrDAO;
+import dao.LegalEntityDAO;
 import oracle.jdbc.pool.OracleDataSource;
-import phonenumber.PhoneNumberDAO;
-import simcontr.SimContrDAO;
+import dao.PhoneNumberDAO;
+import dao.SimContrDAO;
 
 /**
  *

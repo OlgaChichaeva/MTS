@@ -4,8 +4,8 @@
  */
 package oracle;
 
-import Sim.Sim;
-import Tariff.Tariff;
+import objects.Sim;
+import objects.Tariff;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,8 +13,8 @@ import java.util.List;
 import javax.sql.DataSource;
 import oracle.conditions.AbstractOneConditionCreator;
 import oracle.conditions.IntegerConditionCreator;
-import phonenumber.PhoneNumber;
-import phonenumber.PhoneNumberDAO;
+import objects.PhoneNumber;
+import dao.PhoneNumberDAO;
 
 /**
  *

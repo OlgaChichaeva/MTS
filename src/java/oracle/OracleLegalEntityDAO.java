@@ -9,8 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import javax.sql.DataSource;
-import legalentity.LegalEntity;
-import legalentity.LegalEntityDAO;
+import objects.LegalEntity;
+import dao.LegalEntityDAO;
 import oracle.conditions.IntegerConditionCreator;
 import oracle.conditions.StringConditionCreator;
 

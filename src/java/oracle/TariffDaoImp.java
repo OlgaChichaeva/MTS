@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import Service.Service;
-import Tariff.Tariff;
-import Tariff.TariffDao;
+import objects.Service;
+import objects.Tariff;
+import dao.TariffDao;
 import javax.sql.DataSource;
 import pack.Abstract;
 

@@ -4,8 +4,8 @@
  */
 package oracle;
 
-import client.Client;
-import client.ClientDAO;
+import objects.Client;
+import dao.ClientDAO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

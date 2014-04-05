@@ -12,8 +12,8 @@ import java.util.List;
 import javax.sql.DataSource;
 import oracle.conditions.ConditionCreator;
 import oracle.conditions.IntegerConditionCreator;
-import simcontr.SimContr;
-import simcontr.SimContrDAO;
+import objects.SimContr;
+import dao.SimContrDAO;
 
 /**
  *

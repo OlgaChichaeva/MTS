@@ -4,9 +4,9 @@
  */
 package oracle;
 
-import Sim.Sim;
-import Sim.SimDao;
-import Tariff.Tariff;
+import objects.Sim;
+import dao.SimDao;
+import objects.Tariff;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

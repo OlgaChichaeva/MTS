@@ -4,19 +4,19 @@
  */
 package pack;
 
-import Service.Service;
-import Sim.Sim;
-import Tariff.Tariff;
-import TypeService.TypeService;
-import client.Client;
-import clientcontr.ClientContr;
+import objects.Service;
+import objects.Sim;
+import objects.Tariff;
+import objects.TypeService;
+import objects.Client;
+import objects.ClientContr;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.sql.DataSource;
-import legalcontr.LegalContr;
-import legalentity.LegalEntity;
-import phonenumber.PhoneNumber;
+import objects.LegalContr;
+import objects.LegalEntity;
+import objects.PhoneNumber;
 
 /**
  *

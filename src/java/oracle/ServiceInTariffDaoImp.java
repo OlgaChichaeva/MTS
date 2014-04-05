@@ -4,11 +4,11 @@
  */
 package oracle;
 
-import Service.Service;
-import ServiceInTariff.ServiceInTariff;
-import ServiceInTariff.ServiceInTariffDao;
-import Tariff.Tariff;
-import TypeService.TypeService;
+import objects.Service;
+import objects.ServiceInTariff;
+import dao.ServiceInTariffDao;
+import objects.Tariff;
+import objects.TypeService;
 import factory.TableFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

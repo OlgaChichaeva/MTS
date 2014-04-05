@@ -4,12 +4,12 @@
  */
 package servlets;
 
-import Service.Service;
-import Service.Service;
-import Service.ServiceDao;
-import Service.ServiceDao;
-import TypeService.TypeService;
-import TypeService.TypeServiceDao;
+import objects.Service;
+import objects.Service;
+import dao.ServiceDao;
+import dao.ServiceDao;
+import objects.TypeService;
+import dao.TypeServiceDao;
 import factory.TableFactory;
 import java.io.IOException;
 import java.io.PrintWriter;

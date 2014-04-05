@@ -4,11 +4,11 @@
  */
 package oracle;
 
-import Sim.Sim;
-import Tariff.Tariff;
-import client.Client;
-import clientcontr.ClientContr;
-import clientcontr.ClientContrDAO;
+import objects.Sim;
+import objects.Tariff;
+import objects.Client;
+import objects.ClientContr;
+import dao.ClientContrDAO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

@@ -4,12 +4,12 @@
  */
 package oracle;
 
-import Service.Service;
-import Sim.Sim;
-import Tariff.Tariff;
-import Traffic.Traffic;
-import Traffic.TrafficDao;
-import TypeService.TypeService;
+import objects.Service;
+import objects.Sim;
+import objects.Tariff;
+import objects.Traffic;
+import dao.TrafficDao;
+import objects.TypeService;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

@@ -4,10 +4,10 @@
  */
 package oracle;
 
-import Service.ServiceDao;
-import Service.Service;
-import Service.ServiceFilter;
-import TypeService.TypeService;
+import dao.ServiceDao;
+import objects.Service;
+import filters.ServiceFilter;
+import objects.TypeService;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

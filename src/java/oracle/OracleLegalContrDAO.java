@@ -9,10 +9,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import javax.sql.DataSource;
-import legalcontr.LegalContr;
-import legalcontr.LegalContrDAO;
-import legalcontr.LegalContrFilter;
-import legalentity.LegalEntity;
+import objects.LegalContr;
+import dao.LegalContrDAO;
+import filters.LegalContrFilter;
+import objects.LegalEntity;
 import oracle.conditions.ConditionCreator;
 import oracle.conditions.IntegerConditionCreator;
 
