@@ -148,13 +148,6 @@ class OracleLegalContrDAO extends OracleUniversalDAO<LegalContr> implements Lega
         }
 
         /**
-         * @return the filter
-         */
-        public LegalContrFilter getFilter() {
-            return filter;
-        }
-
-        /**
          * @param filter the filter to set
          */
         public void setFilter(LegalContrFilter filter) {
