@@ -4,6 +4,7 @@
  */
 package dao;
 
+import filters.ClientFilter;
 import objects.Client;
 import java.util.List;
 
@@ -22,4 +23,5 @@ public interface ClientDAO {
     List<Client> getClientsByLastname(String lastname);
     List<Client> getClientsByMiddlename(String middlename);
     List<Client> getClientsByFullname(String firstname, String lastname, String middlename);
+    List<Client> getFilteredClients(ClientFilter client);
 }
