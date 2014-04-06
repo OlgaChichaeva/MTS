@@ -15,7 +15,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-
+        <jsp:include page="/header.jsp" flush="true"/>
         <h1>Service</h1>
         <form name="Data Input Form" action="/MTSweb/ServiceUpdate/" method="POST">
             Enter name_service:<br>

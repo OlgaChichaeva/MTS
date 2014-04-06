@@ -12,18 +12,18 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <a href="SelectAllService/">Service</a>
-        <a href="showService/">Service in tariff</a>
-        <a href="showService/">Type service </a>
-        <a href="showService/">Sim</a>
-        <a href="showService/">Tariff</a>
-        <a href="showService/">Tariff List</a>
-        <a href="showService/">Sim contract</a>
-        <a href="showService/">Phone number contract</a>
-        <a href="showService/">Legal entity</a>
-        <a href="showService/">Legal contract</a>
-        <a href="showService/">Client</a>
-        <a href="showService/">Client contract</a>
+        <a href="/MTSweb/SelectAllService/">Service</a>
+        <a href="/MTSweb/showService/">Service in tariff</a>
+        <a href="/MTSweb/showService/">Type service </a>
+        <a href="/MTSweb/showService/">Sim</a>
+        <a href="/MTSweb/showService/">Tariff</a>
+        <a href="/MTSweb/showService/">Tariff List</a>
+        <a href="/MTSweb/showService/">Sim contract</a>
+        <a href="/MTSweb/showService/">Phone number contract</a>
+        <a href="/MTSweb/showService/">Legal entity</a>
+        <a href="/MTSweb/showService/">Legal contract</a>
+        <a href="/MTSweb/showService/">Client</a>
+        <a href="/MTSweb/showService/">Client contract</a>
         
     </body>
 </html>
