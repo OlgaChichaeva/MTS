@@ -14,6 +14,7 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <jsp:include page="/header.jsp" flush="true"/>
         <%
             Object o = session.getAttribute("ServiceList");
             if (o == null) {
@@ -22,32 +23,54 @@
             }
             List<Service> services = (List<Service>) o;
         %>
-        <table>
-            <%
-                for (Service service : services) {
-                    out.print("<tr>");
-                    out.print("<td>");
-                    out.print(service.getNameService());
-                    out.print("</td>");
-                    out.print("<td>");
-                    out.print(service.getTypeService().getNameType());
-                    out.print("</td>");
-                    out.print("<td>");
-                    out.print(service.getCost());
-                    out.print("</td>");
-            %>
+        <table border=1><tr><th>Название</th><th>Тип</th><th>Стоимость</th><th>Действия</th></tr>
+            <form action="/MTSweb/ServiceFilter/" method="POST">
+                <tr>
+                    <td>
+                        <input type="text" name="name_service" value="" />
+                    </td>
+                    <td>
+                        <input type="text" name="ID_type" value="" />
+                    </td>
+                    <td>
+                        <input type="text" name="cost" value="" />
+                    </td>
+                    <td>
+                        <input type="submit" value="Filter" />
+                    </td>
+                </tr>
+            </form>
+                    <%
+                        for (Service service : services) {
+                            out.print("<tr>");
+                            out.print("<td>");
+                            out.print(service.getNameService());
+                            out.print("</td>");
+                            out.print("<td>");
+                            out.print(service.getTypeService().getNameType());
+                            out.print("</td>");
+                            out.print("<td>");
+                            out.print(service.getCost());
+                            out.print("</td>");
+                    %>
 
             <td>
-                <form name="Data Input Form" action="Update.jsp" method="POST">  
-                    <input type="submit" value="update" /> 
-                    <input type = "hidden" name = "ID_Service" value = "<%= service.getIdService()%>"/>
-                </form>
-            </td>
-            <td>
-                <form name="Data Input Form" action="/MTSweb/ServiceDelete/" method="POST">
-                    <input type="submit" value="delete" />   
-                    <input type = "hidden" name = "ID_Service" value = "<%= service.getIdService()%>"/>
-                </form>
+                <table>
+                    <tr>
+                        <td>
+                            <form name="Data Input Form" action="Update.jsp" method="POST">  
+                                <input type="submit" value="update" /> 
+                                <input type = "hidden" name = "ID_Service" value = "<%= service.getIdService()%>"/>
+                            </form>
+                        </td>
+                        <td>
+                            <form name="Data Input Form" action="/MTSweb/ServiceDelete/" method="POST">
+                                <input type="submit" value="delete" />   
+                                <input type = "hidden" name = "ID_Service" value = "<%= service.getIdService()%>"/>
+                            </form>
+                        </td>
+                    </tr>
+                </table>
             </td>
 
             <%
