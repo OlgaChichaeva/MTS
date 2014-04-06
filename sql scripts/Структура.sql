@@ -197,3 +197,65 @@ begin
   execute immediate 'update numbers set sim_id='||:new.sim_id||' where sim_id is null and rownum=1';
 end;
 /
+
+
+-- Заполнение таблиц:
+INSERT INTO numbers(phone_number) VALUES(89111111111);
+INSERT INTO numbers(phone_number) VALUES(89222222222);
+INSERT INTO numbers(phone_number) VALUES(89333333333);
+INSERT INTO numbers(phone_number) VALUES(89444444444);
+INSERT INTO numbers(phone_number) VALUES(89555555555);
+INSERT INTO numbers(phone_number) VALUES(89666666666);
+INSERT INTO numbers(phone_number) VALUES(89777777777);
+INSERT INTO numbers(phone_number) VALUES(89888888888);
+
+INSERT INTO client(passport_series, passport_number, firstname, lastname, middlename, telephone_number)
+VALUES (3614, 123456, 'Петр', 'Иванов', 'Сидорович', 89123456789);
+INSERT INTO client(passport_series, passport_number, firstname, lastname, middlename, telephone_number)
+VALUES (3614, 456789, 'Сидор', 'Петров', 'Иванович', 89987654321);
+INSERT INTO client(passport_series, passport_number, firstname, lastname, middlename, telephone_number)
+VALUES (3614, 918273, 'Иван', 'Сидоров', 'Петрович', 89918364752);
+
+INSERT INTO tariff_list(name_tariff, description) VALUES ('Супер МТС', 'Супер-тариф');
+INSERT INTO tariff_list(name_tariff, description) VALUES ('Не супер МТС', 'Обычный тариф');
+
+INSERT INTO type_service(name_type, measure) VALUES ('Звонок', 'Минута');
+INSERT INTO type_service(name_type, measure) VALUES ('SMS', 'Сообщение');
+INSERT INTO type_service(name_type, measure) VALUES ('Интернет', 'Мегабайт');
+
+INSERT INTO service(id_type, name_service, cost) VALUES(1, 'Звонки внутри области', 0.90);
+INSERT INTO service(id_type, name_service, cost) VALUES(1, 'Звонки внутри страны', 1.90);
+INSERT INTO service(id_type, name_service, cost) VALUES(2, 'SMS-сообщения', 1.00);
+INSERT INTO service(id_type, name_service, cost) VALUES(3, 'Бесплатный интернет', 0.00);
+INSERT INTO service(id_type, name_service, cost) VALUES(3, 'Дорогой интернет', 3.00);
+
+INSERT INTO service_in_tariff(id_tariff, id_service) VALUES(1, 1);
+INSERT INTO service_in_tariff(id_tariff, id_service) VALUES(1, 2);
+INSERT INTO service_in_tariff(id_tariff, id_service) VALUES(1, 3);
+INSERT INTO service_in_tariff(id_tariff, id_service) VALUES(1, 4);
+INSERT INTO service_in_tariff(id_tariff, id_service) VALUES(2, 1);
+INSERT INTO service_in_tariff(id_tariff, id_service) VALUES(2, 3);
+INSERT INTO service_in_tariff(id_tariff, id_service) VALUES(2, 5);
+
+INSERT INTO sim(id_tariff, account) VALUES(1, 100);
+INSERT INTO sim(id_tariff, account) VALUES(2, 100);
+INSERT INTO sim(id_tariff, account) VALUES(2, 100);
+INSERT INTO sim(id_tariff, account) VALUES(2, 70);
+INSERT INTO sim(id_tariff, account) VALUES(2, 70);
+INSERT INTO sim(id_tariff, account) VALUES(2, 70);
+
+INSERT INTO client_contr(client_id, sim_id, contr_doc, begin_date) VALUES(1, 1, 'C:\Documents\Договор с Петром.doc', sysdate);
+INSERT INTO client_contr(client_id, sim_id, contr_doc, begin_date) VALUES(2, 2, 'C:\Documents\Договор с Сидором.doc', sysdate);
+INSERT INTO client_contr(client_id, sim_id, contr_doc, begin_date) VALUES(3, 3, 'C:\Documents\Договор с Иваном.doc', sysdate);
+
+INSERT INTO legal_entity(name_company, address, telephone, e_mail, details) 
+VALUES('ТГУ', 'Белорусская, 14', 556677, 'tltsu@mail.ru', 'C:\Documents\Про ТГУ.doc');
+INSERT INTO legal_entity(name_company, address, telephone, e_mail, details) 
+VALUES('ВАЗ', 'Южное шоссе, 36', 123456, 'vaz@mail.ru', 'C:\Documents\Про ВАЗ.doc');
+
+INSERT INTO legal_contr(company_id, contr_doc, begin_date) VALUES(1, 'C:\Documents\Договор с ТГУ.doc', sysdate);
+
+INSERT INTO sim_contr(sim_id, contr_id) VALUES(4, 1);
+INSERT INTO sim_contr(sim_id, contr_id) VALUES(5, 1);
+INSERT INTO sim_contr(sim_id, contr_id) VALUES(6, 1);
+COMMIT;
