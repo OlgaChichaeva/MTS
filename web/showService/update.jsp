@@ -4,9 +4,9 @@
     Author     : Ольга
 --%>
 
-<%@page import="TypeService.TypeService"%>
+<%@page import="objects.TypeService"%>
 <%@page import="java.util.List"%>
-<%@page import="Service.Service"%>
+<%@page import="objects.Service"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>

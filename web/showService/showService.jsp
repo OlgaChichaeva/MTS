@@ -1,10 +1,10 @@
-<%-- 
+<%--
     Document   : showService
     Created on : 21.03.2014, 12:26:01
     Author     : Ольга
 --%>
 
-<%@page import="Service.Service"%>
+<%@page import="objects.Service"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
