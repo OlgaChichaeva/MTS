@@ -133,8 +133,8 @@ class OracleLegalContrDAO extends OracleUniversalDAO<LegalContr> implements Lega
         public String createSelect() {
             final String SEP = " LIKE ?";
             final String SELECT = SELECT_FOR_ALL 
-                    + " WHERE ent.name_company" + SEP
-                    + " AND con." + DOC_COL + SEP
+                    + " WHERE lower(ent.name_company)" + SEP
+                    + " AND lower(con." + DOC_COL + ")" + SEP
                     + " AND con." + DATE_COL + SEP;
             return SELECT;
         }
@@ -142,8 +142,8 @@ class OracleLegalContrDAO extends OracleUniversalDAO<LegalContr> implements Lega
         @Override
         public void prepareSelectStatement(PreparedStatement ps) throws SQLException {
             final String SEP = "%";
-            ps.setString(1, SEP + filter.getLegalEntity() + SEP);
-            ps.setString(2, SEP + filter.getContrDoc() + SEP);
+            ps.setString(1, SEP + filter.getLegalEntity().toLowerCase() + SEP);
+            ps.setString(2, SEP + filter.getContrDoc().toLowerCase() + SEP);
             ps.setString(3, SEP + filter.getBeginDate() + SEP);
         }
 

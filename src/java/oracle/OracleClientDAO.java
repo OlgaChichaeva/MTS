@@ -234,9 +234,9 @@ class OracleClientDAO extends OracleUniversalDAO<Client> implements ClientDAO {
             final String SELECT = "SELECT * FROM " + TABLE_NAME
                     + " WHERE " + SERIES_COL + SEP
                     + " AND " + NUMBER_COL + SEP
-                    + " AND " + FIRSTNAME_COL + SEP
-                    + " AND " + LASTNAME_COL + SEP
-                    + " AND " + MIDDLENAME_COL + SEP
+                    + " AND lower(" + FIRSTNAME_COL + ")" + SEP
+                    + " AND lower(" + LASTNAME_COL + ")" + SEP
+                    + " AND lower(" + MIDDLENAME_COL + ")" + SEP
                     + " AND " + PHONE_COL + SEP;
             return SELECT;
         }
@@ -246,9 +246,9 @@ class OracleClientDAO extends OracleUniversalDAO<Client> implements ClientDAO {
             final String SEP = "%";
             ps.setString(1, SEP + filter.getPassportSeries() + SEP);
             ps.setString(2, SEP + filter.getPassportNumber() + SEP);
-            ps.setString(3, SEP + filter.getFirstname() + SEP);
-            ps.setString(4, SEP + filter.getLastname() + SEP);
-            ps.setString(5, SEP + filter.getMiddlename() + SEP);
+            ps.setString(3, SEP + filter.getFirstname().toLowerCase() + SEP);
+            ps.setString(4, SEP + filter.getLastname().toLowerCase() + SEP);
+            ps.setString(5, SEP + filter.getMiddlename().toLowerCase() + SEP);
             ps.setString(6, SEP + filter.getTelephoneNumber() + SEP);
         }
         

@@ -117,11 +117,11 @@ class ServiceDaoImp extends Abstract implements ServiceDao {
             List<Service> services = new ArrayList<>();
             PreparedStatement ps = con.prepareStatement("select s.*,t.name_type, t.measure from Service s "
                     + " INNER JOIN   type_service t on s.ID_type = t.ID_type "
-                    + " WHERE t.name_type LIKE ?"
-                    + " AND s.name_service LIKE ?"
+                    + " WHERE lower(t.name_type) LIKE ?"
+                    + " AND lower(s.name_service) LIKE ?"
                     + " AND s.cost LIKE ?");
-            ps.setString(1, "%" + service.getTypeService() + "%");
-            ps.setString(2, "%" + service.getNameService() + "%");
+            ps.setString(1, "%" + service.getTypeService().toLowerCase() + "%");
+            ps.setString(2, "%" + service.getNameService().toLowerCase() + "%");
             ps.setString(3, "%" + service.getCost() + "%");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
