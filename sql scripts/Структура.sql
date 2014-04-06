@@ -1,4 +1,4 @@
-CREATE table service(
+п»їCREATE table service(
   ID_service number CONSTRAINT service_pk_service_id   PRIMARY KEY,
   ID_type number ,
   name_service   varchar(255),
@@ -52,14 +52,14 @@ CREATE  table legal_entity
   address    VARCHAR(255),  
   telephone   number(11),
   e_mail     VARCHAR(255),  
-  details     varchar(255)--cсылка
+  details     varchar(255)--cСЃС‹Р»РєР°
 );
 CREATE  table legal_contr
 (
   contr_id     NUMBER  CONSTRAINT legal_contr_pk_contr_id   PRIMARY KEY,
   company_id   number CONSTRAINT legal_contr_fk_company_id REFERENCES legal_entity(company_id )
   ON DELETE CASCADE, 
-  contr_doc    varchar(255), --ссылка на файл,
+  contr_doc    varchar(255), --СЃСЃС‹Р»РєР° РЅР° С„Р°Р№Р»,
   begin_date         DATE NOT NULL
 );
 
@@ -81,7 +81,7 @@ create table  client_contr
   contr_id     NUMBER  CONSTRAINT phys_contr_pk_contr_id   PRIMARY KEY,
   sim_id       number NOT NULL unique CONSTRAINT client_contr_fk_sim_id REFERENCES sim(sim_id)
   ON DELETE CASCADE, 
-  contr_doc    VARCHAR(255), --ссылка на файл,
+  contr_doc    VARCHAR(255), --СЃСЃС‹Р»РєР° РЅР° С„Р°Р№Р»,
   begin_date         DATE NOT NULL
 );
 
@@ -199,7 +199,7 @@ end;
 /
 
 
--- Заполнение таблиц:
+-- Р—Р°РїРѕР»РЅРµРЅРёРµ С‚Р°Р±Р»РёС†:
 INSERT INTO numbers(phone_number) VALUES(89111111111);
 INSERT INTO numbers(phone_number) VALUES(89222222222);
 INSERT INTO numbers(phone_number) VALUES(89333333333);
@@ -210,24 +210,24 @@ INSERT INTO numbers(phone_number) VALUES(89777777777);
 INSERT INTO numbers(phone_number) VALUES(89888888888);
 
 INSERT INTO client(passport_series, passport_number, firstname, lastname, middlename, telephone_number)
-VALUES (3614, 123456, 'Петр', 'Иванов', 'Сидорович', 89123456789);
+VALUES (3614, 123456, 'РџРµС‚СЂ', 'РРІР°РЅРѕРІ', 'РЎРёРґРѕСЂРѕРІРёС‡', 89123456789);
 INSERT INTO client(passport_series, passport_number, firstname, lastname, middlename, telephone_number)
-VALUES (3614, 456789, 'Сидор', 'Петров', 'Иванович', 89987654321);
+VALUES (3614, 456789, 'РЎРёРґРѕСЂ', 'РџРµС‚СЂРѕРІ', 'РРІР°РЅРѕРІРёС‡', 89987654321);
 INSERT INTO client(passport_series, passport_number, firstname, lastname, middlename, telephone_number)
-VALUES (3614, 918273, 'Иван', 'Сидоров', 'Петрович', 89918364752);
+VALUES (3614, 918273, 'РРІР°РЅ', 'РЎРёРґРѕСЂРѕРІ', 'РџРµС‚СЂРѕРІРёС‡', 89918364752);
 
-INSERT INTO tariff_list(name_tariff, description) VALUES ('Супер МТС', 'Супер-тариф');
-INSERT INTO tariff_list(name_tariff, description) VALUES ('Не супер МТС', 'Обычный тариф');
+INSERT INTO tariff_list(name_tariff, description) VALUES ('РЎСѓРїРµСЂ РњРўРЎ', 'РЎСѓРїРµСЂ-С‚Р°СЂРёС„');
+INSERT INTO tariff_list(name_tariff, description) VALUES ('РќРµ СЃСѓРїРµСЂ РњРўРЎ', 'РћР±С‹С‡РЅС‹Р№ С‚Р°СЂРёС„');
 
-INSERT INTO type_service(name_type, measure) VALUES ('Звонок', 'Минута');
-INSERT INTO type_service(name_type, measure) VALUES ('SMS', 'Сообщение');
-INSERT INTO type_service(name_type, measure) VALUES ('Интернет', 'Мегабайт');
+INSERT INTO type_service(name_type, measure) VALUES ('Р—РІРѕРЅРѕРє', 'РњРёРЅСѓС‚Р°');
+INSERT INTO type_service(name_type, measure) VALUES ('SMS', 'РЎРѕРѕР±С‰РµРЅРёРµ');
+INSERT INTO type_service(name_type, measure) VALUES ('РРЅС‚РµСЂРЅРµС‚', 'РњРµРіР°Р±Р°Р№С‚');
 
-INSERT INTO service(id_type, name_service, cost) VALUES(1, 'Звонки внутри области', 0.90);
-INSERT INTO service(id_type, name_service, cost) VALUES(1, 'Звонки внутри страны', 1.90);
-INSERT INTO service(id_type, name_service, cost) VALUES(2, 'SMS-сообщения', 1.00);
-INSERT INTO service(id_type, name_service, cost) VALUES(3, 'Бесплатный интернет', 0.00);
-INSERT INTO service(id_type, name_service, cost) VALUES(3, 'Дорогой интернет', 3.00);
+INSERT INTO service(id_type, name_service, cost) VALUES(1, 'Р—РІРѕРЅРєРё РІРЅСѓС‚СЂРё РѕР±Р»Р°СЃС‚Рё', 0.90);
+INSERT INTO service(id_type, name_service, cost) VALUES(1, 'Р—РІРѕРЅРєРё РІРЅСѓС‚СЂРё СЃС‚СЂР°РЅС‹', 1.90);
+INSERT INTO service(id_type, name_service, cost) VALUES(2, 'SMS-СЃРѕРѕР±С‰РµРЅРёСЏ', 1.00);
+INSERT INTO service(id_type, name_service, cost) VALUES(3, 'Р‘РµСЃРїР»Р°С‚РЅС‹Р№ РёРЅС‚РµСЂРЅРµС‚', 0.00);
+INSERT INTO service(id_type, name_service, cost) VALUES(3, 'Р”РѕСЂРѕРіРѕР№ РёРЅС‚РµСЂРЅРµС‚', 3.00);
 
 INSERT INTO service_in_tariff(id_tariff, id_service) VALUES(1, 1);
 INSERT INTO service_in_tariff(id_tariff, id_service) VALUES(1, 2);
@@ -244,16 +244,16 @@ INSERT INTO sim(id_tariff, account) VALUES(2, 70);
 INSERT INTO sim(id_tariff, account) VALUES(2, 70);
 INSERT INTO sim(id_tariff, account) VALUES(2, 70);
 
-INSERT INTO client_contr(client_id, sim_id, contr_doc, begin_date) VALUES(1, 1, 'C:\Documents\Договор с Петром.doc', sysdate);
-INSERT INTO client_contr(client_id, sim_id, contr_doc, begin_date) VALUES(2, 2, 'C:\Documents\Договор с Сидором.doc', sysdate);
-INSERT INTO client_contr(client_id, sim_id, contr_doc, begin_date) VALUES(3, 3, 'C:\Documents\Договор с Иваном.doc', sysdate);
+INSERT INTO client_contr(client_id, sim_id, contr_doc, begin_date) VALUES(1, 1, 'C:\Documents\Р”РѕРіРѕРІРѕСЂ СЃ РџРµС‚СЂРѕРј.doc', sysdate);
+INSERT INTO client_contr(client_id, sim_id, contr_doc, begin_date) VALUES(2, 2, 'C:\Documents\Р”РѕРіРѕРІРѕСЂ СЃ РЎРёРґРѕСЂРѕРј.doc', sysdate);
+INSERT INTO client_contr(client_id, sim_id, contr_doc, begin_date) VALUES(3, 3, 'C:\Documents\Р”РѕРіРѕРІРѕСЂ СЃ РРІР°РЅРѕРј.doc', sysdate);
 
 INSERT INTO legal_entity(name_company, address, telephone, e_mail, details) 
-VALUES('ТГУ', 'Белорусская, 14', 556677, 'tltsu@mail.ru', 'C:\Documents\Про ТГУ.doc');
+VALUES('РўР“РЈ', 'Р‘РµР»РѕСЂСѓСЃСЃРєР°СЏ, 14', 556677, 'tltsu@mail.ru', 'C:\Documents\РџСЂРѕ РўР“РЈ.doc');
 INSERT INTO legal_entity(name_company, address, telephone, e_mail, details) 
-VALUES('ВАЗ', 'Южное шоссе, 36', 123456, 'vaz@mail.ru', 'C:\Documents\Про ВАЗ.doc');
+VALUES('Р’РђР—', 'Р®Р¶РЅРѕРµ С€РѕСЃСЃРµ, 36', 123456, 'vaz@mail.ru', 'C:\Documents\РџСЂРѕ Р’РђР—.doc');
 
-INSERT INTO legal_contr(company_id, contr_doc, begin_date) VALUES(1, 'C:\Documents\Договор с ТГУ.doc', sysdate);
+INSERT INTO legal_contr(company_id, contr_doc, begin_date) VALUES(1, 'C:\Documents\Р”РѕРіРѕРІРѕСЂ СЃ РўР“РЈ.doc', sysdate);
 
 INSERT INTO sim_contr(sim_id, contr_id) VALUES(4, 1);
 INSERT INTO sim_contr(sim_id, contr_id) VALUES(5, 1);
