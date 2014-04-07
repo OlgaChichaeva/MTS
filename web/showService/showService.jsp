@@ -4,6 +4,7 @@
     Author     : Ольга
 --%>
 
+<%@page import="pack.HTMLHelper"%>
 <%@page import="objects.Service"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -55,22 +56,7 @@
                     %>
 
             <td>
-                <table>
-                    <tr>
-                        <td>
-                            <form name="Data Input Form" action="Update.jsp" method="POST">  
-                                <input type="submit" value="update" /> 
-                                <input type = "hidden" name = "ID_Service" value = "<%= service.getIdService()%>"/>
-                            </form>
-                        </td>
-                        <td>
-                            <form name="Data Input Form" action="/MTSweb/ServiceDelete/" method="POST">
-                                <input type="submit" value="delete" />   
-                                <input type = "hidden" name = "ID_Service" value = "<%= service.getIdService()%>"/>
-                            </form>
-                        </td>
-                    </tr>
-                </table>
+                <%= HTMLHelper.makeUpdateAndDelete("Update.jsp", "/MTSweb/ServiceDelete/", "ID_Service", service.getIdService()) %>
             </td>
 
             <%
