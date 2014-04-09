@@ -8,7 +8,6 @@ import objects.Service;
 import dao.ServiceDao;
 import objects.TypeService;
 import dao.TypeServiceDao;
-import factory.TableFactory;
 import filters.ServiceFilter;
 import java.io.IOException;
 import java.util.List;
@@ -82,6 +81,7 @@ public class ServiceServlet extends HttpServlet {
         service.setNameService(nameService);
         service.setCost(cost);
         serviceDao.addService(service);
+        response.sendRedirect("/MTSweb/SelectAllService/");
     }
 
     protected void serviceDelete(HttpServletRequest request, HttpServletResponse response)
@@ -89,6 +89,7 @@ public class ServiceServlet extends HttpServlet {
         //System.out.println(convert(request.getParameter("ID_Service")));
         int idService = Integer.parseInt(convert(request.getParameter("ID_Service")));
         serviceDao.deleteService(idService);
+        response.sendRedirect("/MTSweb/SelectAllService/");
     }
 
     protected void serviceUpdate(HttpServletRequest request, HttpServletResponse response)
@@ -103,6 +104,7 @@ public class ServiceServlet extends HttpServlet {
         service.setNameService(nameService);
         service.setCost(cost);
         serviceDao.updateService(service);
+        response.sendRedirect("/MTSweb/SelectAllService/");
     }
 
     protected void serviceFilter(HttpServletRequest request, HttpServletResponse response)
