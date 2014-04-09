@@ -23,18 +23,30 @@
                 return;
             }
             List<Service> services = (List<Service>) o;
+            String enteredName = request.getParameter("name_service");
+            if (enteredName == null) {
+                enteredName = "";
+            }
+            String enteredIdType = request.getParameter("ID_type");
+            if (enteredIdType == null) {
+                enteredIdType = "";
+            }
+            String enteredCost = request.getParameter("cost");
+            if (enteredCost == null) {
+                enteredCost = "";
+            }
         %>
         <table border=1><tr><th>Название</th><th>Тип</th><th>Стоимость</th><th>Действия</th></tr>
             <form action="/MTSweb/ServiceFilter/" method="GET">
                 <tr>
                     <td>
-                        <input type="text" name="name_service" value="<%= request.getParameter("name_service")%>" />
+                        <input type="text" name="name_service" value="<%= enteredName%>" />
                     </td>
                     <td>
-                        <input type="text" name="ID_type" value="<%= request.getParameter("ID_type")%>" />
+                        <input type="text" name="ID_type" value="<%= enteredIdType%>" />
                     </td>
                     <td>
-                        <input type="text" name="cost" value="<%= request.getParameter("cost")%>" />
+                        <input type="text" name="cost" value="<%= enteredCost%>" />
                     </td>
                     <td>
                         <input type="submit" value="Filter" />
