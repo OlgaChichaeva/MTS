@@ -17,29 +17,42 @@
     <body>
         <jsp:include page="/header.jsp" flush="true"/>
         <h1>Service</h1>
+        <%
+            Object o = request.getAttribute("TypeServiceList");
+            Object serv = request.getAttribute("serviceToUpdate");
+            if (o == null || serv == null) {
+                out.print("asd");
+                return;
+            }
+            Service serviceToUpdate = (Service) serv;
+            List<TypeService> TypeServices = (List<TypeService>) o;
+        %>
+
         <form name="Data Input Form" action="/MTSweb/ServiceUpdate/" method="POST">
             Enter name_service:<br>
-            <input type="text" name="name_service" value="" />
+            <input type="hidden" name="ID_Service" value="<%= serviceToUpdate.getIdService()%>">
+            <input type="text" name="name_service" value="<%= serviceToUpdate.getNameService()%>" />
 
             <br>Enter cost:<br>
-            <input type="text" name="cost" value="" />
-          
+            <input type="text" name="cost" value="<%= serviceToUpdate.getCost()%>" />
+
             <br>
-            
+
             Enter Type_Service:<br>
             <%
-                Object o = session.getAttribute("TypeServiceList");
-                if (o == null) {
-                    out.print("jkjhj");
-                    return;
-                }
-                List<TypeService> TypeServices = (List<TypeService>) o;
+                
+
 
                 out.print("<select name=\"ID_type\">");
+                int id = serviceToUpdate.getIdType();
 
                 for (TypeService S : TypeServices) {
 
-                    out.print("<option value =" + S.getIdType() + ">" + S.getNameType() + "</option>");
+                    out.print("<option value =" + S.getIdType());
+                    if (S.getIdType() == id) {
+                        out.print(" selected");
+                    }
+                    out.print(">" + S.getNameType() + "</option>");
                     //out.print("<option value =" + S.getMeasua()+ ">" + S.getMeasua() + "</option>");
 
                 }
@@ -48,10 +61,10 @@
 
 
             %>
-      <br>
-      <br>
+            <br>
+            <br>
             <input type="submit" value="OK" />
-            
+
         </form>
     </body>
 </html>

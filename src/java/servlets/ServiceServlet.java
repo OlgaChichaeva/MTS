@@ -32,7 +32,8 @@ import static pack.EncodingConverter.convert; // Чтобы писать мен�
     "/ServiceDelete/",
     "/ServiceUpdate/",
     "/ServiceFilter/",
-    "/ServiceAddForm/"
+    "/ServiceAddForm/",
+    "/ServiceUpdateForm/"
 })
 public class ServiceServlet extends HttpServlet {
 
@@ -90,6 +91,15 @@ public class ServiceServlet extends HttpServlet {
         int idService = Integer.parseInt(convert(request.getParameter("ID_Service")));
         serviceDao.deleteService(idService);
         response.sendRedirect("/MTSweb/SelectAllService/");
+    }
+    
+    protected void serviceUpdateForm(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        List<TypeService> typeServices = serviceTypeDao.getAllType();
+        Service serviceToUpdate = serviceDao.getService(Integer.parseInt(request.getParameter("ID_Service")));
+        request.setAttribute("TypeServiceList", typeServices);
+        request.setAttribute("serviceToUpdate", serviceToUpdate);
+        request.getRequestDispatcher("/showService/update.jsp").forward(request, response);
     }
 
     protected void serviceUpdate(HttpServletRequest request, HttpServletResponse response)
@@ -193,6 +203,9 @@ public class ServiceServlet extends HttpServlet {
             case "/ServiceAddForm/" : {
                 serviceAddForm(request, response);
                 break;
+            }
+            case "/ServiceUpdateForm/" : {
+                serviceUpdateForm(request, response);
             }
         }
 

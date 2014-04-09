@@ -68,7 +68,7 @@
                     %>
 
             <td>
-                <%= HTMLHelper.makeUpdateAndDelete("Update.jsp", "/MTSweb/ServiceDelete/", "ID_Service", service.getIdService()) %>
+                <%= HTMLHelper.makeUpdateAndDelete("/MTSweb/ServiceUpdateForm/", "/MTSweb/ServiceDelete/", "ID_Service", service.getIdService()) %>
             </td>
 
             <%
