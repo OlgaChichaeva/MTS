@@ -108,12 +108,12 @@ public class ServiceServlet extends HttpServlet {
     protected void serviceFilter(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         ServiceFilter filter = new ServiceFilter();
-        String idType = convert(request.getParameter("ID_type"));
+        /*String idType = convert(request.getParameter("ID_type"));
         String nameService = convert(request.getParameter("name_service"));
-        String cost = convert(request.getParameter("cost"));
-        System.out.println("id_type=" + idType);
-        System.out.println("name_service=" + nameService);
-        System.out.println("cost=" + cost);
+        String cost = convert(request.getParameter("cost"));*/
+        String idType = request.getParameter("ID_type");
+        String nameService = request.getParameter("name_service");
+        String cost = request.getParameter("cost");
         filter.setCost(cost);
         filter.setNameService(nameService);
         filter.setTypeService(idType);
@@ -149,24 +149,12 @@ public class ServiceServlet extends HttpServlet {
                 selectAllService(request, response);
                 break;
             }
-            case "/ServiceAdd/": {
-                serviceAdd(request, response);
-                break;
-            }
-            case "/ServiceDelete/": {
-                serviceDelete(request, response);
-                break;
-            }
-            case "/ServiceUpdate/": {
-                serviceUpdate(request, response);
-                break;
-            }
             case "/ServiceFilter/": {
                 serviceFilter(request, response);
                 break;
             }
-            case "/ServiceAddForm/" : {
-                serviceAddForm(request, response);
+            default : {
+                doPost(request, response);
                 break;
             }
         }
@@ -184,7 +172,27 @@ public class ServiceServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        doGet(request, response);
+        String userPath = request.getServletPath();
+        response.setContentType("text/html;charset=UTF-8");
+
+        switch (userPath) {
+            case "/ServiceAdd/": {
+                serviceAdd(request, response);
+                break;
+            }
+            case "/ServiceDelete/": {
+                serviceDelete(request, response);
+                break;
+            }
+            case "/ServiceUpdate/": {
+                serviceUpdate(request, response);
+                break;
+            }
+            case "/ServiceAddForm/" : {
+                serviceAddForm(request, response);
+                break;
+            }
+        }
 
     }
 
