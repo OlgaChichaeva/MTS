@@ -25,16 +25,16 @@
             List<Service> services = (List<Service>) o;
         %>
         <table border=1><tr><th>Название</th><th>Тип</th><th>Стоимость</th><th>Действия</th></tr>
-            <form action="/MTSweb/ServiceFilter/" method="POST">
+            <form action="/MTSweb/ServiceFilter/" method="GET">
                 <tr>
                     <td>
-                        <input type="text" name="name_service" value="" />
+                        <input type="text" name="name_service" value="<%= request.getParameter("name_service")%>" />
                     </td>
                     <td>
-                        <input type="text" name="ID_type" value="" />
+                        <input type="text" name="ID_type" value="<%= request.getParameter("ID_type")%>" />
                     </td>
                     <td>
-                        <input type="text" name="cost" value="" />
+                        <input type="text" name="cost" value="<%= request.getParameter("cost")%>" />
                     </td>
                     <td>
                         <input type="submit" value="Filter" />
