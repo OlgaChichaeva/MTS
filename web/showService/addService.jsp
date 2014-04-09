@@ -28,7 +28,7 @@
             
             Enter Type_Service:<br>
             <%
-                Object o = session.getAttribute("TypeServiceList");
+                Object o = request.getAttribute("TypeServiceList");
                 if (o == null) {
                     out.print("jkjhj");
                     return;

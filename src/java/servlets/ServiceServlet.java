@@ -17,7 +17,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import oracle.OracleTableFactory;
+//import oracle.OracleTableFactory;
+import pack.DaoMaster;
 //import pack.EncodingConverter;
 import static pack.EncodingConverter.convert; // Чтобы писать меньше
 
@@ -31,13 +32,14 @@ import static pack.EncodingConverter.convert; // Чтобы писать мен�
     "/ServiceAdd/",
     "/ServiceDelete/",
     "/ServiceUpdate/",
-    "/ServiceFilter/"
+    "/ServiceFilter/",
+    "/ServiceAddForm/"
 })
 public class ServiceServlet extends HttpServlet {
 
-    private TableFactory factory = new OracleTableFactory();
-    private ServiceDao serviceDao = factory.makeService();
-    private TypeServiceDao serviceTypeDao = factory.makeTypeService();
+    //private TableFactory factory = new OracleTableFactory();
+    private ServiceDao serviceDao = DaoMaster.getServiceDao();
+    private TypeServiceDao serviceTypeDao = DaoMaster.getTypeServiceDao();
 
     /**
      * Processes requests for both HTTP
@@ -59,6 +61,13 @@ public class ServiceServlet extends HttpServlet {
             throws ServletException, IOException {
         List<Service> services = serviceDao.getAllServices();
         goToSelect(services, request, response);
+    }
+    
+    protected void serviceAddForm(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        List<TypeService> typeServices = serviceTypeDao.getAllType();
+        request.setAttribute("TypeServiceList", typeServices);
+        request.getRequestDispatcher("/showService/addService.jsp").forward(request, response);
     }
 
     protected void serviceAdd(HttpServletRequest request, HttpServletResponse response)
@@ -115,10 +124,8 @@ public class ServiceServlet extends HttpServlet {
 
     protected void goToSelect(List<Service> services, HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<TypeService> typeServices = serviceTypeDao.getAllType();
-        request.getSession().setAttribute("ServiceList", services);
-        request.getSession().setAttribute("TypeServiceList", typeServices);
-        response.sendRedirect("/MTSweb/showService/showService.jsp");
+        request.setAttribute("ServiceList", services);
+        request.getRequestDispatcher("/showService/showService.jsp").forward(request, response);
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 
@@ -156,6 +163,10 @@ public class ServiceServlet extends HttpServlet {
             }
             case "/ServiceFilter/": {
                 serviceFilter(request, response);
+                break;
+            }
+            case "/ServiceAddForm/" : {
+                serviceAddForm(request, response);
                 break;
             }
         }

@@ -17,7 +17,7 @@
     <body>
         <jsp:include page="/header.jsp" flush="true"/>
         <%
-            Object o = session.getAttribute("ServiceList");
+            Object o = request.getAttribute("ServiceList");
             if (o == null) {
                 out.print("asd");
                 return;
@@ -65,6 +65,6 @@
             %>
 
         </table>
-        <a href="addService.jsp">add</a>
+        <a href="/MTSweb/ServiceAddForm/">add</a>
     </body>
 </html>
