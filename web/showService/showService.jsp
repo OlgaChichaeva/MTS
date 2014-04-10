@@ -24,15 +24,11 @@
             }
             List<Service> services = (List<Service>) o;
             String enteredName = request.getParameter("name_service");
-            if (enteredName == null) {
-                enteredName = "";
-            }
             String enteredIdType = request.getParameter("ID_type");
-            if (enteredIdType == null) {
-                enteredIdType = "";
-            }
             String enteredCost = request.getParameter("cost");
-            if (enteredCost == null) {
+            if (enteredName == null || enteredIdType == null || enteredCost == null) {
+                enteredName = "";
+                enteredIdType = "";
                 enteredCost = "";
             }
         %>
