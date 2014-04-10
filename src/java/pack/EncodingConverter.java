@@ -7,7 +7,7 @@ package pack;
 import java.io.UnsupportedEncodingException;
 
 /**
- *
+ * Класс для исправления ошибок кодировки.
  * @author Ivan
  */
 public class EncodingConverter {
@@ -21,7 +21,8 @@ public class EncodingConverter {
     }
     
     /**
-     * Конвертирует из ISO-8859-1 в UTF-8.
+     * Конвертирует из ISO-8859-1 в UTF-8. Нужно использовать ТОЛЬКО при обработке
+     * POST-запросов, при GET с кодировкой проблем нет.
      * @param source исходная строка в кодировке ISO-8859-1
      * @return строку в кодировке UTF-8 
      */

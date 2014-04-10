@@ -16,13 +16,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-//import oracle.OracleTableFactory;
 import pack.DaoMaster;
-//import pack.EncodingConverter;
 import static pack.EncodingConverter.convert; // Чтобы писать меньше
 
 /**
- *
+ * Сервлет для работы с услугами.
  * @author Ольга
  */
 @WebServlet(name = "ContrillerServlet", loadOnStartup = 1,
@@ -37,32 +35,31 @@ import static pack.EncodingConverter.convert; // Чтобы писать мен�
 })
 public class ServiceServlet extends HttpServlet {
 
-    //private TableFactory factory = new OracleTableFactory();
-    private ServiceDao serviceDao = DaoMaster.getServiceDao();
-    private TypeServiceDao serviceTypeDao = DaoMaster.getTypeServiceDao();
+    private final ServiceDao serviceDao = DaoMaster.getServiceDao();
+    private final TypeServiceDao serviceTypeDao = DaoMaster.getTypeServiceDao();
 
     /**
-     * Processes requests for both HTTP
-     * <code>GET</code> and
-     * <code>POST</code> methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * Перенаправляет на страницу со списком всех сервисов.
+     * Сначала получает список из ДАО, потом переходит на страницу.
+     * @param request берём из методов doGet/doPost
+     * @param response берём из методов doGet/doPost
+     * @throws ServletException
+     * @throws IOException 
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-
-    }
-
     protected void selectAllService(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         List<Service> services = serviceDao.getAllServices();
         goToSelect(services, request, response);
     }
     
+    /**
+     * Перенаправляет на страницу добавления услуги. Нужен для того, чтобы
+     * заполнять список типов не заранее, а только когда это потребуется
+     * @param request берём из методов doGet/doPost
+     * @param response берём из методов doGet/doPost
+     * @throws ServletException
+     * @throws IOException 
+     */
     protected void serviceAddForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         List<TypeService> typeServices = serviceTypeDao.getAllType();
@@ -70,14 +67,20 @@ public class ServiceServlet extends HttpServlet {
         request.getRequestDispatcher("/showService/addService.jsp").forward(request, response);
     }
 
+    /**
+     * Добавляет услугу со значениями, взятыми из запроса. Затем перенаправляет на
+     * страницу вывода всех услуг.
+     * @param request берём из методов doGet/doPost
+     * @param response берём из методов doGet/doPost
+     * @throws ServletException
+     * @throws IOException 
+     */
     protected void serviceAdd(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Service service = new Service();
         int idType = Integer.parseInt(convert(request.getParameter("ID_type")));
         String nameService = convert(request.getParameter("name_service"));
         double cost = Double.parseDouble(convert(request.getParameter("cost")));
-        // int idService = Integer.parseInt(request.getParameter("ID_Service"));
-        //service.setIdService(idService);
         service.setIdType(idType);
         service.setNameService(nameService);
         service.setCost(cost);
@@ -85,14 +88,29 @@ public class ServiceServlet extends HttpServlet {
         response.sendRedirect("/MTSweb/SelectAllService/");
     }
 
+    /**
+     * Удаляет услугу с ID, полученным из запроса. Затем перенаправляет на
+     * страницу вывода всех услуг.
+     * @param request берём из методов doGet/doPost
+     * @param response берём из методов doGet/doPost
+     * @throws ServletException
+     * @throws IOException 
+     */
     protected void serviceDelete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //System.out.println(convert(request.getParameter("ID_Service")));
         int idService = Integer.parseInt(convert(request.getParameter("ID_Service")));
         serviceDao.deleteService(idService);
         response.sendRedirect("/MTSweb/SelectAllService/");
     }
     
+    /**
+     * Перенаправляет на страницу обновления услуги. Нужен для того, чтобы
+     * заполнять список типов не заранее, а только когда это потребуется
+     * @param request берём из методов doGet/doPost
+     * @param response берём из методов doGet/doPost
+     * @throws ServletException
+     * @throws IOException 
+     */
     protected void serviceUpdateForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         List<TypeService> typeServices = serviceTypeDao.getAllType();
@@ -102,6 +120,14 @@ public class ServiceServlet extends HttpServlet {
         request.getRequestDispatcher("/showService/update.jsp").forward(request, response);
     }
 
+    /**
+     * Обновляет услугу в согласии со значениями из параметров запроса,
+     * потом перенаправляет на страницу вывода всех услуг.
+     * @param request берём из методов doGet/doPost
+     * @param response берём из методов doGet/doPost
+     * @throws ServletException
+     * @throws IOException 
+     */
     protected void serviceUpdate(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Service service = new Service();
@@ -117,12 +143,17 @@ public class ServiceServlet extends HttpServlet {
         response.sendRedirect("/MTSweb/SelectAllService/");
     }
 
+    /**
+     * Перенаправляет на страницу с отфильтрованным списком сервисов.
+     * Сначала получает список из ДАО, потом переходит на страницу.
+     * @param request берём из методов doGet/doPost
+     * @param response берём из методов doGet/doPost
+     * @throws ServletException
+     * @throws IOException 
+     */
     protected void serviceFilter(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         ServiceFilter filter = new ServiceFilter();
-        /*String idType = convert(request.getParameter("ID_type"));
-        String nameService = convert(request.getParameter("name_service"));
-        String cost = convert(request.getParameter("cost"));*/
         String idType = request.getParameter("ID_type");
         String nameService = request.getParameter("name_service");
         String cost = request.getParameter("cost");
@@ -134,12 +165,19 @@ public class ServiceServlet extends HttpServlet {
         goToSelect(services, request, response);
     }
 
-    protected void goToSelect(List<Service> services, HttpServletRequest request, HttpServletResponse response)
+    /**
+     * Перенаправляет на страницу показа списка сервисов.
+     * @param services список, который нужно отобразить
+     * @param request берём из методов doGet/doPost
+     * @param response берём из методов doGet/doPost
+     * @throws ServletException
+     * @throws IOException 
+     */
+    private void goToSelect(List<Service> services, HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setAttribute("ServiceList", services);
         request.getRequestDispatcher("/showService/showService.jsp").forward(request, response);
     }
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 
     /**
      * Handles the HTTP

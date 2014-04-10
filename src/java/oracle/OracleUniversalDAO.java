@@ -15,7 +15,10 @@ import oracle.conditions.ConditionCreator;
 import pack.Abstract;
 
 /**
- *
+ * Класс для упрощения создания других DAO для Oracle.
+ * Содержит несколько абстрактных методов, подразумевающих логически
+ * объединённую последовательность действий. Эти методы используются
+ * при работе с БД.
  * @author Ivan
  */
 abstract class OracleUniversalDAO<T> extends Abstract {
@@ -77,6 +80,9 @@ abstract class OracleUniversalDAO<T> extends Abstract {
         return getAllObjectsByCustomQuery(SELECT);
     }
     
+    /**
+     * Получаем список объектов на основании запроса, составленного пользователем.
+     */
     protected final List<T> getAllObjectsByCustomQuery(String query) {
         try (Connection con = getConn()) {
             PreparedStatement ps = con.prepareStatement(query);
