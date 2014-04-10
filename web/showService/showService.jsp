@@ -23,14 +23,9 @@
                 return;
             }
             List<Service> services = (List<Service>) o;
-            String enteredName = request.getParameter("name_service");
-            String enteredIdType = request.getParameter("ID_type");
-            String enteredCost = request.getParameter("cost");
-            if (enteredName == null || enteredIdType == null || enteredCost == null) {
-                enteredName = "";
-                enteredIdType = "";
-                enteredCost = "";
-            }
+            String enteredName = HTMLHelper.fromNull(request.getParameter("name_service"));
+            String enteredIdType = HTMLHelper.fromNull(request.getParameter("ID_type"));
+            String enteredCost = HTMLHelper.fromNull(request.getParameter("cost"));
         %>
         <table border=1><tr><th>Название</th><th>Тип</th><th>Стоимость</th><th>Действия</th></tr>
             <form action="/MTSweb/ServiceFilter/" method="GET">
