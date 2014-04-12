@@ -25,7 +25,7 @@ import oracle.OracleTableFactory;
  *
  * @author Ivan
  */
-@WebServlet(name = "ServiceInTariffServlet", loadOnStartup = 1, urlPatterns = {"/ServiceInTariffServlet/","SelectSInT","/SInTAdd/","/SInTDelete/","SInTUpdate","SInTFilter"})
+//@WebServlet(name = "ServiceInTariffServlet", loadOnStartup = 1, urlPatterns = {"/ServiceInTariffServlet/","SelectSInT","/SInTAdd/","/SInTDelete/","SInTUpdate","SInTFilter"})
 public class ServiceInTariffServlet extends HttpServlet {
 
     private TableFactory factory = new OracleTableFactory();
