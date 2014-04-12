@@ -100,4 +100,9 @@ public class OracleTableFactory extends TableFactory {
     public SimContrDAO makeSimContr() {
         return new OracleSimContrDAO(sour);
     }
+
+    @Override
+    public UserDAO makeUser() {
+        return new OracleUserDAO(sour);
+    }
 }

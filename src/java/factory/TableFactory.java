@@ -39,4 +39,6 @@ public abstract class TableFactory {
     public abstract PhoneNumberDAO makePhoneNamber();
 
     public abstract SimContrDAO makeSimContr();
+    
+    public abstract UserDAO makeUser();
 }

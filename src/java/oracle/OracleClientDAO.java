@@ -133,7 +133,7 @@ class OracleClientDAO extends OracleUniversalDAO<Client> implements ClientDAO {
     protected String makeUpdateStatement() {
         final String SEP = "=?,";
         final String UPDATE = "UPDATE " + TABLE_NAME + " SET "
-                    + SERIES_COL + SEP + NUMBER_COL + SEP + FIRSTNAME_COL + "=?" + LASTNAME_COL + SEP + MIDDLENAME_COL + SEP + PHONE_COL + "=?"
+                    + SERIES_COL + SEP + NUMBER_COL + SEP + FIRSTNAME_COL + SEP + LASTNAME_COL + SEP + MIDDLENAME_COL + SEP + PHONE_COL + "=?"
                     + " WHERE " + ID_COL + " = ?";
         return UPDATE;
     }

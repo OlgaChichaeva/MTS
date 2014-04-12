@@ -4,19 +4,11 @@
  */
 package pack;
 
-import objects.Service;
-import objects.Sim;
-import objects.Tariff;
-import objects.TypeService;
-import objects.Client;
-import objects.ClientContr;
+import objects.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.sql.DataSource;
-import objects.LegalContr;
-import objects.LegalEntity;
-import objects.PhoneNumber;
 
 /**
  * Класс, предоставляющий подключения к БД для тех, кто от него наследуется.
@@ -188,5 +180,34 @@ public abstract class Abstract {
         phoneNumber.setSim(sim);
         phoneNumber.setNumber(rs.getLong("phone_number"));
         return phoneNumber;
+    }
+    
+    /**
+     * Создание объекта User на основе результата запроса.
+     * @param rs результат запроса
+     * @param role роль
+     * @return пользователя со всеми заполненными полями
+     * @throws SQLException 
+     */
+    protected User makeUser(ResultSet rs, Role role) throws SQLException {
+        User user = new User();
+        user.setRole(role);
+        user.setIdUser(rs.getInt("id_user"));
+        user.setUserName(rs.getString("user_name"));
+        user.setUserPassword(rs.getString("user_password"));
+        return user;
+    }
+    
+    /**
+     * Создание объекта Role на основе результата запроса.
+     * @param rs результат запроса
+     * @return роль со всеми заполненными полями
+     * @throws SQLException 
+     */
+    protected Role makeRole(ResultSet rs) throws SQLException {
+        Role role = new Role();
+        role.setIdRole(rs.getInt("id_role"));
+        role.setRoleName(rs.getString("role_name"));
+        return role;
     }
 }
