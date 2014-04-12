@@ -287,4 +287,13 @@ INSERT INTO legal_contr(company_id, contr_doc, begin_date) VALUES(1, 'C:\Documen
 INSERT INTO sim_contr(sim_id, contr_id) VALUES(4, 1);
 INSERT INTO sim_contr(sim_id, contr_id) VALUES(5, 1);
 INSERT INTO sim_contr(sim_id, contr_id) VALUES(6, 1);
+
+INSERT INTO roles(role_name) VALUES('Administrator');
+INSERT INTO roles(role_name) VALUES('Client');
+INSERT INTO roles(role_name) VALUES('Legal entity');
+
+INSERT INTO users(id_role, user_name, user_password) VALUES(1, 'admin', 'admin');
+INSERT INTO users(id_role, user_name, user_password) VALUES(2, 'jack', 'jack');
+INSERT INTO users(id_role, user_name, user_password) VALUES(3, 'tsu', 'tsu');
+
 COMMIT;
