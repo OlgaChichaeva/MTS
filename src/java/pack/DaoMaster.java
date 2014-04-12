@@ -34,6 +34,7 @@ public class DaoMaster {
     private final static LegalEntityDAO legalEntityDao = factory.makeLegalEntity();
     private final static PhoneNumberDAO phoneNumberDao = factory.makePhoneNamber();
     private final static SimContrDAO simContrDao = factory.makeSimContr();
+    private final static UserDAO userDao = factory.makeUser();
 
     /**
      * @return the serviceDao
@@ -117,6 +118,13 @@ public class DaoMaster {
      */
     public static SimContrDAO getSimContrDao() {
         return simContrDao;
+    }
+
+    /**
+     * @return the userDao
+     */
+    public static UserDAO getUserDao() {
+        return userDao;
     }
     
     /**
