@@ -93,6 +93,18 @@ create table sim_contr
   ON DELETE CASCADE, 
   CONSTRAINT key_sim PRIMARY KEY (sim_id,contr_id )
 );
+
+CREATE TABLE roles (
+  id_role number CONSTRAINT roles_pk_id_role PRIMARY KEY,
+  role_name varchar2(30)
+);
+
+CREATE TABLE users (
+  id_user number CONSTRAINT users_pk_id_user PRIMARY KEY,
+  id_role number CONSTRAINT users_fk_id_role REFERENCES roles(id_role),
+  user_name varchar2(255) UNIQUE,
+  user_password varchar2(255)
+);
 --------------------------------------------------------------------------------------------------------------
 alter table service
 add CONSTRAINT service_fk_type_id foreign key(ID_type) REFERENCES type_service(ID_type)
@@ -183,7 +195,24 @@ CREATE  or replace  TRIGGER trig_sim
   end;
 /
 ---------------------------------------------------------------------------------------------------------------------------
-
+CREATE SEQUENCe roles_seq$id_role increment by 1 Start with 1;
+CREATE  or replace  TRIGGER trig_roles
+  BEFORE INSERT  ON roles
+  FOR EACH ROW
+  BEgin
+    SELECT roles_seq$id_role.NEXTVAL INTO:NEW.id_role FROM dual;
+  end;
+/
+---------------------------------------------------------------------------------------------------------------------------
+CREATE SEQUENCe users_seq$id_user increment by 1 Start with 1;
+CREATE  or replace  TRIGGER trig_users
+  BEFORE INSERT  ON users
+  FOR EACH ROW
+  BEgin
+    SELECT users_seq$id_user.NEXTVAL INTO:NEW.id_user FROM dual;
+  end;
+/
+---------------------------------------------------------------------------------------------------------------------------
 create table numbers
 (
   sim_id number null unique constraint numbers_fk_sim_id references sim(sim_id) on delete set null,
