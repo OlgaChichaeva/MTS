@@ -18,51 +18,6 @@ public class HTMLHelper {
     public static final String ROOT = "/MTSweb";
     
     /**
-     * Путь к папке с заголовочными jsp.
-     */
-    public static final String HEADERS = "/WEB-INF/headers";
-    
-    /**
-     * Путь к папке со страницами, разграничивающими доступ.
-     */
-    public static final String SECURITY = "/WEB-INF/security";
-    
-    /**
-     * Путь к странице, дающей клиенту доступ.
-     */
-    public static final String ACCEPT_CLIENT = SECURITY + "/acceptClient.jsp";
-    
-    /**
-     * Путь к странице, дающей юр. лицу доступ.
-     */
-    public static final String ACCEPT_LEGAL = SECURITY + "/acceptLegalEntity.jsp";
-    
-    /**
-     * Путь к странице, дающей юр. лицу доступ.
-     */
-    public static final String CHECK_ACCEPT = SECURITY + "/checkAccept.jsp";
-    
-    /**
-     * Путь к заголовочной странице, используемой по умолчанию.
-     */
-    public static final String DEFAULT_HEADER = HEADERS + "/defaultHeader.jsp";
-    
-    /**
-     * Путь к заголовочной странице для клиентов.
-     */
-    public static final String CLIENT_HEADER = HEADERS + "/clientHeader.jsp";
-    
-    /**
-     * Путь к заголовочной странице для админа.
-     */
-    public static final String ADMIN_HEADER = HEADERS + "/adminHeader.jsp";
-    
-    /**
-     * Путь к заголовочной странице для юр. лиц.
-     */
-    public static final String LEGAL_HEADER = HEADERS + "/legalEntityHeader.jsp";
-    
-    /**
      * Получаем кнопки Update и Delete
      * @param updatePath путь для update
      * @param deletePath путь для delete
