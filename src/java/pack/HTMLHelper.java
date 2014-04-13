@@ -28,6 +28,21 @@ public class HTMLHelper {
     public static final String SECURITY = "/WEB-INF/security";
     
     /**
+     * Путь к странице, дающей клиенту доступ.
+     */
+    public static final String ACCEPT_CLIENT = SECURITY + "/acceptClient.jsp";
+    
+    /**
+     * Путь к странице, дающей юр. лицу доступ.
+     */
+    public static final String ACCEPT_LEGAL = SECURITY + "/acceptLegalEntity.jsp";
+    
+    /**
+     * Путь к странице, дающей юр. лицу доступ.
+     */
+    public static final String CHECK_ACCEPT = SECURITY + "/checkAccept.jsp";
+    
+    /**
      * Путь к заголовочной странице, используемой по умолчанию.
      */
     public static final String DEFAULT_HEADER = HEADERS + "/defaultHeader.jsp";
