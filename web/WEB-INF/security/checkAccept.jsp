@@ -4,18 +4,22 @@
     Author     : Ivan
 --%>
 
+<%@page import="pack.HTMLHelper"%>
 <%--
     Проверяет, есть ли у пользователя право просмотра страницы.
     Список ролей, имеющих доступ к странице, должен быть заполнен заранее.
+    Если доступа нет, выводит соответствующее сообщение и закрывает
+    поток для вывода.
 --%>
 <%@page import="objects.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:useBean id="security" class="security.SecurityBean" scope="request" />
+<jsp:useBean id="currentUser" scope="session" class="objects.User" />
 <%
-    User currentUser = (User) session.getAttribute("user");
     if ( !security.isUserAccepted(currentUser)) {
         out.print("You shall no pass!");
-        out.print("<a href=\"" + request.getContextPath() + "\">обрано</a>");
+        out.print("<a href=\"" + request.getHeader("referer")+ "\">обрано</a>");
+        out.close();
         return;
     }
 %>
