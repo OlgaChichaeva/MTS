@@ -8,14 +8,6 @@
 <%@page import="objects.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<%
-    /*User user = (User) session.getAttribute("user");
-    if (user == null || user.getIdRole() != 2) { // id_role=2 - клиент
-        out.print("You shall no pass!");
-        out.print("<a href=\"" + request.getContextPath() + "\">обрано</a>");
-        return;
-    }*/
-%>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -34,5 +26,6 @@
                 </td>
             </tr>
         </table>
+                    <hr>
     </body>
 </html>

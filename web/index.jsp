@@ -4,6 +4,7 @@
     Author     : Ольга
 --%>
 
+<%@page import="pack.HTMLHelper"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -12,9 +13,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <jsp:include page="header.jsp" flush="true"/>
+         <jsp:include page="<%= HTMLHelper.DEFAULT_HEADER %>" />
         <h1>Service</h1>
-       
-        <%-- <a href="SelectAllService/">select all</a> --%>
     </body>
 </html>

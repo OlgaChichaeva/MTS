@@ -4,6 +4,7 @@
     Author     : Ольга
 --%>
 
+<%@page import="pack.HTMLHelper"%>
 <%@page import="objects.TypeService"%>
 <%@page import="java.util.List"%>
 <%@page import="objects.Service"%>
@@ -15,7 +16,8 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <jsp:include page="/header.jsp" flush="true"/>
+        <jsp:include page="<%= HTMLHelper.CHECK_ACCEPT %>" flush="true"/>
+        <jsp:include page="<%= HTMLHelper.CHOOSE_HEADER %>" flush="true"/>
         <h1>Service</h1>
         <%
             Object o = request.getAttribute("TypeServiceList");

@@ -17,7 +17,7 @@
         <table width="100%" border="0" cellpadding="0" cellspacing="0">
             <tr>
                 <td width="70%">
-                    <%! private final String ROOT = HTMLHelper.ROOT;%>
+                    <% String ROOT = request.getContextPath();%>
                     <img src="<%= ROOT%>/boring.jpg" alt=":("/>
                     <a href="<%= ROOT%>/">Home</a>
                     <a href="<%= ROOT%>/SelectAllService/">Service</a>
@@ -39,6 +39,7 @@
                     </p>
                 </td>
             </tr>
-        </table>     
+        </table>   
+                    <hr>
     </body>
 </html>
