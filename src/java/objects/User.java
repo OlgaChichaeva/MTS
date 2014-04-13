@@ -4,8 +4,10 @@
  */
 package objects;
 
+import security.SecurityBean;
+
 /**
- *
+ * По умолчанию создаётся с ID роли = NOT_LOGGED (не авторизованный)
  * @author Ivan
  */
 public class User {
@@ -14,6 +16,9 @@ public class User {
     private String userName;
     private String userPassword;
 
+    public User() {
+        setIdRole(SecurityBean.NOT_LOGGED);
+    }
     /**
      * @return the ideUser
      */
