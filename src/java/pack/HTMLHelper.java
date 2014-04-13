@@ -13,6 +13,31 @@ package pack;
 public class HTMLHelper {
     
     /**
+     * Корневой адрес приложения.
+     */
+    public static final String ROOT = "/MTSweb";
+    
+    /**
+     * Путь к папке с заголовочными jsp.
+     */
+    public static final String HEADERS = "/WEB-INF/headers";
+    
+    /**
+     * Путь к папке со страницами, разграничивающими доступ.
+     */
+    public static final String SECURITY = "/WEB-INF/security";
+    
+    /**
+     * Путь к заголовочной странице, используемой по умолчанию.
+     */
+    public static final String DEFAULT_HEADER = HEADERS + "/defaultHeader.jsp";
+    
+    /**
+     * Путь к заголовочной странице для клиентов.
+     */
+    public static final String CLIENT_HEADER = HEADERS + "/clientHeader.jsp";
+    
+    /**
      * Получаем кнопки Update и Delete
      * @param updatePath путь для update
      * @param deletePath путь для delete
