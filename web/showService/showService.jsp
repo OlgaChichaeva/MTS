@@ -4,6 +4,7 @@
     Author     : Ольга
 --%>
 
+<%@page import="security.SecurityBean"%>
 <%@page import="pack.HTMLHelper"%>
 <%@page import="objects.Service"%>
 <%@page import="java.util.List"%>
@@ -15,7 +16,8 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <jsp:include page="/header.jsp" flush="true"/>
+        <jsp:useBean id="currentUser" scope="session" class="objects.User" />
+        <jsp:include page="<%= HTMLHelper.DEFAULT_HEADER%>" flush="true"/>
         <%
             Object o = request.getAttribute("ServiceList");
             if (o == null) {
@@ -26,8 +28,10 @@
             String enteredName = HTMLHelper.fromNull(request.getParameter("name_service"));
             String enteredIdType = HTMLHelper.fromNull(request.getParameter("ID_type"));
             String enteredCost = HTMLHelper.fromNull(request.getParameter("cost"));
+            boolean acceptedToChange = currentUser.getIdRole() == SecurityBean.ADMIN;
         %>
-        <table border=1><tr><th>Название</th><th>Тип</th><th>Стоимость</th><th>Действия</th></tr>
+        <table border=1><tr><th>Название</th><th>Тип</th><th>Стоимость</th><th>Действия</th>
+            </tr>
             <form action="/MTSweb/ServiceFilter/" method="GET">
                 <tr>
                     <td>
@@ -44,22 +48,30 @@
                     </td>
                 </tr>
             </form>
-                    <%
-                        for (Service service : services) {
-                            out.print("<tr>");
-                            out.print("<td>");
-                            out.print(service.getNameService());
-                            out.print("</td>");
-                            out.print("<td>");
-                            out.print(service.getTypeService().getNameType());
-                            out.print("</td>");
-                            out.print("<td>");
-                            out.print(service.getCost());
-                            out.print("</td>");
-                    %>
+            <%
+                for (Service service : services) {
+                    out.print("<tr>");
+                    out.print("<td>");
+                    out.print(service.getNameService());
+                    out.print("</td>");
+                    out.print("<td>");
+                    out.print(service.getTypeService().getNameType());
+                    out.print("</td>");
+                    out.print("<td>");
+                    out.print(service.getCost());
+                    out.print(" / ");
+                    out.print(service.getTypeService().getMeasure());
+                    out.print("</td>");
+            %>
 
             <td>
-                <%= HTMLHelper.makeUpdateAndDelete("/MTSweb/ServiceUpdateForm/", "/MTSweb/ServiceDelete/", "ID_Service", service.getIdService()) %>
+                <% if (acceptedToChange) { // Показываем кнопки только тогда, когда юзер имеет права для редактирования %>
+                <%= HTMLHelper.makeUpdateAndDelete("/MTSweb/ServiceUpdateForm/", "/MTSweb/ServiceDelete/", "ID_Service", service.getIdService())%>
+                <%
+                    } else {
+                        out.print("<hr>");
+                    }
+                %>
             </td>
 
             <%
@@ -68,6 +80,8 @@
             %>
 
         </table>
-        <a href="/MTSweb/ServiceAddForm/">add</a>
+        <% if (acceptedToChange) {%>
+            <a href="/MTSweb/ServiceAddForm/">add</a>
+        <%}%>
     </body>
 </html>
