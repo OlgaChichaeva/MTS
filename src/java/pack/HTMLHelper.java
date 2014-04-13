@@ -38,6 +38,16 @@ public class HTMLHelper {
     public static final String CLIENT_HEADER = HEADERS + "/clientHeader.jsp";
     
     /**
+     * Путь к заголовочной странице для админа.
+     */
+    public static final String ADMIN_HEADER = HEADERS + "/adminHeader.jsp";
+    
+    /**
+     * Путь к заголовочной странице для юр. лиц.
+     */
+    public static final String LEGAL_HEADER = HEADERS + "/legalEntityHeader.jsp";
+    
+    /**
      * Получаем кнопки Update и Delete
      * @param updatePath путь для update
      * @param deletePath путь для delete
