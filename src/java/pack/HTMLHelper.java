@@ -58,6 +58,11 @@ public class HTMLHelper {
     public static final String LEGAL_HEADER = HEADERS + "/legalEntityHeader.jsp";
     
     /**
+     * Путь странице автоматического выбора заголовка
+     */
+    public static final String CHOOSE_HEADER = HEADERS + "/chooseHeader.jsp";
+    
+    /**
      * Получаем кнопки Update и Delete
      * @param updatePath путь для update
      * @param deletePath путь для delete
