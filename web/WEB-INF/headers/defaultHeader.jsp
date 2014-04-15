@@ -43,6 +43,7 @@
                             } else {
                                 %>
                                     Здравствуйте, <%= currentUser.getUserName()%>
+                                    <a href="<%= ROOT%>/Logout/">Выйти</a>
                                 <%
                             }
                         %>

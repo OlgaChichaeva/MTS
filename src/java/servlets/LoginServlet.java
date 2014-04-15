@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import objects.User;
 import pack.DaoMaster;
+import pack.HTMLHelper;
+import security.SecurityBean;
 
 /**
  *
@@ -56,7 +58,13 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //processRequest(request, response);
+        String userPath = request.getServletPath();
+        switch (userPath) {
+            case "/Logout/": {
+                logout(request, response);
+                break;
+            }
+        }
     }
 
     /**
@@ -73,12 +81,9 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         String userPath = request.getServletPath();
         switch (userPath) {
-            case "/LoginUser/": {
+            case "/Login/": {
                 login(request, response);
                 break;
-            }
-            case "/LogoutUser/": {
-                logout(request, response);
             }
         }
     }
@@ -99,29 +104,34 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("password");
 
         User user = userDao.getUserByUserName(username);
-        if (!user.getUserPassword().equals(password)) {
+        if (user == null || !user.getUserPassword().equals(password)) {
+            System.out.println("wrong!");
+            return;
             // выкинуть на страницу с ошибкой
         }
         HttpSession session = request.getSession(true);
-        session.setAttribute("user", user);
+        session.setAttribute("currentUser", user);
         switch (user.getIdRole()) {
-            case 1: {
+            case SecurityBean.ADMIN: {
                 // это админ
                 break;
             }
-            case 2: {
+            case SecurityBean.CLIENT: {
                 // а это клиент
                 break;
             }
-            case 3: {
+            case SecurityBean.LEGAL_ENTITY: {
                 // юр. лицо
                 break;
             }
         }
+        response.sendRedirect(request.getContextPath());
     }
 
     private void logout(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        HttpSession session = request.getSession(true);
+        session.setAttribute("currentUser", null);
+        response.sendRedirect(request.getContextPath());
     }
 }
