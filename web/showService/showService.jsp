@@ -17,7 +17,7 @@
     </head>
     <body>
         <jsp:useBean id="currentUser" scope="session" class="objects.User" />
-        <jsp:include page="<%= HTMLHelper.DEFAULT_HEADER%>" flush="true"/>
+        <jsp:include page="<%= HTMLHelper.CHOOSE_HEADER%>" flush="true"/>
         <%
             Object o = request.getAttribute("ServiceList");
             if (o == null) {

@@ -1,11 +1,12 @@
 
 <%@page import="pack.HTMLHelper"%>
 <%@page import="security.SecurityBean"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:useBean id="currentUser" scope="session" class="objects.User" />
 <%
     switch(currentUser.getIdRole()) {
         case SecurityBean.ADMIN : {
-            %><jsp:include page="<%= HTMLHelper.DEFAULT_HEADER %>" flush="true"/><%
+            %><jsp:include page="<%= HTMLHelper.ADMIN_HEADER %>" flush="true"/><%
             break;
         }
         case SecurityBean.CLIENT : {

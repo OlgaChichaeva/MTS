@@ -13,7 +13,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-         <jsp:include page="<%= HTMLHelper.DEFAULT_HEADER %>" />
+         <jsp:include page="<%= HTMLHelper.CHOOSE_HEADER %>" />
         <h1>Service</h1>
     </body>
 </html>
