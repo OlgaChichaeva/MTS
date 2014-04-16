@@ -17,7 +17,10 @@
         <table width="100%" border="0" cellpadding="0" cellspacing="0">
             <tr>
                 <td width="70%">
-                    Тут будут ссылки для клиента
+                    <% String ROOT = request.getContextPath();%>
+                    <img src="<%= ROOT%>/boring.jpg" alt=":("/>
+                    <a href="<%= ROOT%>/">Home</a>
+                    <a href="<%= ROOT%>/SelectAllService/">Service</a>
                 </td>
                 <td>
                     <p align="right">

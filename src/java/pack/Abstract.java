@@ -208,6 +208,7 @@ public abstract class Abstract {
         Role role = new Role();
         role.setIdRole(rs.getInt("id_role"));
         role.setRoleName(rs.getString("role_name"));
+        role.setReadOnly(rs.getBoolean("read_only"));
         return role;
     }
 }

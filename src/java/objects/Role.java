@@ -11,6 +11,7 @@ package objects;
 public class Role {
     private int idRole;
     private String roleName;
+    private boolean readOnly = true;
 
     /**
      * @return the idRole
@@ -38,5 +39,19 @@ public class Role {
      */
     public void setRoleName(String roleName) {
         this.roleName = roleName;
+    }
+
+    /**
+     * @return the readOnly
+     */
+    public boolean isReadOnly() {
+        return readOnly;
+    }
+
+    /**
+     * @param readOnly the readOnly to set
+     */
+    public void setReadOnly(boolean readOnly) {
+        this.readOnly = readOnly;
     }
 }

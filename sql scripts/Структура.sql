@@ -96,7 +96,8 @@ create table sim_contr
 
 CREATE TABLE roles (
   id_role number CONSTRAINT roles_pk_id_role PRIMARY KEY,
-  role_name varchar2(30)
+  role_name varchar2(30),
+  read_only number(1) -- Равно единице = true, равно нулю = false
 );
 
 CREATE TABLE users (
@@ -288,9 +289,9 @@ INSERT INTO sim_contr(sim_id, contr_id) VALUES(4, 1);
 INSERT INTO sim_contr(sim_id, contr_id) VALUES(5, 1);
 INSERT INTO sim_contr(sim_id, contr_id) VALUES(6, 1);
 
-INSERT INTO roles(role_name) VALUES('Administrator');
-INSERT INTO roles(role_name) VALUES('Client');
-INSERT INTO roles(role_name) VALUES('Legal entity');
+INSERT INTO roles(role_name, read_only) VALUES('Administrator', 0);
+INSERT INTO roles(role_name, read_only) VALUES('Client', 1);
+INSERT INTO roles(role_name, read_only) VALUES('Legal entity', 1);
 
 INSERT INTO users(id_role, user_name, user_password) VALUES(1, 'admin', 'admin');
 INSERT INTO users(id_role, user_name, user_password) VALUES(2, 'jack', 'jack');

@@ -18,6 +18,7 @@ public class User {
 
     public User() {
         setIdRole(SecurityBean.NOT_LOGGED);
+        setReadOnly(true);
     }
     /**
      * @return the ideUser
@@ -84,5 +85,16 @@ public class User {
             role = new Role();
         }
         role.setIdRole(idRole);
+    }
+    
+    public boolean getReadOnly() {
+        return role.isReadOnly();
+    }
+    
+    public void setReadOnly(boolean readOnly) {
+        if(role == null) {
+            role = new Role();
+        }
+        role.setReadOnly(readOnly);
     }
 }
