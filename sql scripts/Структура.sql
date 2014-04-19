@@ -104,7 +104,9 @@ CREATE TABLE users (
   id_user number CONSTRAINT users_pk_id_user PRIMARY KEY,
   id_role number CONSTRAINT users_fk_id_role REFERENCES roles(id_role),
   user_name varchar2(255) UNIQUE,
-  user_password varchar2(255)
+  user_password varchar2(255),
+  client_id number unique CONSTRAINT users_fk_client_id REFERENCES client(client_id),
+  company_id number unique CONSTRAINT users_fk_company_id REFERENCES legal_entity(company_id)
 );
 --------------------------------------------------------------------------------------------------------------
 alter table service
@@ -294,7 +296,10 @@ INSERT INTO roles(role_name, read_only) VALUES('Client', 1);
 INSERT INTO roles(role_name, read_only) VALUES('Legal entity', 1);
 
 INSERT INTO users(id_role, user_name, user_password) VALUES(1, 'admin', 'admin');
-INSERT INTO users(id_role, user_name, user_password) VALUES(2, 'jack', 'jack');
-INSERT INTO users(id_role, user_name, user_password) VALUES(3, 'tsu', 'tsu');
+INSERT INTO users(id_role, user_name, user_password, client_id) VALUES(2, 'petr', 'petr', 1);
+INSERT INTO users(id_role, user_name, user_password, client_id) VALUES(2, 'sidor', 'sidor', 2);
+INSERT INTO users(id_role, user_name, user_password, client_id) VALUES(2, 'ivan', 'ivan', 3);
+INSERT INTO users(id_role, user_name, user_password, company_id) VALUES(3, 'tsu', 'tsu', 1);
+INSERT INTO users(id_role, user_name, user_password, company_id) VALUES(3, 'vas', 'vas', 2);
 
 COMMIT;
