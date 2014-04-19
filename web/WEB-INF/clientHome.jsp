@@ -10,7 +10,7 @@
 <jsp:include page="<%= HTMLHelper.ACCEPT_CLIENT%>" flush="true"/>
 <jsp:include page="<%= HTMLHelper.CHECK_ACCEPT%>" flush="true"/>
 <jsp:include page="<%= HTMLHelper.CHOOSE_HEADER%>" />
-<jsp:useBean id="currentUser" scope="session" class="objects.User" />
+<jsp:useBean id="currentClient" scope="session" class="objects.Client" />
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

@@ -4,9 +4,11 @@
  */
 package servlets;
 
+import dao.ClientContrDAO;
 import dao.ClientDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import objects.Client;
+import objects.ClientContr;
 import objects.User;
 import pack.DaoMaster;
 
@@ -24,7 +27,7 @@ import pack.DaoMaster;
 @WebServlet(name = "ClientServlet", loadOnStartup = 1, urlPatterns = {"/clientHome/"})
 public class ClientServlet extends HttpServlet {
 
-    private ClientDAO clientDao = DaoMaster.getClientDao();
+    private ClientContrDAO clientContrDao = DaoMaster.getClientContrDao();
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -41,7 +44,7 @@ public class ClientServlet extends HttpServlet {
             throws ServletException, IOException {
         String userPath = request.getServletPath();
         switch (userPath) {
-            case "/clientHome/" : {
+            case "/clientHome/": {
                 clientHome(request, response);
                 break;
             }
@@ -64,12 +67,13 @@ public class ClientServlet extends HttpServlet {
     }
 
     /**
-     * Загружает информацию о клиенте, связанном с данным юзером,
-     * и перенаправляет на домашнюю для клиента страницу.
+     * Загружает информацию о клиенте, связанном с данным юзером, и
+     * перенаправляет на домашнюю для клиента страницу.
+     *
      * @param request
      * @param response
      * @throws ServletException
-     * @throws IOException 
+     * @throws IOException
      */
     private void clientHome(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -79,15 +83,18 @@ public class ClientServlet extends HttpServlet {
             // что-нибудь сделать
             return;
         }
-        Client client = clientDao.getClientByID(user.getIdClient());
-        if (client == null) {
+        List<ClientContr> contr = clientContrDao.getContrsByClientID(user.getIdClient());
+        if (contr.isEmpty()) {
             // что-нибудь сделать
             return;
         }
+        // Можем взять клиента из первого элмента, так как проверили, что список не пустой.
+        Client client = contr.get(0).getClient(); 
         session.setAttribute("currentClient", client);
+        request.setAttribute("contrList", contr); // Кладём список всех контрактов в запрос.
         request.getRequestDispatcher("/WEB-INF/clientHome.jsp").forward(request, response);
     }
-    
+
     /**
      * Returns a short description of the servlet.
      *

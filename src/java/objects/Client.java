@@ -12,9 +12,9 @@ public class Client {
     private int сlientID;
     private int passportSeries;
     private int passportNumber;
-    private String firstname;
-    private String lastname;
-    private String middlename;
+    private String firstname = "";
+    private String lastname = "";
+    private String middlename = "";
     private long telephoneNumber;
 
     /**

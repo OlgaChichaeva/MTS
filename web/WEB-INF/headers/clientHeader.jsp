@@ -13,7 +13,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     </head>
     <body>
-        <jsp:useBean id="currentUser" class="objects.User" scope="session" />
+        <jsp:useBean id="currentClient" scope="session" class="objects.Client" />
         <table width="100%" border="0" cellpadding="0" cellspacing="0">
             <tr>
                 <td width="70%">
@@ -24,7 +24,7 @@
                 </td>
                 <td>
                     <p align="right">
-                        Здравствуйте, <%= currentUser.getUserName()%>
+                        <%= currentClient.getLastname() + " " + currentClient.getFirstname() + " " + currentClient.getMiddlename()%>
                         <a href="<%= request.getContextPath()%>/Logout/">Выйти</a>
                     </p>
                 </td>
