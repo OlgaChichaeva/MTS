@@ -81,7 +81,7 @@
 
         </table>
         <% if (acceptedToChange) {%>
-            <a href="/MTSweb/ServiceAddForm/">add</a>
+            <a href="<%= request.getContextPath()%>/ServiceAddForm/">add</a>
         <%}%>
     </body>
 </html>
