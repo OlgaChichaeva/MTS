@@ -18,6 +18,16 @@ public class HTMLHelper {
     public static final String HEADERS = "/WEB-INF/headers";
     
     /**
+     * Путь к папке с файлами javascript.
+     */
+    public static final String JS = "/js";
+    
+    /**
+     * Путь к библиотеке jquery.
+     */
+    public static final String JQUERY = JS + "/jquery-1.5.1.js";
+    
+    /**
      * Путь к папке со страницами, разграничивающими доступ.
      */
     public static final String SECURITY = "/WEB-INF/security";
