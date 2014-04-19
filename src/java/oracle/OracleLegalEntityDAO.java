@@ -37,12 +37,14 @@ class OracleLegalEntityDAO extends OracleUniversalDAO<LegalEntity> implements Le
             + " ON r.id_role=u.id_role";
     
     private final IntegerConditionCreator idConditionCreator;
+    private final IntegerConditionCreator userIDConditionCreator;
     private final StringConditionCreator nameConditionCreator;
     
     public OracleLegalEntityDAO(DataSource dataSource) {
         super(dataSource);
         idConditionCreator = new IntegerConditionCreator(SELECT_FOR_ALL + " WHERE " + ID_COL + " = ?");
         nameConditionCreator = new StringConditionCreator(SELECT_FOR_ALL + " WHERE " + NAME_COL + " = ?");
+        userIDConditionCreator = new IntegerConditionCreator(SELECT_FOR_ALL + " WHERE id_user = ?");
     }
 
     @Override
@@ -62,7 +64,7 @@ class OracleLegalEntityDAO extends OracleUniversalDAO<LegalEntity> implements Le
 
     @Override
     public List<LegalEntity> getAllEntities() {
-        return getAllObjects(TABLE_NAME);
+        return getAllObjectsByCustomQuery(SELECT_FOR_ALL);
     }
 
     @Override
@@ -75,6 +77,12 @@ class OracleLegalEntityDAO extends OracleUniversalDAO<LegalEntity> implements Le
     public List<LegalEntity> getEntitiesByName(String nameCompany) {
         nameConditionCreator.setValue(nameCompany);
         return getObjectsWithConditions(nameConditionCreator);
+    }
+    
+    @Override
+    public LegalEntity getEntityByUserID(int userID) {
+        userIDConditionCreator.setValue(userID);
+        return getUniqueObject(userIDConditionCreator);
     }
 
     @Override
@@ -120,13 +128,6 @@ class OracleLegalEntityDAO extends OracleUniversalDAO<LegalEntity> implements Le
         Role role = makeRole(rs);
         User user = makeUser(rs, role);
         LegalEntity newEntity = makeLegalEntity(rs, user);
-        
-        /*newEntity.setCompanyID(rs.getInt(ID_COL));
-        newEntity.setNameCompany(rs.getString(NAME_COL));
-        newEntity.setAddress(rs.getString(ADDR_COL));
-        newEntity.setTelephone(rs.getString(PHONE_COL));
-        newEntity.setEmail(rs.getString(EMAIL_COL));
-        newEntity.setDetails(rs.getString(DETAIL_COL));*/
         return newEntity;
     }
 }
