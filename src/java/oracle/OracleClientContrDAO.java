@@ -31,7 +31,7 @@ class OracleClientContrDAO extends OracleUniversalDAO<ClientContr> implements Cl
     private static final String SELECT_FOR_ALL = "SELECT con.contr_id, con.contr_doc, con.begin_date,"
                 + " cl.*, sim.*, tar.name_tariff, tar.description"
                 + " FROM " + TABLE_NAME + " con"
-                + " INNER JOIN client.cl on con.client_id=cl.client_id"
+                + " INNER JOIN client cl on con.client_id=cl.client_id"
                 + " INNER JOIN sim on con.sim_id=sim.sim_id"
                 + " INNER JOIN tariff_list tar on sim.ID_tariff=tar.ID_tariff";
     
@@ -42,9 +42,9 @@ class OracleClientContrDAO extends OracleUniversalDAO<ClientContr> implements Cl
     public OracleClientContrDAO(DataSource dataSource) {
         super(dataSource);
         
-        contrIDConditionCreator = new IntegerConditionCreator(SELECT_FOR_ALL + " WHERE " + CONTR_ID_COL + " = ?");
-        clientIDConditionCreator = new IntegerConditionCreator(SELECT_FOR_ALL + " WHERE " + CLIENT_ID_COL + " = ?");
-        simIDConditionCreator = new IntegerConditionCreator(SELECT_FOR_ALL + " WHERE " + SIM_ID_COL + " = ?");
+        contrIDConditionCreator = new IntegerConditionCreator(SELECT_FOR_ALL + " WHERE con." + CONTR_ID_COL + " = ?");
+        clientIDConditionCreator = new IntegerConditionCreator(SELECT_FOR_ALL + " WHERE con." + CLIENT_ID_COL + " = ?");
+        simIDConditionCreator = new IntegerConditionCreator(SELECT_FOR_ALL + " WHERE con." + SIM_ID_COL + " = ?");
     }
     
     @Override
@@ -75,14 +75,14 @@ class OracleClientContrDAO extends OracleUniversalDAO<ClientContr> implements Cl
 
     @Override
     public ClientContr getContrBySimID(int simID) {
-        clientIDConditionCreator.setValue(simID);
-        return getUniqueObject(clientIDConditionCreator);
+        simIDConditionCreator.setValue(simID);
+        return getUniqueObject(simIDConditionCreator);
     }
 
     @Override
     public List<ClientContr> getContrsByClientID(int clientID) {
-        simIDConditionCreator.setValue(clientID);
-        return getObjectsWithConditions(simIDConditionCreator);
+        clientIDConditionCreator.setValue(clientID);
+        return getObjectsWithConditions(clientIDConditionCreator);
     }
 
     @Override

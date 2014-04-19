@@ -105,6 +105,7 @@ abstract class OracleUniversalDAO<T> extends Abstract {
             List<T> objectList = selectObjects(ps);
             return objectList;
         } catch (SQLException ex) {
+            ex.printStackTrace();
             return null;
         }
     }
