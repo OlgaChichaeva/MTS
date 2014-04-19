@@ -41,8 +41,8 @@ class OracleLegalEntityDAO extends OracleUniversalDAO<LegalEntity> implements Le
     
     public OracleLegalEntityDAO(DataSource dataSource) {
         super(dataSource);
-        idConditionCreator = new IntegerConditionCreator(TABLE_NAME, ID_COL);
-        nameConditionCreator = new StringConditionCreator(TABLE_NAME, ID_COL);
+        idConditionCreator = new IntegerConditionCreator(SELECT_FOR_ALL + " WHERE " + ID_COL + " = ?");
+        nameConditionCreator = new StringConditionCreator(SELECT_FOR_ALL + " WHERE " + NAME_COL + " = ?");
     }
 
     @Override
