@@ -18,7 +18,7 @@
             <tr>
                 <td width="70%">
                     <% String ROOT = request.getContextPath();%>
-                    <img src="<%= ROOT%>/boring.jpg" alt=":("/>
+                    <img src="<%= ROOT%>/pics/boring.jpg" alt=":("/>
                     <a href="<%= ROOT%>/">Home</a>
                     <a href="<%= ROOT%>/SelectAllService/">Service</a>
                     <a href="<%= ROOT%>/showService/">Service in tariff</a>
