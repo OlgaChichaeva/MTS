@@ -80,7 +80,7 @@ public abstract class Abstract {
      */
     protected Tariff makeTariff(ResultSet rs) throws SQLException {
         Tariff tariff = new Tariff();
-        tariff.setIdTariff(rs.getInt(" ID_tariff"));
+        tariff.setIdTariff(rs.getInt("ID_tariff"));
         tariff.setNameTariff(rs.getString("name_tariff"));
         tariff.setDescription(rs.getString("description"));
         return tariff;
