@@ -18,5 +18,4 @@ public interface LegalEntityDAO {
     List<LegalEntity> getAllEntities();
     LegalEntity getEntityByID(int companyID);
     List<LegalEntity> getEntitiesByName(String nameCompany);
-    LegalEntity getEntityByUserID(int userID);
 }

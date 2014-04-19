@@ -40,18 +40,16 @@ class OracleClientDAO extends OracleUniversalDAO<Client> implements ClientDAO {
             + " ON r.id_role=u.id_role";
     
     private final IntegerConditionCreator clientIDConditionCreator;
-    private final IntegerConditionCreator userIDConditionCreator;
     private final StringConditionCreator firstnameConditionCreator;
     private final StringConditionCreator lastnameConditionCreator;
     private final StringConditionCreator middlenameConditionCreator;
     private final OracleClientDAO.PassportConditionCreator passportConditionCreator;
-    private final OracleClientDAO.FullnameConditionCreator fullnameConditionCreator; 
+    private final OracleClientDAO.FullnameConditionCreator fullnameConditionCreator;
     private final FilteredConditionCreator filteredConditionCreator;
 
     public OracleClientDAO(DataSource dataSource) {
         super(dataSource);
         clientIDConditionCreator = new IntegerConditionCreator(SELECT_FOR_ALL + " WHERE " + ID_COL + " = ?");
-        userIDConditionCreator = new IntegerConditionCreator(SELECT_FOR_ALL + " WHERE id_user = ?");
         firstnameConditionCreator = new StringConditionCreator(SELECT_FOR_ALL + " WHERE " + FIRSTNAME_COL + " = ?");
         lastnameConditionCreator = new StringConditionCreator(SELECT_FOR_ALL + " WHERE " + LASTNAME_COL + " = ?");
         middlenameConditionCreator = new StringConditionCreator(SELECT_FOR_ALL + " WHERE " + MIDDLENAME_COL + " = ?");
@@ -77,7 +75,7 @@ class OracleClientDAO extends OracleUniversalDAO<Client> implements ClientDAO {
 
     @Override
     public List<Client> getAllClients() {
-        return getAllObjectsByCustomQuery(SELECT_FOR_ALL);
+        return getAllObjects(TABLE_NAME);
     }
 
     @Override
@@ -119,12 +117,6 @@ class OracleClientDAO extends OracleUniversalDAO<Client> implements ClientDAO {
         return getObjectsWithConditions(fullnameConditionCreator);
     }
 
-    @Override
-    public Client getClientByUserID(int userID) {
-        userIDConditionCreator.setValue(userID);
-        return getUniqueObject(userIDConditionCreator);
-    }
-    
     @Override
     public List<Client> getFilteredClients(ClientFilter client) {
         filteredConditionCreator.setFilter(client);
@@ -177,7 +169,7 @@ class OracleClientDAO extends OracleUniversalDAO<Client> implements ClientDAO {
         Client newClient = makeClient(rs, user);
         return newClient;
     }
-    
+
     // ------------------- Классы ConditionCreator --------------------
     private static class PassportConditionCreator extends ConditionCreator {
 

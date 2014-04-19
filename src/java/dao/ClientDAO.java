@@ -24,5 +24,4 @@ public interface ClientDAO {
     List<Client> getClientsByMiddlename(String middlename);
     List<Client> getClientsByFullname(String firstname, String lastname, String middlename);
     List<Client> getFilteredClients(ClientFilter client);
-    Client getClientByUserID(int userID);
 }
