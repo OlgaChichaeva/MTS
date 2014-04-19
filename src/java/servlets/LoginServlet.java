@@ -113,12 +113,12 @@ public class LoginServlet extends HttpServlet {
         session.setAttribute("currentUser", user);
         switch (user.getIdRole()) {
             case SecurityBean.ADMIN: {
-                // это админ
+                // это админ (логично)
                 break;
             }
             case SecurityBean.CLIENT: {
-                // а это клиент
-                break;
+                response.sendRedirect(request.getContextPath() + "/clientHome/");
+                return;
             }
             case SecurityBean.LEGAL_ENTITY: {
                 // юр. лицо

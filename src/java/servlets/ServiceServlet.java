@@ -89,7 +89,7 @@ public class ServiceServlet extends HttpServlet {
         service.setNameService(nameService);
         service.setCost(cost);
         serviceDao.addService(service);
-        response.sendRedirect("/MTSweb/SelectAllService/");
+        response.sendRedirect(request.getContextPath() + "/SelectAllService/");
     }
 
     /**
