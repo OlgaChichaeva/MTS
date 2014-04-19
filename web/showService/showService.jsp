@@ -28,7 +28,7 @@
             String enteredName = HTMLHelper.fromNull(request.getParameter("name_service"));
             String enteredIdType = HTMLHelper.fromNull(request.getParameter("ID_type"));
             String enteredCost = HTMLHelper.fromNull(request.getParameter("cost"));
-            boolean acceptedToChange = !currentUser.getReadOnly();
+            boolean acceptedToChange = currentUser.getIdRole() == SecurityBean.ADMIN;
         %>
         <table border=1><tr><th>Название</th><th>Тип</th><th>Стоимость</th><th>Действия</th>
             </tr>
