@@ -21,6 +21,7 @@ import static pack.EncodingConverter.convert; // Чтобы писать мен�
 
 /**
  * Сервлет для работы с услугами.
+ *
  * @author Ольга
  */
 @WebServlet(name = "ContrillerServlet", loadOnStartup = 1,
@@ -39,26 +40,28 @@ public class ServiceServlet extends HttpServlet {
     private final TypeServiceDao serviceTypeDao = DaoMaster.getTypeServiceDao();
 
     /**
-     * Перенаправляет на страницу со списком всех сервисов.
-     * Сначала получает список из ДАО, потом переходит на страницу.
+     * Перенаправляет на страницу со списком всех сервисов. Сначала получает
+     * список из ДАО, потом переходит на страницу.
+     *
      * @param request берём из методов doGet/doPost
      * @param response берём из методов doGet/doPost
      * @throws ServletException
-     * @throws IOException 
+     * @throws IOException
      */
     protected void selectAllService(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         List<Service> services = serviceDao.getAllServices();
         goToSelect(services, request, response);
     }
-    
+
     /**
      * Перенаправляет на страницу добавления услуги. Нужен для того, чтобы
      * заполнять список типов не заранее, а только когда это потребуется
+     *
      * @param request берём из методов doGet/doPost
      * @param response берём из методов doGet/doPost
      * @throws ServletException
-     * @throws IOException 
+     * @throws IOException
      */
     protected void serviceAddForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -68,12 +71,13 @@ public class ServiceServlet extends HttpServlet {
     }
 
     /**
-     * Добавляет услугу со значениями, взятыми из запроса. Затем перенаправляет на
-     * страницу вывода всех услуг.
+     * Добавляет услугу со значениями, взятыми из запроса. Затем перенаправляет
+     * на страницу вывода всех услуг.
+     *
      * @param request берём из методов doGet/doPost
      * @param response берём из методов doGet/doPost
      * @throws ServletException
-     * @throws IOException 
+     * @throws IOException
      */
     protected void serviceAdd(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -91,10 +95,11 @@ public class ServiceServlet extends HttpServlet {
     /**
      * Удаляет услугу с ID, полученным из запроса. Затем перенаправляет на
      * страницу вывода всех услуг.
+     *
      * @param request берём из методов doGet/doPost
      * @param response берём из методов doGet/doPost
      * @throws ServletException
-     * @throws IOException 
+     * @throws IOException
      */
     protected void serviceDelete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -102,14 +107,15 @@ public class ServiceServlet extends HttpServlet {
         serviceDao.deleteService(idService);
         response.sendRedirect("/MTSweb/SelectAllService/");
     }
-    
+
     /**
      * Перенаправляет на страницу обновления услуги. Нужен для того, чтобы
      * заполнять список типов не заранее, а только когда это потребуется
+     *
      * @param request берём из методов doGet/doPost
      * @param response берём из методов doGet/doPost
      * @throws ServletException
-     * @throws IOException 
+     * @throws IOException
      */
     protected void serviceUpdateForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -121,12 +127,13 @@ public class ServiceServlet extends HttpServlet {
     }
 
     /**
-     * Обновляет услугу в согласии со значениями из параметров запроса,
-     * потом перенаправляет на страницу вывода всех услуг.
+     * Обновляет услугу в согласии со значениями из параметров запроса, потом
+     * перенаправляет на страницу вывода всех услуг.
+     *
      * @param request берём из методов doGet/doPost
      * @param response берём из методов doGet/doPost
      * @throws ServletException
-     * @throws IOException 
+     * @throws IOException
      */
     protected void serviceUpdate(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -144,12 +151,13 @@ public class ServiceServlet extends HttpServlet {
     }
 
     /**
-     * Перенаправляет на страницу с отфильтрованным списком сервисов.
-     * Сначала получает список из ДАО, потом переходит на страницу.
+     * Перенаправляет на страницу с отфильтрованным списком сервисов. Сначала
+     * получает список из ДАО, потом переходит на страницу.
+     *
      * @param request берём из методов doGet/doPost
      * @param response берём из методов doGet/doPost
      * @throws ServletException
-     * @throws IOException 
+     * @throws IOException
      */
     protected void serviceFilter(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -167,11 +175,12 @@ public class ServiceServlet extends HttpServlet {
 
     /**
      * Перенаправляет на страницу показа списка сервисов.
+     *
      * @param services список, который нужно отобразить
      * @param request берём из методов doGet/doPost
      * @param response берём из методов doGet/doPost
      * @throws ServletException
-     * @throws IOException 
+     * @throws IOException
      */
     private void goToSelect(List<Service> services, HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -203,8 +212,12 @@ public class ServiceServlet extends HttpServlet {
                 serviceFilter(request, response);
                 break;
             }
-            default : {
-                doPost(request, response);
+            case "/ServiceAddForm/": {
+                serviceAddForm(request, response);
+                break;
+            }
+            default: {
+                //doPost(request, response);
                 break;
             }
         }
@@ -238,11 +251,7 @@ public class ServiceServlet extends HttpServlet {
                 serviceUpdate(request, response);
                 break;
             }
-            case "/ServiceAddForm/" : {
-                serviceAddForm(request, response);
-                break;
-            }
-            case "/ServiceUpdateForm/" : {
+            case "/ServiceUpdateForm/": {
                 serviceUpdateForm(request, response);
             }
         }

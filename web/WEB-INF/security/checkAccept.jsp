@@ -17,8 +17,8 @@
 <jsp:useBean id="currentUser" scope="session" class="objects.User" />
 <%
     if ( !security.isUserAccepted(currentUser)) {
-        out.print("You shall no pass!");
-        out.print("<a href=\"" + request.getHeader("referer")+ "\">обрано</a>");
+        out.print("You shall no pass! ");
+        out.print("<a href=\"" + request.getContextPath()+ "\">На главную</a>");
         out.close();
         return;
     }
