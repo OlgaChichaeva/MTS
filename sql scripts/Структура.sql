@@ -1,23 +1,23 @@
 ﻿CREATE table service(
   ID_service number CONSTRAINT service_pk_service_id   PRIMARY KEY,
   ID_type number ,
-  name_service   varchar(255),
+  name_service   varchar2(255),
   cost    number
 );
 
 
 Create table type_service(
   ID_type number CONSTRAINT type_service_pk_type_id   PRIMARY KEY,
-  name_type varchar(255),
-  measure   varchar(255)
+  name_type varchar2(255),
+  measure   varchar2(255)
 );
 
 
 
 Create table tariff_list(
   ID_tariff number CONSTRAINT tariff_list_pk_tariff_id   PRIMARY KEY,
-  name_tariff varchar(255),
-  description varchar(255)
+  name_tariff varchar2(255),
+  description varchar2(255)
 );
 
 Create table service_in_tariff(
@@ -45,55 +45,6 @@ create table traffic(
   time       date
 );
 
-CREATE  table legal_entity
-(
-  company_id     NUMBER  CONSTRAINT legal_entity_pk_company_id   PRIMARY KEY,
-  name_company VARCHAR(255),
-  address    VARCHAR(255),  
-  telephone   number(11),
-  e_mail     VARCHAR(255),  
-  details     varchar(255)--cсылка
-);
-CREATE  table legal_contr
-(
-  contr_id     NUMBER  CONSTRAINT legal_contr_pk_contr_id   PRIMARY KEY,
-  company_id   number CONSTRAINT legal_contr_fk_company_id REFERENCES legal_entity(company_id )
-  ON DELETE CASCADE, 
-  contr_doc    varchar(255), --ссылка на файл,
-  begin_date         DATE NOT NULL
-);
-
-
-create table client(
-  client_id    NUMBER  CONSTRAINT client_pk_client_id   PRIMARY KEY,
-  passport_series  number,
-  passport_number number,
-  firstname    VARCHAR(255) NOT NULL,
-  lastname     VARCHAR(255),
-  middlename   VARCHAR(255),
-  telephone_number NUMBER(11)
-);
-
-create table  client_contr
-(
-  client_id    number  NOT NULL CONSTRAINT client_contr_fk_client_id REFERENCES client(client_id)
-  ON DELETE CASCADE, 
-  contr_id     NUMBER  CONSTRAINT phys_contr_pk_contr_id   PRIMARY KEY,
-  sim_id       number NOT NULL unique CONSTRAINT client_contr_fk_sim_id REFERENCES sim(sim_id)
-  ON DELETE CASCADE, 
-  contr_doc    VARCHAR(255), --ссылка на файл,
-  begin_date         DATE NOT NULL
-);
-
-create table sim_contr
-(
-  sim_id            NUMBER   NOT NULL  unique   CONSTRAINT sim_contr_fk_sim_id REFERENCES sim(sim_id)
-  ON DELETE CASCADE,   
-  contr_id         NUMBER  CONSTRAINT legal_contr_fk_contr_id REFERENCES legal_contr(contr_id)
-  ON DELETE CASCADE, 
-  CONSTRAINT key_sim PRIMARY KEY (sim_id,contr_id )
-);
-
 CREATE TABLE roles (
   id_role number CONSTRAINT roles_pk_id_role PRIMARY KEY,
   role_name varchar2(30),
@@ -106,6 +57,58 @@ CREATE TABLE users (
   user_name varchar2(255) UNIQUE,
   user_password varchar2(255)
 );
+
+CREATE  table legal_entity
+(
+  company_id     NUMBER  CONSTRAINT legal_entity_pk_company_id   PRIMARY KEY,
+  name_company VARCHAR2(255),
+  address    VARCHAR2(255),  
+  telephone   number(11),
+  e_mail     VARCHAR2(255),  
+  details     varchar2(255),--cсылка
+  id_user number unique CONSTRAINT legal_entity_fk_id_user REFERENCES users(id_user)
+);
+CREATE  table legal_contr
+(
+  contr_id     NUMBER  CONSTRAINT legal_contr_pk_contr_id   PRIMARY KEY,
+  company_id   number CONSTRAINT legal_contr_fk_company_id REFERENCES legal_entity(company_id )
+  ON DELETE CASCADE, 
+  contr_doc    varchar2(255), --ссылка на файл,
+  begin_date         DATE NOT NULL
+);
+
+
+create table client(
+  client_id    NUMBER  CONSTRAINT client_pk_client_id   PRIMARY KEY,
+  passport_series  number,
+  passport_number number,
+  firstname    VARCHAR2(255) NOT NULL,
+  lastname     VARCHAR2(255),
+  middlename   VARCHAR2(255),
+  telephone_number NUMBER(11),
+  id_user number unique CONSTRAINT client_fk_id_user REFERENCES users(id_user)
+);
+
+create table  client_contr
+(
+  client_id    number  NOT NULL CONSTRAINT client_contr_fk_client_id REFERENCES client(client_id)
+  ON DELETE CASCADE, 
+  contr_id     NUMBER  CONSTRAINT phys_contr_pk_contr_id   PRIMARY KEY,
+  sim_id       number NOT NULL unique CONSTRAINT client_contr_fk_sim_id REFERENCES sim(sim_id)
+  ON DELETE CASCADE, 
+  contr_doc    VARCHAR2(255), --ссылка на файл,
+  begin_date         DATE NOT NULL
+);
+
+create table sim_contr
+(
+  sim_id            NUMBER   NOT NULL  unique   CONSTRAINT sim_contr_fk_sim_id REFERENCES sim(sim_id)
+  ON DELETE CASCADE,   
+  contr_id         NUMBER  CONSTRAINT legal_contr_fk_contr_id REFERENCES legal_contr(contr_id)
+  ON DELETE CASCADE, 
+  CONSTRAINT key_sim PRIMARY KEY (sim_id,contr_id )
+);
+
 --------------------------------------------------------------------------------------------------------------
 alter table service
 add CONSTRAINT service_fk_type_id foreign key(ID_type) REFERENCES type_service(ID_type)
@@ -239,12 +242,23 @@ INSERT INTO numbers(phone_number) VALUES(89666666666);
 INSERT INTO numbers(phone_number) VALUES(89777777777);
 INSERT INTO numbers(phone_number) VALUES(89888888888);
 
-INSERT INTO client(passport_series, passport_number, firstname, lastname, middlename, telephone_number)
-VALUES (3614, 123456, 'Петр', 'Иванов', 'Сидорович', 89123456789);
-INSERT INTO client(passport_series, passport_number, firstname, lastname, middlename, telephone_number)
-VALUES (3614, 456789, 'Сидор', 'Петров', 'Иванович', 89987654321);
-INSERT INTO client(passport_series, passport_number, firstname, lastname, middlename, telephone_number)
-VALUES (3614, 918273, 'Иван', 'Сидоров', 'Петрович', 89918364752);
+INSERT INTO roles(role_name, read_only) VALUES('Administrator', 0);
+INSERT INTO roles(role_name, read_only) VALUES('Client', 1);
+INSERT INTO roles(role_name, read_only) VALUES('Legal entity', 1);
+
+INSERT INTO users(id_role, user_name, user_password) VALUES(1, 'admin', 'admin');
+INSERT INTO users(id_role, user_name, user_password) VALUES(2, 'petr', 'petr');
+INSERT INTO users(id_role, user_name, user_password) VALUES(2, 'sidor', 'sidor');
+INSERT INTO users(id_role, user_name, user_password) VALUES(2, 'ivan', 'ivan');
+INSERT INTO users(id_role, user_name, user_password) VALUES(3, 'tsu', 'tsu');
+INSERT INTO users(id_role, user_name, user_password) VALUES(3, 'vas', 'vas');
+
+INSERT INTO client(passport_series, passport_number, firstname, lastname, middlename, telephone_number, id_user)
+VALUES (3614, 123456, 'Петр', 'Иванов', 'Сидорович', 89123456789, 2);
+INSERT INTO client(passport_series, passport_number, firstname, lastname, middlename, telephone_number, id_user)
+VALUES (3614, 456789, 'Сидор', 'Петров', 'Иванович', 89987654321, 3);
+INSERT INTO client(passport_series, passport_number, firstname, lastname, middlename, telephone_number, id_user)
+VALUES (3614, 918273, 'Иван', 'Сидоров', 'Петрович', 89918364752, 4);
 
 INSERT INTO tariff_list(name_tariff, description) VALUES ('Супер МТС', 'Супер-тариф');
 INSERT INTO tariff_list(name_tariff, description) VALUES ('Не супер МТС', 'Обычный тариф');
@@ -278,23 +292,15 @@ INSERT INTO client_contr(client_id, sim_id, contr_doc, begin_date) VALUES(1, 1, 
 INSERT INTO client_contr(client_id, sim_id, contr_doc, begin_date) VALUES(2, 2, 'C:\Documents\Договор с Сидором.doc', sysdate);
 INSERT INTO client_contr(client_id, sim_id, contr_doc, begin_date) VALUES(3, 3, 'C:\Documents\Договор с Иваном.doc', sysdate);
 
-INSERT INTO legal_entity(name_company, address, telephone, e_mail, details) 
-VALUES('ТГУ', 'Белорусская, 14', 556677, 'tltsu@mail.ru', 'C:\Documents\Про ТГУ.doc');
-INSERT INTO legal_entity(name_company, address, telephone, e_mail, details) 
-VALUES('ВАЗ', 'Южное шоссе, 36', 123456, 'vaz@mail.ru', 'C:\Documents\Про ВАЗ.doc');
+INSERT INTO legal_entity(name_company, address, telephone, e_mail, details, id_user) 
+VALUES('ТГУ', 'Белорусская, 14', 556677, 'tltsu@mail.ru', 'C:\Documents\Про ТГУ.doc', 5);
+INSERT INTO legal_entity(name_company, address, telephone, e_mail, details, id_user) 
+VALUES('ВАЗ', 'Южное шоссе, 36', 123456, 'vaz@mail.ru', 'C:\Documents\Про ВАЗ.doc', 6);
 
 INSERT INTO legal_contr(company_id, contr_doc, begin_date) VALUES(1, 'C:\Documents\Договор с ТГУ.doc', sysdate);
 
 INSERT INTO sim_contr(sim_id, contr_id) VALUES(4, 1);
 INSERT INTO sim_contr(sim_id, contr_id) VALUES(5, 1);
 INSERT INTO sim_contr(sim_id, contr_id) VALUES(6, 1);
-
-INSERT INTO roles(role_name, read_only) VALUES('Administrator', 0);
-INSERT INTO roles(role_name, read_only) VALUES('Client', 1);
-INSERT INTO roles(role_name, read_only) VALUES('Legal entity', 1);
-
-INSERT INTO users(id_role, user_name, user_password) VALUES(1, 'admin', 'admin');
-INSERT INTO users(id_role, user_name, user_password) VALUES(2, 'jack', 'jack');
-INSERT INTO users(id_role, user_name, user_password) VALUES(3, 'tsu', 'tsu');
 
 COMMIT;
