@@ -7,7 +7,6 @@ package servlets;
 import dao.ClientContrDAO;
 import dao.ClientDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,7 +23,9 @@ import pack.DaoMaster;
  *
  * @author Ivan
  */
-@WebServlet(name = "ClientServlet", loadOnStartup = 1, urlPatterns = {"/clientHome/"})
+@WebServlet(name = "ClientServlet", loadOnStartup = 1, urlPatterns = {
+    "/clientHome/",
+})
 public class ClientServlet extends HttpServlet {
 
     private ClientContrDAO clientContrDao = DaoMaster.getClientContrDao();
@@ -67,6 +68,16 @@ public class ClientServlet extends HttpServlet {
     }
 
     /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }// </editor-fold>
+
+    /**
      * Загружает информацию о клиенте, связанном с данным юзером, и
      * перенаправляет на домашнюю для клиента страницу.
      *
@@ -89,19 +100,9 @@ public class ClientServlet extends HttpServlet {
             return;
         }
         // Можем взять клиента из первого элмента, так как проверили, что список не пустой.
-        Client client = contr.get(0).getClient(); 
+        Client client = contr.get(0).getClient();
         session.setAttribute("currentClient", client);
         request.setAttribute("contrList", contr); // Кладём список всех контрактов в запрос.
         request.getRequestDispatcher("/WEB-INF/clientHome.jsp").forward(request, response);
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
 }
