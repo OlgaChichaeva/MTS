@@ -28,10 +28,11 @@ public class OracleUserDAO extends OracleUniversalDAO<User> implements UserDAO {
     private static final String ROLE_NAME_COL = "role_name";
     private static final String READ_ONLY_COL = "read_only";
     
-    private static final String SELECT_FOR_ALL = "SELECT u.*, r." + ROLE_NAME_COL 
-            + ", r." + READ_ONLY_COL + " FROM "
+    private static final String SELECT_FOR_ALL = "SELECT u.id_user, u.user_name, u.user_password, r.*, c.*, ent.* FROM "
             + TABLE_NAME + " u INNER JOIN roles r "
-            + "ON u." + ROLE_ID_COL + "=r." + ROLE_ID_COL;
+            + " ON u." + ROLE_ID_COL + "=r." + ROLE_ID_COL
+            + " LEFT JOIN client c ON c.client_id=u.client_id"
+            + " LEFT JOIN legal_entity ent ON ent.company_id=u.company_id";
     
     private final StringConditionCreator userNameConditionCreator;
     

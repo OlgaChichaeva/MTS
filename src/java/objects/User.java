@@ -15,6 +15,8 @@ public class User {
     private Role role;
     private String userName;
     private String userPassword;
+    private Client client;
+    private LegalEntity legalEntity;
 
     public User() {
         setIdRole(SecurityBean.NOT_LOGGED);
@@ -96,5 +98,55 @@ public class User {
             role = new Role();
         }
         role.setReadOnly(readOnly);
+    }
+
+    /**
+     * @return the client
+     */
+    public Client getClient() {
+        return client;
+    }
+
+    /**
+     * @param client the client to set
+     */
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    /**
+     * @return the legalEntity
+     */
+    public LegalEntity getLegalEntity() {
+        return legalEntity;
+    }
+
+    /**
+     * @param legalEntity the legalEntity to set
+     */
+    public void setLegalEntity(LegalEntity legalEntity) {
+        this.legalEntity = legalEntity;
+    }
+    
+    public int getIdClient() {
+        return client.getСlientID();
+    }
+    
+    public void setIdClient(int idClient) {
+        if(client == null) {
+            client = new Client();
+        }
+        client.setСlientID(idClient);
+    }
+    
+    public int getCompanyId() {
+        return legalEntity.getCompanyID();
+    }
+    
+    public void setCompanyId(int companyId) {
+        if(legalEntity == null) {
+            legalEntity = new LegalEntity();
+        }
+        legalEntity.setCompanyID(companyId);
     }
 }

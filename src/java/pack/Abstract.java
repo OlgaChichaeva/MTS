@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.sql.DataSource;
+import security.SecurityBean;
 
 /**
  * Класс, предоставляющий подключения к БД для тех, кто от него наследуется.
@@ -195,6 +196,18 @@ public abstract class Abstract {
         user.setIdUser(rs.getInt("id_user"));
         user.setUserName(rs.getString("user_name"));
         user.setUserPassword(rs.getString("user_password"));
+        switch (role.getIdRole()) {
+            case SecurityBean.CLIENT : {
+                Client client = makeClient(rs);
+                user.setClient(client);
+                break;
+            }
+            case SecurityBean.LEGAL_ENTITY : {
+                LegalEntity entity = makeLegalEntity(rs);
+                user.setLegalEntity(entity);
+                break;
+            }
+        }
         return user;
     }
     
