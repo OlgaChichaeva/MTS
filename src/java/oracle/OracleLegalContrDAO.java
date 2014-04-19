@@ -13,8 +13,6 @@ import objects.LegalContr;
 import dao.LegalContrDAO;
 import filters.LegalContrFilter;
 import objects.LegalEntity;
-import objects.Role;
-import objects.User;
 import oracle.conditions.ConditionCreator;
 import oracle.conditions.IntegerConditionCreator;
 
@@ -23,30 +21,28 @@ import oracle.conditions.IntegerConditionCreator;
  * @author Ivan
  */
 class OracleLegalContrDAO extends OracleUniversalDAO<LegalContr> implements LegalContrDAO {
-
+    
     private static final String TABLE_NAME = "legal_contr";
     private static final String CONTR_ID_COL = "contr_id";
     private static final String COMP_ID_COL = "company_id";
     private static final String DOC_COL = "contr_doc";
     private static final String DATE_COL = "begin_date";
     private static final String SELECT_FOR_ALL = "SELECT con.contr_id, con.contr_doc, con.begin_date,"
-            + " ent.*, u.id_role, u.user_name, "
-            + " u.user_password, r.role_name, r.read_only"
-            + " FROM " + TABLE_NAME + " con"
-            + " INNER JOIN legal_entity ent on con.company_id=ent.company_id"
-            + " INNER JOIN users u ON ent.id_user=u.id_user"
-            + " INNER JOIN roles r ON r.id_role=u.id_role";
+                + " ent.*"
+                + " FROM " + TABLE_NAME + " con"
+                + " INNER JOIN legal_entity ent on con.company_id=ent.company_id";
+
     private final IntegerConditionCreator contrIDConditionCreator;
     private final IntegerConditionCreator companyIDConditionCreator;
     private final FilteredConditionCreator filteredConditionCreator;
-
+    
     public OracleLegalContrDAO(DataSource dataSource) {
         super(dataSource);
         contrIDConditionCreator = new IntegerConditionCreator(SELECT_FOR_ALL + " WHERE " + CONTR_ID_COL + " = ?");
         companyIDConditionCreator = new IntegerConditionCreator(SELECT_FOR_ALL + " WHERE " + COMP_ID_COL + " = ?");
         filteredConditionCreator = new FilteredConditionCreator();
     }
-
+    
     @Override
     public boolean addLegalContr(LegalContr contr) {
         return addObject(contr);
@@ -78,7 +74,7 @@ class OracleLegalContrDAO extends OracleUniversalDAO<LegalContr> implements Lega
         companyIDConditionCreator.setValue(companyID);
         return getObjectsWithConditions(companyIDConditionCreator);
     }
-
+    
     @Override
     public List<LegalContr> getFilteredContracts(LegalContrFilter legalContr) {
         filteredConditionCreator.setFilter(legalContr);
@@ -88,8 +84,8 @@ class OracleLegalContrDAO extends OracleUniversalDAO<LegalContr> implements Lega
     @Override
     protected String makeInsertStatement() {
         final String INSERT = "INSERT INTO " + TABLE_NAME
-                + "(" + COMP_ID_COL + "," + DOC_COL + "," + DATE_COL + ")"
-                + " VALUES(?,?,?)";
+                    + "(" + COMP_ID_COL + "," + DOC_COL + "," + DATE_COL + ")"
+                    + " VALUES(?,?,?)";
         return INSERT;
     }
 
@@ -103,8 +99,8 @@ class OracleLegalContrDAO extends OracleUniversalDAO<LegalContr> implements Lega
     protected String makeUpdateStatement() {
         final String SEP = "=?,";
         final String UPDATE = "UPDATE " + TABLE_NAME + " SET "
-                + COMP_ID_COL + SEP + DOC_COL + SEP + DATE_COL + "=?"
-                + " WHERE " + CONTR_ID_COL + " = ?";
+                    + COMP_ID_COL + SEP + DOC_COL + SEP + DATE_COL + "=?"
+                    + " WHERE " + CONTR_ID_COL + " = ?";
         return UPDATE;
     }
 
@@ -123,22 +119,20 @@ class OracleLegalContrDAO extends OracleUniversalDAO<LegalContr> implements Lega
 
     @Override
     protected LegalContr makeObject(ResultSet rs) throws SQLException {
-        Role role = makeRole(rs);
-        User user = makeUser(rs, role);
-        LegalEntity legalEntity = makeLegalEntity(rs, user);
+        LegalEntity legalEntity = makeLegalEntity(rs);
         LegalContr newContr = makeLegalContr(rs, legalEntity);
         return newContr;
     }
-
+    
     // Классы ConditionCreator
     private static class FilteredConditionCreator extends ConditionCreator {
-
+        
         private LegalContrFilter filter;
 
         @Override
         public String createSelect() {
             final String SEP = " LIKE ?";
-            final String SELECT = SELECT_FOR_ALL
+            final String SELECT = SELECT_FOR_ALL 
                     + " WHERE lower(ent.name_company)" + SEP
                     + " AND lower(con." + DOC_COL + ")" + SEP
                     + " AND con." + DATE_COL + SEP;
@@ -159,5 +153,6 @@ class OracleLegalContrDAO extends OracleUniversalDAO<LegalContr> implements Lega
         public void setFilter(LegalContrFilter filter) {
             this.filter = filter;
         }
+        
     }
 }

@@ -12,8 +12,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import javax.sql.DataSource;
-import objects.Role;
-import objects.User;
 import oracle.conditions.ConditionCreator;
 import oracle.conditions.IntegerConditionCreator;
 import oracle.conditions.StringConditionCreator;
@@ -23,7 +21,7 @@ import oracle.conditions.StringConditionCreator;
  * @author Ivan
  */
 class OracleClientDAO extends OracleUniversalDAO<Client> implements ClientDAO {
-
+    
     private static final String TABLE_NAME = "client";
     private static final String ID_COL = "client_id";
     private static final String SERIES_COL = "passport_series";
@@ -32,12 +30,6 @@ class OracleClientDAO extends OracleUniversalDAO<Client> implements ClientDAO {
     private static final String LASTNAME_COL = "lastname";
     private static final String MIDDLENAME_COL = "middlename";
     private static final String PHONE_COL = "telephone_number";
-    private static final String SELECT_FOR_ALL = "SELECT cl.*, u.id_role, u.user_name, "
-            + " u.user_password, r.role_name, r.read_only FROM client cl"
-            + " INNER JOIN users u "
-            + " ON cl.id_user=u.id_user"
-            + " INNER JOIN roles r "
-            + " ON r.id_role=u.id_role";
     
     private final IntegerConditionCreator clientIDConditionCreator;
     private final StringConditionCreator firstnameConditionCreator;
@@ -46,18 +38,18 @@ class OracleClientDAO extends OracleUniversalDAO<Client> implements ClientDAO {
     private final OracleClientDAO.PassportConditionCreator passportConditionCreator;
     private final OracleClientDAO.FullnameConditionCreator fullnameConditionCreator;
     private final FilteredConditionCreator filteredConditionCreator;
-
+    
     public OracleClientDAO(DataSource dataSource) {
         super(dataSource);
-        clientIDConditionCreator = new IntegerConditionCreator(SELECT_FOR_ALL + " WHERE " + ID_COL + " = ?");
-        firstnameConditionCreator = new StringConditionCreator(SELECT_FOR_ALL + " WHERE " + FIRSTNAME_COL + " = ?");
-        lastnameConditionCreator = new StringConditionCreator(SELECT_FOR_ALL + " WHERE " + LASTNAME_COL + " = ?");
-        middlenameConditionCreator = new StringConditionCreator(SELECT_FOR_ALL + " WHERE " + MIDDLENAME_COL + " = ?");
+        clientIDConditionCreator = new IntegerConditionCreator(TABLE_NAME, ID_COL);
+        firstnameConditionCreator = new StringConditionCreator(TABLE_NAME, FIRSTNAME_COL);
+        lastnameConditionCreator = new StringConditionCreator(TABLE_NAME, LASTNAME_COL);
+        middlenameConditionCreator = new StringConditionCreator(TABLE_NAME, MIDDLENAME_COL);
         passportConditionCreator = new OracleClientDAO.PassportConditionCreator();
         fullnameConditionCreator = new OracleClientDAO.FullnameConditionCreator();
         filteredConditionCreator = new FilteredConditionCreator();
     }
-
+    
     @Override
     public boolean addClient(Client client) {
         return addObject(client);
@@ -122,12 +114,12 @@ class OracleClientDAO extends OracleUniversalDAO<Client> implements ClientDAO {
         filteredConditionCreator.setFilter(client);
         return getObjectsWithConditions(clientIDConditionCreator);
     }
-
+        
     @Override
     protected String makeInsertStatement() {
         final String INSERT = "INSERT INTO " + TABLE_NAME
-                + "(" + SERIES_COL + "," + NUMBER_COL + "," + FIRSTNAME_COL + "," + LASTNAME_COL + "," + MIDDLENAME_COL + "," + PHONE_COL + ")"
-                + " VALUES(?,?,?,?,?,?)";
+                    + "(" + SERIES_COL + "," + NUMBER_COL + "," + FIRSTNAME_COL + "," + LASTNAME_COL + "," + MIDDLENAME_COL + "," + PHONE_COL + ")"
+                    + " VALUES(?,?,?,?,?,?)";
         return INSERT;
     }
 
@@ -141,8 +133,8 @@ class OracleClientDAO extends OracleUniversalDAO<Client> implements ClientDAO {
     protected String makeUpdateStatement() {
         final String SEP = "=?,";
         final String UPDATE = "UPDATE " + TABLE_NAME + " SET "
-                + SERIES_COL + SEP + NUMBER_COL + SEP + FIRSTNAME_COL + SEP + LASTNAME_COL + SEP + MIDDLENAME_COL + SEP + PHONE_COL + "=?"
-                + " WHERE " + ID_COL + " = ?";
+                    + SERIES_COL + SEP + NUMBER_COL + SEP + FIRSTNAME_COL + SEP + LASTNAME_COL + SEP + MIDDLENAME_COL + SEP + PHONE_COL + "=?"
+                    + " WHERE " + ID_COL + " = ?";
         return UPDATE;
     }
 
@@ -164,21 +156,20 @@ class OracleClientDAO extends OracleUniversalDAO<Client> implements ClientDAO {
 
     @Override
     protected Client makeObject(ResultSet rs) throws SQLException {
-        Role role = makeRole(rs);
-        User user = makeUser(rs, role);
-        Client newClient = makeClient(rs, user);
+        Client newClient = makeClient(rs);
         return newClient;
     }
 
     // ------------------- Классы ConditionCreator --------------------
     private static class PassportConditionCreator extends ConditionCreator {
-
+        
         private int series;
         private int number;
+        
 
         @Override
         public String createSelect() {
-            final String SELECT = SELECT_FOR_ALL +  " WHERE " + SERIES_COL + " = ? AND " + NUMBER_COL + " = ?";
+            final String SELECT = "SELECT * FROM " + TABLE_NAME + " WHERE " + SERIES_COL + " = ? AND " + NUMBER_COL + " = ?";
             return SELECT;
         }
 
@@ -194,18 +185,18 @@ class OracleClientDAO extends OracleUniversalDAO<Client> implements ClientDAO {
 
         public void setNumber(int number) {
             this.number = number;
-        }
+        }       
     }
-
+    
     private static class FullnameConditionCreator extends ConditionCreator {
-
+        
         private String firstname;
         private String lastname;
         private String middlename;
 
         @Override
         public String createSelect() {
-            final String SELECT = SELECT_FOR_ALL
+            final String SELECT = "SELECT * FROM " + TABLE_NAME
                     + " WHERE " + FIRSTNAME_COL + " = ? AND "
                     + LASTNAME_COL + " = ? AND "
                     + MIDDLENAME_COL + " = ?";
@@ -230,16 +221,17 @@ class OracleClientDAO extends OracleUniversalDAO<Client> implements ClientDAO {
         public void setMiddlename(String middlename) {
             this.middlename = middlename;
         }
+        
     }
-
+    
     private static class FilteredConditionCreator extends ConditionCreator {
-
+        
         private ClientFilter filter;
 
         @Override
         public String createSelect() {
             final String SEP = " LIKE ?";
-            final String SELECT = SELECT_FOR_ALL
+            final String SELECT = "SELECT * FROM " + TABLE_NAME
                     + " WHERE " + SERIES_COL + SEP
                     + " AND " + NUMBER_COL + SEP
                     + " AND lower(" + FIRSTNAME_COL + ")" + SEP
@@ -259,7 +251,7 @@ class OracleClientDAO extends OracleUniversalDAO<Client> implements ClientDAO {
             ps.setString(5, SEP + filter.getMiddlename().toLowerCase() + SEP);
             ps.setString(6, SEP + filter.getTelephoneNumber() + SEP);
         }
-
+        
         public void setFilter(ClientFilter filter) {
             this.filter = filter;
         }

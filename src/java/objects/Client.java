@@ -16,7 +16,6 @@ public class Client {
     private String lastname;
     private String middlename;
     private long telephoneNumber;
-    private User user;
 
     /**
      * @return the сlientID
@@ -114,30 +113,5 @@ public class Client {
      */
     public void setTelephoneNumber(long telephoneNumber) {
         this.telephoneNumber = telephoneNumber;
-    }
-
-    /**
-     * @return the user
-     */
-    public User getUser() {
-        return user;
-    }
-
-    /**
-     * @param user the user to set
-     */
-    public void setUser(User user) {
-        this.user = user;
-    }
-    
-    public int getUserId() {
-        return user.getIdUser();
-    }
-    
-    public void setUserId(int userId) {
-        if (user == null) {
-            user = new User();
-        }
-        user.setIdUser(userId);
     }
 }
