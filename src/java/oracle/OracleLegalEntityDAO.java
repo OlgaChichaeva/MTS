@@ -11,6 +11,8 @@ import java.util.List;
 import javax.sql.DataSource;
 import objects.LegalEntity;
 import dao.LegalEntityDAO;
+import objects.Role;
+import objects.User;
 import oracle.conditions.IntegerConditionCreator;
 import oracle.conditions.StringConditionCreator;
 
@@ -27,6 +29,12 @@ class OracleLegalEntityDAO extends OracleUniversalDAO<LegalEntity> implements Le
     private static final String PHONE_COL = "telephone";
     private static final String EMAIL_COL = "e_mail";
     private static final String DETAIL_COL = "details";
+    private static final String SELECT_FOR_ALL = "SELECT cl.*, u.id_role, u.user_name, "
+            + " u.user_password, r.role_name, r.read_only FROM legal_entity ent"
+            + " INNER JOIN users u "
+            + " ON ent.id_user=u.id_user"
+            + " INNER JOIN roles r "
+            + " ON r.id_role=u.id_role";
     
     private final IntegerConditionCreator idConditionCreator;
     private final StringConditionCreator nameConditionCreator;
@@ -109,13 +117,16 @@ class OracleLegalEntityDAO extends OracleUniversalDAO<LegalEntity> implements Le
 
     @Override
     protected LegalEntity makeObject(ResultSet rs) throws SQLException {
-        LegalEntity newEntity = new LegalEntity();
-        newEntity.setCompanyID(rs.getInt(ID_COL));
+        Role role = makeRole(rs);
+        User user = makeUser(rs, role);
+        LegalEntity newEntity = makeLegalEntity(rs, user);
+        
+        /*newEntity.setCompanyID(rs.getInt(ID_COL));
         newEntity.setNameCompany(rs.getString(NAME_COL));
         newEntity.setAddress(rs.getString(ADDR_COL));
         newEntity.setTelephone(rs.getString(PHONE_COL));
         newEntity.setEmail(rs.getString(EMAIL_COL));
-        newEntity.setDetails(rs.getString(DETAIL_COL));
+        newEntity.setDetails(rs.getString(DETAIL_COL));*/
         return newEntity;
     }
 }

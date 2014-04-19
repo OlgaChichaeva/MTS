@@ -14,6 +14,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import javax.sql.DataSource;
+import objects.Role;
+import objects.User;
 import oracle.conditions.IntegerConditionCreator;
 
 /**
@@ -21,7 +23,7 @@ import oracle.conditions.IntegerConditionCreator;
  * @author Ivan
  */
 class OracleClientContrDAO extends OracleUniversalDAO<ClientContr> implements ClientContrDAO {
-    
+
     private static final String TABLE_NAME = "client_contr";
     private static final String CONTR_ID_COL = "contr_id";
     private static final String CLIENT_ID_COL = "client_id";
@@ -29,24 +31,26 @@ class OracleClientContrDAO extends OracleUniversalDAO<ClientContr> implements Cl
     private static final String DOC_COL = "contr_doc";
     private static final String DATE_COL = "begin_date";
     private static final String SELECT_FOR_ALL = "SELECT con.contr_id, con.contr_doc, con.begin_date,"
-                + " cl.*, sim.*, tar.name_tariff, tar.description"
-                + " FROM " + TABLE_NAME + " con"
-                + " INNER JOIN client.cl on con.client_id=cl.client_id"
-                + " INNER JOIN sim on con.sim_id=sim.sim_id"
-                + " INNER JOIN tariff_list tar on sim.ID_tariff=tar.ID_tariff";
-    
+            + " cl.*, sim.*, tar.name_tariff, tar.description, u.id_role, u.user_name, "
+            + " u.user_password, r.role_name, r.read_only"
+            + " FROM " + TABLE_NAME + " con"
+            + " INNER JOIN client cl on con.client_id=cl.client_id"
+            + " INNER JOIN sim on con.sim_id=sim.sim_id"
+            + " INNER JOIN tariff_list tar on sim.ID_tariff=tar.ID_tariff"
+            + " INNER JOIN users u ON cl.id_user=u.id_user"
+            + " INNER JOIN roles r ON r.id_role=u.id_role";
     private final IntegerConditionCreator contrIDConditionCreator;
     private final IntegerConditionCreator clientIDConditionCreator;
     private final IntegerConditionCreator simIDConditionCreator;
 
     public OracleClientContrDAO(DataSource dataSource) {
         super(dataSource);
-        
+
         contrIDConditionCreator = new IntegerConditionCreator(SELECT_FOR_ALL + " WHERE " + CONTR_ID_COL + " = ?");
         clientIDConditionCreator = new IntegerConditionCreator(SELECT_FOR_ALL + " WHERE " + CLIENT_ID_COL + " = ?");
         simIDConditionCreator = new IntegerConditionCreator(SELECT_FOR_ALL + " WHERE " + SIM_ID_COL + " = ?");
     }
-    
+
     @Override
     public boolean addContr(ClientContr contr) {
         return addObject(contr);
@@ -88,8 +92,8 @@ class OracleClientContrDAO extends OracleUniversalDAO<ClientContr> implements Cl
     @Override
     protected String makeInsertStatement() {
         final String INSERT = "INSERT INTO " + TABLE_NAME
-                    + "(" + CLIENT_ID_COL + "," + SIM_ID_COL + "," + DOC_COL + "," + DATE_COL + ")"
-                    + " VALUES(?,?,?,?)";
+                + "(" + CLIENT_ID_COL + "," + SIM_ID_COL + "," + DOC_COL + "," + DATE_COL + ")"
+                + " VALUES(?,?,?,?)";
         return INSERT;
     }
 
@@ -103,8 +107,8 @@ class OracleClientContrDAO extends OracleUniversalDAO<ClientContr> implements Cl
     protected String makeUpdateStatement() {
         final String SEP = "=?,";
         final String UPDATE = "UPDATE " + TABLE_NAME + " SET "
-                    + CLIENT_ID_COL + SEP + SIM_ID_COL + SEP + DOC_COL + SEP + DATE_COL + "=?"
-                    + " WHERE " + CONTR_ID_COL + " = ?";
+                + CLIENT_ID_COL + SEP + SIM_ID_COL + SEP + DOC_COL + SEP + DATE_COL + "=?"
+                + " WHERE " + CONTR_ID_COL + " = ?";
         return UPDATE;
     }
 
@@ -124,11 +128,13 @@ class OracleClientContrDAO extends OracleUniversalDAO<ClientContr> implements Cl
 
     @Override
     protected ClientContr makeObject(ResultSet rs) throws SQLException {
-        Client client = makeClient(rs);
+        Role role = makeRole(rs);
+        User user = makeUser(rs, role);
+        Client newClient = makeClient(rs, user);
         Tariff tariff = makeTariff(rs);
         Sim sim = makeSim(rs, tariff);
-        
-        ClientContr newContr = makeClientContr(rs, client, sim);
+
+        ClientContr newContr = makeClientContr(rs, newClient, sim);
         return newContr;
     }
 }

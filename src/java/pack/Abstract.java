@@ -105,7 +105,7 @@ public abstract class Abstract {
      * @return клиента со всеми заполненными полями
      * @throws SQLException 
      */
-    protected Client makeClient(ResultSet rs) throws SQLException {
+    protected Client makeClient(ResultSet rs, User user) throws SQLException {
         Client newClient = new Client();
         newClient.setСlientID(rs.getInt("client_id"));
         newClient.setPassportSeries(rs.getInt("passport_series"));
@@ -114,6 +114,7 @@ public abstract class Abstract {
         newClient.setLastname(rs.getString("lastname"));
         newClient.setMiddlename(rs.getString("middlename"));
         newClient.setTelephoneNumber(rs.getLong("telephone_number"));
+        newClient.setUser(user);
         return newClient;
     }
 
@@ -157,7 +158,7 @@ public abstract class Abstract {
      * @return юридическое лицо со всеми заполненными полями
      * @throws SQLException 
      */
-    protected LegalEntity makeLegalEntity(ResultSet rs) throws SQLException {
+    protected LegalEntity makeLegalEntity(ResultSet rs, User user) throws SQLException {
         LegalEntity newEntity = new LegalEntity();
         newEntity.setCompanyID(rs.getInt("company_id"));
         newEntity.setNameCompany(rs.getString("name_company"));
@@ -165,6 +166,7 @@ public abstract class Abstract {
         newEntity.setTelephone(rs.getString("telephone"));
         newEntity.setEmail(rs.getString("e_mail"));
         newEntity.setDetails(rs.getString("details"));
+        newEntity.setUser(user);
         return newEntity;
     }
 

@@ -15,6 +15,7 @@ public class LegalEntity {
     private String telephone;
     private String email;
     private String details;
+    private User user;
 
     /**
      * @return the companyID
@@ -98,5 +99,30 @@ public class LegalEntity {
      */
     public void setDetails(String details) {
         this.details = details;
+    }
+
+    /**
+     * @return the user
+     */
+    public User getUser() {
+        return user;
+    }
+
+    /**
+     * @param user the user to set
+     */
+    public void setUser(User user) {
+        this.user = user;
+    }
+    
+    public int getUserId() {
+        return user.getIdUser();
+    }
+    
+    public void setUserId(int userId) {
+        if (user == null) {
+            user = new User();
+        }
+        user.setIdUser(userId);
     }
 }
