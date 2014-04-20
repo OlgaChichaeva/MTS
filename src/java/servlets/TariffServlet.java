@@ -97,7 +97,7 @@ public class TariffServlet extends HttpServlet {
     private void goToSelect(List<Tariff> tariffList, HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setAttribute("TariffList", tariffList);
-        request.getRequestDispatcher("/tariff/showTariff.jsp").forward(request, response);
+        request.getRequestDispatcher("/tariff/showTariffList.jsp").forward(request, response);
     }
 
     private void tariffFilter(HttpServletRequest request, HttpServletResponse response)
