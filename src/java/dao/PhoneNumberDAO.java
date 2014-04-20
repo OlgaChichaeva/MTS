@@ -17,5 +17,5 @@ public interface PhoneNumberDAO {
     boolean updateNumber(PhoneNumber number);
     List<PhoneNumber> getAllNumbers();
     PhoneNumber getNumber(long number);
-    List<PhoneNumber> getNumberBySimID(int simID);
+    PhoneNumber getNumberBySimID(int simID);
 }

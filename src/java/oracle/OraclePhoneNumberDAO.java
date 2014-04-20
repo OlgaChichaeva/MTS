@@ -25,7 +25,7 @@ class OraclePhoneNumberDAO extends OracleUniversalDAO<PhoneNumber> implements Ph
     private static final String TABLE_NAME = "numbers";
     private static final String SIM_ID_COL = "sim_id";
     private static final String NUMBER_COL = "phone_number";
-    private static final String SELECT_FOR_ALL = "SELECT num.phone_number, sim.*"
+    private static final String SELECT_FOR_ALL = "SELECT num.phone_number, sim.*, tar.name_tariff, tar.description"
             + " FROM " + TABLE_NAME + " num"
             + " LEFT JOIN sim on num.sim_id=sim.sim_id"
             + " INNER JOIN tariff_list tar on sim.ID_tariff=tar.ID_tariff";
@@ -34,8 +34,8 @@ class OraclePhoneNumberDAO extends OracleUniversalDAO<PhoneNumber> implements Ph
 
     public OraclePhoneNumberDAO(DataSource datasource) {
         super(datasource);
-        numberConditionCreator = new NumberConditionCreator(SELECT_FOR_ALL + " WHERE " + NUMBER_COL + " = ?");
-        simIDConditionCreator = new IntegerConditionCreator(SELECT_FOR_ALL + " WHERE " + SIM_ID_COL + " = ?");
+        numberConditionCreator = new NumberConditionCreator(SELECT_FOR_ALL + " WHERE num." + NUMBER_COL + " = ?");
+        simIDConditionCreator = new IntegerConditionCreator(SELECT_FOR_ALL + " WHERE num." + SIM_ID_COL + " = ?");
     }
 
     @Override
@@ -67,9 +67,9 @@ class OraclePhoneNumberDAO extends OracleUniversalDAO<PhoneNumber> implements Ph
     }
 
     @Override
-    public List<PhoneNumber> getNumberBySimID(int simID) {
+    public PhoneNumber getNumberBySimID(int simID) {
         simIDConditionCreator.setValue(simID);
-        return getObjectsWithConditions(simIDConditionCreator);
+        return getUniqueObject(simIDConditionCreator);
     }
 
     @Override
