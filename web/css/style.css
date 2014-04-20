@@ -1,0 +1,59 @@
+/* 
+    Document   : style
+    Created on : 20.04.2014, 10:02:35
+    Author     : Ivan
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/*
+    Таблица для отображения данных из БД.
+*/
+table.select {
+    margin-left: auto; /* Чтобы была по центру */
+    margin-right: auto; /* Чтобы была по центру */
+    background-color:#fafafa;
+    border-collapse: collapse;
+    border-color: #ff0000;
+    border: 1px ridge #cc0000;
+    width: 800px;
+}
+
+/*
+    Текстовые поля в таблице.
+*/
+input.intable {
+    width: 96%;
+    padding: 5px 3px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #d07f7f;
+    font: normal 0.8em tahoma;
+}
+
+/*
+    Ячейки таблицы для отображения данных из БД.
+*/
+td.select {
+    font: normal 0.8em tahoma;
+    padding: 5px;
+}
+
+/*
+    Ячейки заголовка таблицы для отображения данных из БД.
+*/
+th.select {
+    font: bold 1.1em tahoma;
+    background-color: #fd3c3c;
+    color: white;
+    border-color: black;
+    padding: 3px;
+}
+
+/*
+    Ячейки таблицы, содержащие форму.
+*/
+td.withform {
+    text-align: center;
+}
+
