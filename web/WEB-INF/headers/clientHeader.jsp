@@ -29,7 +29,7 @@
                 <td>
                     <p align="right">
                         <%= currentClient.getLastname() + " " + currentClient.getFirstname() + " " + currentClient.getMiddlename()%>
-                        <a href="<%= request.getContextPath()%>/Logout/">Выйти</a>
+                        <a class="other" href="<%= request.getContextPath()%>/Logout/">Выйти</a>
                     </p>
                 </td>
             </tr>

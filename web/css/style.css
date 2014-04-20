@@ -17,6 +17,11 @@ td {
     padding: 3px;
 }
 
+h1 {
+    text-align: center;
+    font: bold 1.3em tahoma;
+}
+
 /*
     Таблица для отображения данных из БД.
 */
@@ -121,4 +126,17 @@ td.info {
     border-collapse: collapse;
     border: 1px solid #cc0000;
     background-color: #fafafa;
+}
+
+/*
+    Все гиперссылки.
+*/
+a.other {
+    font: inherit;
+    color: black;
+    text-decoration: underline;
+}
+a.other:hover {
+    color: #cc0000;
+    text-decoration: none;
 }

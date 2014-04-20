@@ -41,12 +41,12 @@
                         <%
                             if (currentUser.getIdRole() == SecurityBean.NOT_LOGGED) {
                                 %>
-                                    <a href="<%= ROOT%>/login.jsp">Войти</a>
+                                    <a class="other" href="<%= ROOT%>/login.jsp">Войти</a>
                                 <%
                             } else {
                                 %>
                                     Здравствуйте, <%= currentUser.getUserName()%>
-                                    <a href="<%= ROOT%>/Logout/">Выйти</a>
+                                    <a class="other" href="<%= ROOT%>/Logout/">Выйти</a>
                                 <%
                             }
                         %>

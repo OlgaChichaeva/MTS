@@ -39,7 +39,7 @@
                 <td>
                     <p align="right">
                         Здравствуйте, <%= currentUser.getUserName()%>
-                        <a href="<%= ROOT%>/Logout/">Выйти</a>
+                        <a class="other" href="<%= ROOT%>/Logout/">Выйти</a>
                     </p>
                 </td>
             </tr>

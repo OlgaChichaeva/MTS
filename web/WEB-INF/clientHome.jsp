@@ -5,6 +5,7 @@
 --%>
 
 
+<%@page import="objects.Tariff"%>
 <%@page import="objects.Sim"%>
 <%@page import="objects.PhoneNumber"%>
 <%@page import="java.util.Map"%>
@@ -53,12 +54,16 @@
                         <td class="info">
                             Номер договора: <%= contr.getContrID()%><br>
                             Дата заключения: <%= contr.getBeginDate()%><br>
-                            <a href="<%= contr.getContrDoc()%>">Скачать договор</a>
+                            <a class="other" href="<%= contr.getContrDoc()%>">Скачать договор</a>
                         </td>
                         <td class="info">
                             Телефон: <%= HTMLHelper.phoneToString(number.getNumber())%><br>
                             Баланс: <%= sim.getAccount()%><br>
-                            Тариф: <%= sim.getTariff().getNameTariff()%> Вставить гиперссылку!<br>
+                            <% Tariff tariff = sim.getTariff();%>
+                            Тариф: 
+                            <a class="other" href="<%= ROOT %>/ShowTariff/?ID_tariff=<%= tariff.getIdTariff()%>">
+                                <%= tariff.getNameTariff()%>
+                            </a>
                         </td>
                     </tr>
                     <%

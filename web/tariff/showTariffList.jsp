@@ -53,7 +53,9 @@
                     %>
                     <tr>
                         <td class="select">
-                            <%= tariff.getNameTariff()%>
+                            <a class="other" href="<%= ROOT %>/ShowTariff/?ID_tariff=<%= tariff.getIdTariff()%>">
+                                <%= tariff.getNameTariff()%>
+                            </a>
                         </td>
                         <td class="select">
                             <%= tariff.getDescription()%>

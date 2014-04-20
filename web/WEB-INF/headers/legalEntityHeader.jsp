@@ -28,7 +28,7 @@
                 <td>
                     <p align="right">
                         Здравствуйте, <%= currentUser.getUserName()%>
-                        <a href="<%= request.getContextPath()%>/Logout/">Выйти</a>
+                        <a class="other" href="<%= request.getContextPath()%>/Logout/">Выйти</a>
                     </p>
                 </td>
             </tr>

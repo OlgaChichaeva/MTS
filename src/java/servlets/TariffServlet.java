@@ -4,6 +4,7 @@
  */
 package servlets;
 
+import dao.ServiceInTariffDao;
 import dao.TariffDao;
 import filters.TariffFilter;
 import java.io.IOException;
@@ -13,6 +14,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import objects.ServiceInTariff;
 import objects.Tariff;
 import pack.DaoMaster;
 
@@ -22,11 +24,13 @@ import pack.DaoMaster;
  */
 @WebServlet(name = "TariffServlet", loadOnStartup = 1, urlPatterns = {
     "/SelectAllTariff/",
-    "/TariffFilter/"
+    "/TariffFilter/",
+    "/ShowTariff/"
 })
 public class TariffServlet extends HttpServlet {
 
     private final TariffDao tariffDao = DaoMaster.getTariffDao();
+    private final ServiceInTariffDao servInTarDao = DaoMaster.getServiceInTariffDao();
     
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -49,6 +53,10 @@ public class TariffServlet extends HttpServlet {
             }
             case "/TariffFilter/": {
                 tariffFilter(request, response);
+                break;
+            }
+            case "/ShowTariff/": {
+                showTariff(request, response);
                 break;
             }
         }
@@ -110,5 +118,13 @@ public class TariffServlet extends HttpServlet {
 
         List<Tariff> tariffList = tariffDao.getFilteredTariffList(filter);
         goToSelect(tariffList, request, response);
+    }
+
+    private void showTariff(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        int idTariff = Integer.parseInt(request.getParameter("ID_tariff"));
+        List<ServiceInTariff> servInTarList = servInTarDao.getIdTariff(idTariff);
+        request.setAttribute("servInTarList", servInTarList);
+        request.getRequestDispatcher("/tariff/showTariff.jsp").forward(request, response);
     }
 }
