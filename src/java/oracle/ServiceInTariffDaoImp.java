@@ -40,7 +40,7 @@ class ServiceInTariffDaoImp extends Abstract implements ServiceInTariffDao {
                     + "INNER JOIN service s on s.ID_service=sInT.ID_service "
                     + "INNER JOIN tariff_list tar on tar.ID_tariff=sInT.ID_tariff "
                     + "INNER JOIN type_service type on type.ID_type=s.ID_type "
-                    + "where ID_tariff=?");
+                    + "where sInt.ID_tariff=?");
             ps.setInt(1, idTariff);
             ResultSet rs = ps.executeQuery();
             List<ServiceInTariff> list = new ArrayList<>();
@@ -57,7 +57,7 @@ class ServiceInTariffDaoImp extends Abstract implements ServiceInTariffDao {
             }
             return list;
         } catch (SQLException ex) {
-            Logger.getLogger(ServiceInTariffDaoImp.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
         return null;
     }
