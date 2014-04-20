@@ -98,6 +98,15 @@ public class LoginServlet extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    /**
+     * Попытка авторизации пользователя. В случае успеха перенаправляет
+     * на домашнюю страницу (специфична для типа пользователя).
+     * Что делать в случае неудачи - нужно определиться.
+     * @param request берём из методов doGet/doPost
+     * @param response берём из методов doGet/doPost
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void login(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String username = request.getParameter("username");
@@ -128,6 +137,13 @@ public class LoginServlet extends HttpServlet {
         response.sendRedirect(request.getContextPath());
     }
 
+    /**
+     * Выход пользователя и перенаправление на корневой каталог сайта.
+     * @param request берём из методов doGet/doPost
+     * @param response берём из методов doGet/doPost
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void logout(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(true);

@@ -31,8 +31,8 @@ import pack.DaoMaster;
 })
 public class ClientServlet extends HttpServlet {
 
-    private ClientContrDAO clientContrDao = DaoMaster.getClientContrDao();
-    private PhoneNumberDAO phoneNumberDao = DaoMaster.getPhoneNumberDao();
+    private final ClientContrDAO clientContrDao = DaoMaster.getClientContrDao();
+    private final PhoneNumberDAO phoneNumberDao = DaoMaster.getPhoneNumberDao();
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -85,8 +85,8 @@ public class ClientServlet extends HttpServlet {
      * Загружает информацию о клиенте, связанном с данным юзером, и
      * перенаправляет на домашнюю для клиента страницу.
      *
-     * @param request
-     * @param response
+     * @param request берём из методов doGet/doPost
+     * @param response берём из методов doGet/doPost
      * @throws ServletException
      * @throws IOException
      */
