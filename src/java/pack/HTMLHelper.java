@@ -133,4 +133,25 @@ public class HTMLHelper {
     public static String includeCSS(String root) {
         return "<link rel=\"stylesheet\" type=\"text/css\" href=\"" + root + CSS + "\" />";
     }
+    
+    /**
+     * Преобразование телефонного номера в отформатированную строку.
+     * @param phone номер
+     * @return отформатированный номер в случае успеха, иначе
+     * просто строковое представление номера.
+     */
+    public static String phoneToString(long phone) {
+        final char SEP = '-';
+        String temp = Long.toString(phone);
+        try {
+            StringBuilder stringPhone = new StringBuilder(temp);
+            stringPhone.insert(9, SEP);
+            stringPhone.insert(7, SEP);
+            stringPhone.insert(4, SEP);
+            stringPhone.insert(1, SEP);
+            return stringPhone.toString();
+        } catch (IndexOutOfBoundsException ex) {
+            return temp;
+        }
+    }
 }

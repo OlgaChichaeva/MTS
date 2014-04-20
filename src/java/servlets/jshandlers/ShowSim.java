@@ -4,6 +4,7 @@
  */
 package servlets.jshandlers;
 
+import dao.PhoneNumberDAO;
 import dao.SimDao;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,8 +13,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import objects.PhoneNumber;
 import objects.Sim;
 import pack.DaoMaster;
+import pack.HTMLHelper;
 
 /**
  * Из-за глупого javascript придётся создавать по целому сервлету для обработки
@@ -26,7 +29,7 @@ import pack.DaoMaster;
 @WebServlet(name = "ShowSim", loadOnStartup = 1, urlPatterns = {"/showSim"})
 public class ShowSim extends HttpServlet {
 
-    private SimDao simDao = DaoMaster.getSimDao();
+    private PhoneNumberDAO phoneNumberDao = DaoMaster.getPhoneNumberDao();
 
     /**
      * Processes requests for both HTTP
@@ -41,13 +44,15 @@ public class ShowSim extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int simId = Integer.parseInt(request.getParameter("sim_id"));
-        Sim sim = simDao.getIdSim(simId);
+        PhoneNumber phone = phoneNumberDao.getNumberBySimID(simId);
+        Sim sim = phone.getSim();
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             if (sim == null) {
                 out.print("Не удалось загрузить сим-карту с таким ID");
                 return;
             }
+            out.print("Телефон: " + HTMLHelper.phoneToString(phone.getNumber())+ "<br>");
             out.print("Номер сим-карты: " + sim.getSimId() + "<br>");
             // !!!!!!!!!!!!! Добавить гиперссылку на тариф !!!!!!!!!!
             out.print("Тариф: " + sim.getTariff().getNameTariff() + "<br>");
