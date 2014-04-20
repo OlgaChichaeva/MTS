@@ -41,7 +41,7 @@ import pack.Abstract;
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery("select * from tariff_list");
             while (rs.next()) {
-                int IdTariff = rs.getInt(" ID_tariff");
+                int IdTariff = rs.getInt("ID_tariff");
                 String nameTariff = rs.getString("name_tariff");
                 String description = rs.getString("description");
                 Tariff tariff= new Tariff();
@@ -54,9 +54,9 @@ import pack.Abstract;
             return tariffs;
 
         } catch (SQLException ex) {
+            ex.printStackTrace();
+             return null;
         }
-        return null;
-
     }
 
     @Override
