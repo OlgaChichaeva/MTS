@@ -57,3 +57,33 @@ td.withform {
     text-align: center;
 }
 
+/*
+    Таблица с сылками в заголовочных файлах.
+*/
+table.headerlink {
+    padding: 0px;
+    border-width: 0px;
+    width: 100%;
+    border-spacing: 0px;
+}
+
+/*
+    Гиперссылки в заголовочных файлах.
+*/
+a.headerlink {
+    font: bold 0.9em tahoma;
+    color: black;
+    text-decoration: none;
+    padding: 3px;
+    border: 1px groove #fd3c3c;
+    background-color: #f4f4f4;
+}
+
+/*
+    Гиперссылки в заголовочных файлах - при наведении мыши.
+*/
+a.headerlink:hover {
+    color: white;
+    border-color:  white;
+    background-color: #fd3c3c;
+}
