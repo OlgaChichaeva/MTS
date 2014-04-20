@@ -9,10 +9,10 @@ package filters;
  * @author Ivan
  */
 public class ServiceFilter {
-    private String idService;
-    private String typeService;
-    private String nameService;
-    private String cost;
+    private String idService = "";
+    private String typeService = "";
+    private String nameService = "";
+    private String cost = "";
 
     /**
      * @return the idService
