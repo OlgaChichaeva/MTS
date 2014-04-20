@@ -14,6 +14,7 @@ function showSim(simId)
             $("#simlayer").empty();
             //и выводим ответ php скрипта
             $("#simlayer").append(html);
+            document.getElementById('siminfo').scrollIntoView(); // Переход к просмотру сим-карты.
         }
     });
 

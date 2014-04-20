@@ -24,11 +24,7 @@
         <!-- Подключаем файл showSim.js, содержащий функцию showSim()-->
         <script src="<%= ROOT%><%= HTMLHelper.JS%>/client/showSim.js" type="text/javascript"></script>
 
-        <style>
-            .simref {
-                border-bottom: 1px dotted black; /* Параметры линии */
-            }
-        </style>
+        <%= HTMLHelper.includeCSS(ROOT) %>
     </head>
 
         <%
@@ -48,7 +44,10 @@
         }%>
     <%-- Если список не null и не пуст, то зразу загружает первую сим-карту. --%>
     <body onload="showSim(<%= contrList.get(0).getSimID()%>);">
-        <table border=1>
+        <table class="container"><tr>
+                <td>
+            
+        <table class="list">
 
             <%
                 for (ClientContr contr : contrList) {
@@ -56,7 +55,7 @@
             <tr>
                 <td>
                     <%-- При нажатии на надпись загружается нужная сим-карта. --%>
-                    <span class="simref" title="Просмотреть информацию" onclick="showSim(<%= contr.getSimID()%>);">Сим-карта</span> 
+                    <span class="jsonpage" title="Просмотреть информацию" onclick="showSim(<%= contr.getSimID()%>);">Сим-карта</span> 
                     <br>
                     Номер договора: <%= contr.getContrID()%>
                     <br>
@@ -67,9 +66,12 @@
             </tr>
             <%}%>
         </table>
-
-        <div id="simlayer">
+        </td>
+        <td valign="top">
+        <div id="simlayer" >
             <%-- Слой для печати в нём. --%>
         </div> 
+        </td>
+        </tr></table>
     </body>
 </html>

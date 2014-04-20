@@ -52,6 +52,7 @@ public class ShowSim extends HttpServlet {
                 out.print("Не удалось загрузить сим-карту с таким ID");
                 return;
             }
+            out.print("<a id=\"siminfo\" name=\"siminfo\"><b>Информация о сим-карте</b></a><br>");
             out.print("Телефон: " + HTMLHelper.phoneToString(phone.getNumber())+ "<br>");
             out.print("Номер сим-карты: " + sim.getSimId() + "<br>");
             // !!!!!!!!!!!!! Добавить гиперссылку на тариф !!!!!!!!!!
