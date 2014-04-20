@@ -23,8 +23,8 @@
                 </td>
                 <td width="80%">
                     <a class="headerlink" href="<%= ROOT%>/">Home</a>                
-                    <a class="headerlink" href="<%= ROOT%>/SelectAllService/">Service</a>                 
-                    <a class="headerlink" href="<%= ROOT%>/showService/">Service in tariff</a>              
+                    <a class="headerlink" href="<%= ROOT%>/SelectAllService/">Услуги</a>                 
+                    <a class="headerlink" href="<%= ROOT%>/SelectAllTariff/">Тарифы</a>              
                     <a class="headerlink" href="<%= ROOT%>/showService/">Type service</a>                 
                     <a class="headerlink" href="<%= ROOT%>/showService/">Sim</a>                 
                     <a class="headerlink" href="<%= ROOT%>/showService/">Traffic</a>                

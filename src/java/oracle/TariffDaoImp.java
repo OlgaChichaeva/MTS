@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import objects.Service;
 import objects.Tariff;
 import dao.TariffDao;
+import filters.TariffFilter;
 import javax.sql.DataSource;
 import pack.Abstract;
 
@@ -118,5 +118,30 @@ import pack.Abstract;
         }
 
     }   
+
+    @Override
+    public List<Tariff> getFilteredTariffList(TariffFilter tariff) {
+        try (Connection con = getConn()) {
+
+            List<Tariff> tariffList = new ArrayList<>();
+            PreparedStatement ps = con.prepareStatement("select * from tariff_list "
+                    + " WHERE lower(name_tariff) LIKE ?"
+                    + " AND lower(description) LIKE ?");
+            ps.setString(1, "%" + tariff.getNameTariff().toLowerCase() + "%");
+            ps.setString(2, "%" + tariff.getDescription().toLowerCase() + "%");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Tariff newTariff = makeTariff(rs);
+                tariffList.add(newTariff);
+            }
+
+            return tariffList;
+
+        } catch (SQLException ex) {
+            //System.out.println("DAO Exception");
+            ex.printStackTrace();
+        }
+        return null;
+    }
 }
 

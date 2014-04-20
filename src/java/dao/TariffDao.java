@@ -4,6 +4,7 @@
  */
 package dao;
 
+import filters.TariffFilter;
 import java.util.List;
 import objects.Service;
 import objects.Tariff;
@@ -23,4 +24,6 @@ public interface TariffDao {
     public void deleteTariffList(int idTariff);
     
     public void addSTariffList(Tariff tariff);
+    
+    List<Tariff> getFilteredTariffList(TariffFilter tariff);
 }

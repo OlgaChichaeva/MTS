@@ -4,9 +4,9 @@
     Author     : Ольга
 --%>
 
+<%@page import="objects.Tariff"%>
 <%@page import="security.SecurityBean"%>
 <%@page import="pack.HTMLHelper"%>
-<%@page import="objects.Service"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -21,33 +21,27 @@
         <jsp:useBean id="currentUser" scope="session" class="objects.User" />
         <jsp:include page="<%= HTMLHelper.CHOOSE_HEADER%>" flush="true"/>
         <%
-            Object o = request.getAttribute("ServiceList");
-            if (o == null) {
-                out.print("asd");
+            List<Tariff> tariffList = (List<Tariff>) request.getAttribute("TariffList");
+            if (tariffList == null) {
+                out.print("fatal error");
                 return;
             }
-            List<Service> services = (List<Service>) o;
-            String enteredName = HTMLHelper.fromNull(request.getParameter("name_service"));
-            String enteredIdType = HTMLHelper.fromNull(request.getParameter("ID_type"));
-            String enteredCost = HTMLHelper.fromNull(request.getParameter("cost"));
+            String enteredName = HTMLHelper.fromNull(request.getParameter("name_tariff"));
+            String enteredDescription = HTMLHelper.fromNull(request.getParameter("description"));
             boolean acceptedToChange = !currentUser.getReadOnly();
         %>
         <table border=1 class="select"><tr>
                 <th class="select" width="25%">Название</th>
-                <th class="select" width="25%">Тип</th>
-                <th class="select" width="25%">Стоимость</th>
+                <th class="select" width="50%">Описание</th>
                 <th class="select" width="25%">Действия</th>
             </tr>
-            <form action="<%= ROOT %>/ServiceFilter/" method="GET">
+            <form action="<%= ROOT %>/TariffFilter/" method="GET">
                 <tr>
                     <td class="withform">
-                        <input class="intable" type="text" name="name_service" value="<%= enteredName%>" />
+                        <input class="intable" type="text" name="name_tariff" value="<%= enteredName%>" />
                     </td>
                     <td class="withform">
-                        <input class="intable" type="text" name="ID_type" value="<%= enteredIdType%>" />
-                    </td>
-                    <td class="withform">
-                        <input class="intable" type="text" name="cost" value="<%= enteredCost%>" />
+                        <input class="intable" type="text" name="description" value="<%= enteredDescription%>" />
                     </td>
                     <td class="withform">
                         <input type="submit" value="Filter" />
@@ -55,26 +49,21 @@
                 </tr>
             </form>
             <%
-                for (Service service : services) {
+                for (Tariff tariff : tariffList) {
                     %>
                     <tr>
                         <td class="select">
-                            <%= service.getNameService()%>
+                            <%= tariff.getNameTariff()%>
                         </td>
                         <td class="select">
-                            <%= service.getTypeService().getNameType()%>
-                        </td>
-                        <td class="select">
-                            <%= service.getCost()%>
-                            /
-                            <%= service.getTypeService().getMeasure()%>
+                            <%= tariff.getDescription()%>
                         </td>
                     <%
             %>
 
             <td class="withform">
                 <% if (acceptedToChange) { // Показываем кнопки только тогда, когда юзер имеет права для редактирования %>
-                <%= HTMLHelper.makeUpdateAndDelete(ROOT+"/ServiceUpdateForm/", ROOT+"/ServiceDelete/", "ID_Service", service.getIdService())%>
+                <%= HTMLHelper.makeUpdateAndDelete(ROOT+"/TariffUpdateForm/", ROOT+"/TariffDelete/", "ID_tariff", tariff.getIdTariff())%>
                 <%
                     } else {
                         out.print("<hr>");
@@ -89,7 +78,7 @@
 
         </table>
         <% if (acceptedToChange) {%>
-            <a href="<%= request.getContextPath()%>/ServiceAddForm/">add</a>
+            <a href="<%= request.getContextPath()%>/TariffAddForm/">add</a>
         <%}%>
     </body>
 </html>
