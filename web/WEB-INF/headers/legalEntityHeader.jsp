@@ -11,13 +11,19 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <% String ROOT = request.getContextPath();%>
+        <%= HTMLHelper.includeCSS(ROOT) %>
     </head>
     <body>
         <jsp:useBean id="currentUser" class="objects.User" scope="session" />
-        <table width="100%" border="0" cellpadding="0" cellspacing="0">
+        <table class="headerlink">
             <tr>
+                <td style="padding-right: 3px;" width="1px">
+                    <img src="<%= ROOT%>/pics/boring.jpg" alt=":("/>
+                </td>
                 <td width="70%">
-                    Тут будут ссылки для клиента
+                    <a class="headerlink" href="<%= ROOT%>/">Home</a>
+                    <a class="headerlink" href="<%= ROOT%>/SelectAllService/">Service</a>
                 </td>
                 <td>
                     <p align="right">

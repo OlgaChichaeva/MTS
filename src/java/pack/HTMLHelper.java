@@ -12,20 +12,30 @@ package pack;
  */
 public class HTMLHelper {
     
+    private HTMLHelper() {}
+    
     /**
      * Путь к папке с заголовочными jsp.
      */
     public static final String HEADERS = "/WEB-INF/headers";
     
     /**
-     * Путь к папке с файлами javascript.
+     * Путь к папке с файлами javascript (для подключения нужно
+     * указывать корневой каталог сайта).
      */
     public static final String JS = "/js";
     
     /**
-     * Путь к библиотеке jquery.
+     * Путь к библиотеке jquery (для подключения нужно
+     * указывать корневой каталог сайта).
      */
     public static final String JQUERY = JS + "/jquery-1.5.1.js";
+    
+    /**
+     * Путь к таблице стилей (для подключения нужно
+     * указывать корневой каталог сайта).
+     */
+    public static final String CSS = "/css/style.css";
     
     /**
      * Путь к папке со страницами, разграничивающими доступ.
@@ -82,7 +92,7 @@ public class HTMLHelper {
      */
     public static String makeUpdateAndDelete(String updatePath, String deletePath, String name, int id) {
         String buttons = 
-                "<table>"
+                "<table border=\"0\" align=\"center\">"
                  + "<tr>"
                         + "<td>"
                             + "<form name=\"Data Input Form\" action=\"" + updatePath + "\" method=\"POST\">"  
@@ -113,5 +123,14 @@ public class HTMLHelper {
         } else {
             return source;
         }
+    }
+    
+    /**
+     * Возвращает строку, подключающую таблицу стилей CSS.
+     * @param root корневая директория сайта
+     * @return строку, подключающую css
+     */
+    public static String includeCSS(String root) {
+        return "<link rel=\"stylesheet\" type=\"text/css\" href=\"" + root + CSS + "\" />";
     }
 }

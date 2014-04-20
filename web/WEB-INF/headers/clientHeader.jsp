@@ -11,16 +11,19 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <% String ROOT = request.getContextPath();%>
+        <%= HTMLHelper.includeCSS(ROOT) %>
     </head>
     <body>
         <jsp:useBean id="currentClient" scope="session" class="objects.Client" />
-        <table width="100%" border="0" cellpadding="0" cellspacing="0">
+        <table class="headerlink">
             <tr>
-                <td width="70%">
-                    <% String ROOT = request.getContextPath();%>
+                <td style="padding-right: 3px;" width="1px">
                     <img src="<%= ROOT%>/pics/boring.jpg" alt=":("/>
-                    <a href="<%= ROOT%>/">Home</a>
-                    <a href="<%= ROOT%>/SelectAllService/">Service</a>
+                </td>
+                <td width="70%">
+                    <a class="headerlink" href="<%= ROOT%>/clientHome/">Home</a>
+                    <a class="headerlink" href="<%= ROOT%>/SelectAllService/">Service</a>
                 </td>
                 <td>
                     <p align="right">

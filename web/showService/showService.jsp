@@ -14,6 +14,8 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+        <% String ROOT = request.getContextPath();%>
+        <%= HTMLHelper.includeCSS(ROOT) %>
     </head>
     <body>
         <jsp:useBean id="currentUser" scope="session" class="objects.User" />
@@ -30,41 +32,47 @@
             String enteredCost = HTMLHelper.fromNull(request.getParameter("cost"));
             boolean acceptedToChange = !currentUser.getReadOnly();
         %>
-        <table border=1><tr><th>Название</th><th>Тип</th><th>Стоимость</th><th>Действия</th>
+        <table border=1 class="select"><tr>
+                <th class="select" width="25%">Название</th>
+                <th class="select" width="25%">Тип</th>
+                <th class="select" width="25%">Стоимость</th>
+                <th class="select" width="25%">Действия</th>
             </tr>
             <form action="/MTSweb/ServiceFilter/" method="GET">
                 <tr>
-                    <td>
-                        <input type="text" name="name_service" value="<%= enteredName%>" />
+                    <td class="withform">
+                        <input class="intable" type="text" name="name_service" value="<%= enteredName%>" />
                     </td>
-                    <td>
-                        <input type="text" name="ID_type" value="<%= enteredIdType%>" />
+                    <td class="withform">
+                        <input class="intable" type="text" name="ID_type" value="<%= enteredIdType%>" />
                     </td>
-                    <td>
-                        <input type="text" name="cost" value="<%= enteredCost%>" />
+                    <td class="withform">
+                        <input class="intable" type="text" name="cost" value="<%= enteredCost%>" />
                     </td>
-                    <td>
+                    <td class="withform">
                         <input type="submit" value="Filter" />
                     </td>
                 </tr>
             </form>
             <%
                 for (Service service : services) {
-                    out.print("<tr>");
-                    out.print("<td>");
-                    out.print(service.getNameService());
-                    out.print("</td>");
-                    out.print("<td>");
-                    out.print(service.getTypeService().getNameType());
-                    out.print("</td>");
-                    out.print("<td>");
-                    out.print(service.getCost());
-                    out.print(" / ");
-                    out.print(service.getTypeService().getMeasure());
-                    out.print("</td>");
+                    %>
+                    <tr>
+                        <td class="select">
+                            <%= service.getNameService()%>
+                        </td>
+                        <td class="select">
+                            <%= service.getTypeService().getNameType()%>
+                        </td>
+                        <td class="select">
+                            <%= service.getCost()%>
+                            /
+                            <%= service.getTypeService().getMeasure()%>
+                        </td>
+                    <%
             %>
 
-            <td>
+            <td class="withform">
                 <% if (acceptedToChange) { // Показываем кнопки только тогда, когда юзер имеет права для редактирования %>
                 <%= HTMLHelper.makeUpdateAndDelete("/MTSweb/ServiceUpdateForm/", "/MTSweb/ServiceDelete/", "ID_Service", service.getIdService())%>
                 <%

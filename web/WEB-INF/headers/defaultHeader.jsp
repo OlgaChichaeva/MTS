@@ -11,27 +11,30 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <% String ROOT = request.getContextPath();%>
+        <%= HTMLHelper.includeCSS(ROOT) %>
     </head>
     <body>
         <jsp:useBean id="currentUser" class="objects.User" scope="session" />
-        <table width="100%" border="0" cellpadding="0" cellspacing="0">
+        <table class="headerlink">
             <tr>
-                <td width="70%">
-                    <% String ROOT = request.getContextPath();%>
+                <td style="padding-right: 3px;" width="1px">
                     <img src="<%= ROOT%>/pics/boring.jpg" alt=":("/>
-                    <a href="<%= ROOT%>/">Home</a>
-                    <a href="<%= ROOT%>/SelectAllService/">Service</a>
-                    <a href="<%= ROOT%>/showService/">Service in tariff</a>
-                    <a href="<%= ROOT%>/showService/">Type service</a>
-                    <a href="<%= ROOT%>/showService/">Sim</a>
-                    <a href="<%= ROOT%>/showService/">Traffic</a>
-                    <a href="<%= ROOT%>/showService/">Tariff List</a>
-                    <a href="<%= ROOT%>/showService/">Sim contract</a>
-                    <a href="<%= ROOT%>/showService/">Phone number</a>
-                    <a href="<%= ROOT%>/showService/">Legal entity</a>
-                    <a href="<%= ROOT%>/showService/">Legal contract</a>
-                    <a href="<%= ROOT%>/showService/">Client</a>
-                    <a href="<%= ROOT%>/showService/">Client contract</a> 
+                </td>
+                <td width="80%">
+                    <a class="headerlink" href="<%= ROOT%>/">Home</a>                
+                    <a class="headerlink" href="<%= ROOT%>/SelectAllService/">Service</a>                 
+                    <a class="headerlink" href="<%= ROOT%>/showService/">Service in tariff</a>              
+                    <a class="headerlink" href="<%= ROOT%>/showService/">Type service</a>                 
+                    <a class="headerlink" href="<%= ROOT%>/showService/">Sim</a>                 
+                    <a class="headerlink" href="<%= ROOT%>/showService/">Traffic</a>                
+                    <a class="headerlink" href="<%= ROOT%>/showService/">Tariff List</a>                             
+                    <a class="headerlink" href="<%= ROOT%>/showService/">Sim contract</a>                      
+                    <a class="headerlink" href="<%= ROOT%>/showService/">Phone number</a>             
+                    <a class="headerlink" href="<%= ROOT%>/showService/">Legal entity</a>
+                    <a class="headerlink" href="<%= ROOT%>/showService/">Legal contract</a>
+                    <a class="headerlink" href="<%= ROOT%>/showService/">Client</a>
+                    <a class="headerlink" href="<%= ROOT%>/showService/">Client contract</a>
                 </td>
                 <td>
                     <p align="right">
