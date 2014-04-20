@@ -115,22 +115,10 @@ a.headerlink:hover {
 /*
     Таблицы, содержащие список.
 */
-table.list {
+td.info {
     font: normal 1.2em tahoma;
     line-height: 1.5;
     border-collapse: collapse;
     border: 1px solid #cc0000;
     background-color: #fafafa;
-    min-width: 500px;
-}
-
-/*
-    Таблица, хранящая какое-либо содержимое.
-*/
-table.container {
-    margin-left: auto; /* Чтобы была по центру */
-    margin-right: auto; /* Чтобы была по центру */
-    border-width: 0px;
-    min-width: 800px;
-    max-width: 1000px;
 }

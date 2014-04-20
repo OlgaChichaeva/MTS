@@ -5,9 +5,11 @@
 package servlets;
 
 import dao.ClientContrDAO;
-import dao.ClientDAO;
+import dao.PhoneNumberDAO;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import objects.Client;
 import objects.ClientContr;
+import objects.PhoneNumber;
 import objects.User;
 import pack.DaoMaster;
 
@@ -29,6 +32,7 @@ import pack.DaoMaster;
 public class ClientServlet extends HttpServlet {
 
     private ClientContrDAO clientContrDao = DaoMaster.getClientContrDao();
+    private PhoneNumberDAO phoneNumberDao = DaoMaster.getPhoneNumberDao();
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -94,15 +98,21 @@ public class ClientServlet extends HttpServlet {
             // что-нибудь сделать
             return;
         }
-        List<ClientContr> contr = clientContrDao.getContrsByClientID(user.getIdClient());
-        if (contr.isEmpty()) {
+        List<ClientContr> contrs = clientContrDao.getContrsByClientID(user.getIdClient());
+        if (contrs.isEmpty()) {
             // что-нибудь сделать
             return;
         }
         // Можем взять клиента из первого элмента, так как проверили, что список не пустой.
-        Client client = contr.get(0).getClient();
+        Client client = contrs.get(0).getClient();
         session.setAttribute("currentClient", client);
-        request.setAttribute("contrList", contr); // Кладём список всех контрактов в запрос.
+        
+        // Соотносим телефонные номера с договорами.
+        Map<ClientContr, PhoneNumber> phonesMap = new HashMap<>();
+        for (ClientContr contr: contrs) {
+            phonesMap.put(contr, phoneNumberDao.getNumberBySimID(contr.getSimID()));
+        }
+        request.setAttribute("phonesMap", phonesMap); // Кладём список всех контрактов в запрос.
         request.getRequestDispatcher("/WEB-INF/clientHome.jsp").forward(request, response);
     }
 }

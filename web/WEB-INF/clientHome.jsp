@@ -5,8 +5,10 @@
 --%>
 
 
+<%@page import="objects.Sim"%>
+<%@page import="objects.PhoneNumber"%>
+<%@page import="java.util.Map"%>
 <%@page import="objects.ClientContr"%>
-<%@page import="java.util.List"%>
 <%@page import="pack.HTMLHelper"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -19,59 +21,49 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
         <% String ROOT = request.getContextPath();%>
-        <!-- Подключаем библиотеку jquery-->
-        <script src="<%= ROOT%><%= HTMLHelper.JQUERY%>" type="text/javascript"></script>
-        <!-- Подключаем файл showSim.js, содержащий функцию showSim()-->
-        <script src="<%= ROOT%><%= HTMLHelper.JS%>/client/showSim.js" type="text/javascript"></script>
-
         <%= HTMLHelper.includeCSS(ROOT) %>
     </head>
 
         <%
-        List<ClientContr> contrList = (List<ClientContr>) request.getAttribute("contrList");
-        if (contrList == null) {
+        Map<ClientContr, PhoneNumber> phonesMap = ( Map<ClientContr, PhoneNumber>) request.getAttribute("phonesMap");
+        if (phonesMap == null) {
             %>
             <body>
             Ошибка загрузки списка договоров.<br>
             <%
             return;
-        } else if (contrList.isEmpty()) {
+        } else if (phonesMap.isEmpty()) {
             %>
             <body>
             Договоров нет.<br>
             <%
             return;
         }%>
-    <%-- Если список не null и не пуст, то зразу загружает первую сим-карту. --%>
-    <body onload="showSim(<%= contrList.get(0).getSimID()%>);">
-        <table class="container"><tr>
-                <td>
-            
-        <table class="list">
-
-            <%
-                for (ClientContr contr : contrList) {
-            %>
-            <tr>
-                <td>
-                    <%-- При нажатии на надпись загружается нужная сим-карта. --%>
-                    <span class="jsonpage" title="Просмотреть информацию" onclick="showSim(<%= contr.getSimID()%>);">Сим-карта</span> 
-                    <br>
-                    Номер договора: <%= contr.getContrID()%>
-                    <br>
-                    Дата заключения: <%= contr.getBeginDate()%>
-                    <br>
-                    <a href="<%=request.getContextPath()%>/<%= contr.getContrDoc()%>">Скачать договор</a>
-                </td>
+        <table class="select" border="1"><tr>
+            <th class="select" width="50%">Договор</th>
+            <th class="select" width="50%">Сим-карта</th>
             </tr>
-            <%}%>
+            <%
+                for (Map.Entry<ClientContr, PhoneNumber> entry : phonesMap.entrySet()) {
+                    ClientContr contr = entry.getKey();
+                    PhoneNumber number = entry.getValue();
+                    Sim sim = number.getSim();
+                    %>
+                    <tr>
+                        <td class="info">
+                            Номер договора: <%= contr.getContrID()%><br>
+                            Дата заключения: <%= contr.getBeginDate()%><br>
+                            <a href="<%= contr.getContrDoc()%>">Скачать договор</a>
+                        </td>
+                        <td class="info">
+                            Телефон: <%= HTMLHelper.phoneToString(number.getNumber())%><br>
+                            Баланс: <%= sim.getAccount()%><br>
+                            Тариф: <%= sim.getTariff().getNameTariff()%> Вставить гиперссылку!<br>
+                        </td>
+                    </tr>
+                    <%
+                }
+            %>
         </table>
-        </td>
-        <td valign="top">
-        <div id="simlayer" >
-            <%-- Слой для печати в нём. --%>
-        </div> 
-        </td>
-        </tr></table>
     </body>
 </html>
