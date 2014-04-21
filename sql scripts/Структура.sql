@@ -1,8 +1,30 @@
-﻿CREATE table service(
+﻿CREATE  table legal_entity
+(
+  company_id     NUMBER  CONSTRAINT legal_entity_pk_company_id   PRIMARY KEY,
+  name_company VARCHAR(255),
+  address    VARCHAR(255),  
+  telephone   number(11),
+  e_mail     VARCHAR(255),  
+  details     varchar(255)--cсылка
+);
+
+create table client(
+  client_id    NUMBER  CONSTRAINT client_pk_client_id   PRIMARY KEY,
+  passport_series  number,
+  passport_number number,
+  firstname    VARCHAR(255) NOT NULL,
+  lastname     VARCHAR(255),
+  middlename   VARCHAR(255),
+  telephone_number NUMBER(11)
+);
+
+CREATE table service(
   ID_service number CONSTRAINT service_pk_service_id   PRIMARY KEY,
   ID_type number ,
   name_service   varchar(255),
-  cost    number
+  cost    number,
+  optional number(1) default 0 -- Равно единице = true, равно нулю = false
+                     -- Если true, то юзер может добавлять/удалять услугу к тарифу.
 );
 
 
@@ -12,12 +34,26 @@ Create table type_service(
   measure   varchar(255)
 );
 
+CREATE TABLE roles (
+  id_role number CONSTRAINT roles_pk_id_role PRIMARY KEY,
+  role_name varchar2(30),
+  read_only number(1) default 1 -- Равно единице = true, равно нулю = false
+);
 
+CREATE TABLE users (
+  id_user number CONSTRAINT users_pk_id_user PRIMARY KEY,
+  id_role number CONSTRAINT users_fk_id_role REFERENCES roles(id_role),
+  user_name varchar2(255) UNIQUE,
+  user_password varchar2(255),
+  client_id number unique CONSTRAINT users_fk_client_id REFERENCES client(client_id),
+  company_id number unique CONSTRAINT users_fk_company_id REFERENCES legal_entity(company_id)
+);
 
 Create table tariff_list(
   ID_tariff number CONSTRAINT tariff_list_pk_tariff_id   PRIMARY KEY,
   name_tariff varchar(255),
-  description varchar(255)
+  description varchar(255),
+  id_user number CONSTRAINT tariff_list_fk_id_user REFERENCES users(id_user) -- Юзер, создавший тариф (Если null, то тариф будет доступен для всех)
 );
 
 Create table service_in_tariff(
@@ -45,15 +81,7 @@ create table traffic(
   time       date
 );
 
-CREATE  table legal_entity
-(
-  company_id     NUMBER  CONSTRAINT legal_entity_pk_company_id   PRIMARY KEY,
-  name_company VARCHAR(255),
-  address    VARCHAR(255),  
-  telephone   number(11),
-  e_mail     VARCHAR(255),  
-  details     varchar(255)--cсылка
-);
+
 CREATE  table legal_contr
 (
   contr_id     NUMBER  CONSTRAINT legal_contr_pk_contr_id   PRIMARY KEY,
@@ -61,17 +89,6 @@ CREATE  table legal_contr
   ON DELETE CASCADE, 
   contr_doc    varchar(255), --ссылка на файл,
   begin_date         DATE NOT NULL
-);
-
-
-create table client(
-  client_id    NUMBER  CONSTRAINT client_pk_client_id   PRIMARY KEY,
-  passport_series  number,
-  passport_number number,
-  firstname    VARCHAR(255) NOT NULL,
-  lastname     VARCHAR(255),
-  middlename   VARCHAR(255),
-  telephone_number NUMBER(11)
 );
 
 create table  client_contr
@@ -94,20 +111,6 @@ create table sim_contr
   CONSTRAINT key_sim PRIMARY KEY (sim_id,contr_id )
 );
 
-CREATE TABLE roles (
-  id_role number CONSTRAINT roles_pk_id_role PRIMARY KEY,
-  role_name varchar2(30),
-  read_only number(1) -- Равно единице = true, равно нулю = false
-);
-
-CREATE TABLE users (
-  id_user number CONSTRAINT users_pk_id_user PRIMARY KEY,
-  id_role number CONSTRAINT users_fk_id_role REFERENCES roles(id_role),
-  user_name varchar2(255) UNIQUE,
-  user_password varchar2(255),
-  client_id number unique CONSTRAINT users_fk_client_id REFERENCES client(client_id),
-  company_id number unique CONSTRAINT users_fk_company_id REFERENCES legal_entity(company_id)
-);
 --------------------------------------------------------------------------------------------------------------
 alter table service
 add CONSTRAINT service_fk_type_id foreign key(ID_type) REFERENCES type_service(ID_type)
@@ -256,10 +259,10 @@ INSERT INTO type_service(name_type, measure) VALUES ('SMS', 'Сообщение'
 INSERT INTO type_service(name_type, measure) VALUES ('Интернет', 'Мегабайт');
 
 INSERT INTO service(id_type, name_service, cost) VALUES(1, 'Звонки внутри области', 0.90);
-INSERT INTO service(id_type, name_service, cost) VALUES(1, 'Звонки внутри страны', 1.90);
+INSERT INTO service(id_type, name_service, cost, optional) VALUES(1, 'Звонки внутри страны', 1.90, 1);
 INSERT INTO service(id_type, name_service, cost) VALUES(2, 'SMS-сообщения', 1.00);
 INSERT INTO service(id_type, name_service, cost) VALUES(3, 'Бесплатный интернет', 0.00);
-INSERT INTO service(id_type, name_service, cost) VALUES(3, 'Дорогой интернет', 3.00);
+INSERT INTO service(id_type, name_service, cost, optional) VALUES(3, 'Дорогой интернет', 3.00, 1);
 
 INSERT INTO service_in_tariff(id_tariff, id_service) VALUES(1, 1);
 INSERT INTO service_in_tariff(id_tariff, id_service) VALUES(1, 2);

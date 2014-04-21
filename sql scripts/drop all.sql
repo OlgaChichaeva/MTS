@@ -1,5 +1,7 @@
 drop table numbers;
 drop table traffic;
+drop table users;
+drop table roles;
 drop table client_contr;
 drop table client;
 drop table sim_contr;
@@ -10,8 +12,6 @@ drop table sim;
 drop table tariff_list;
 drop table service;
 drop table type_service;
-drop table users;
-drop table roles;
 drop sequence type_seq$type_id;
 drop sequence tariff_seq$tariff_id;
 drop sequence client_seq$client_id;
