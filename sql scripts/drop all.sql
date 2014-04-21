@@ -8,6 +8,7 @@ drop table sim_contr;
 drop table legal_contr;
 drop table legal_entity;
 drop table service_in_tariff;
+drop table service_in_sim;
 drop table sim;
 drop table tariff_list;
 drop table service;

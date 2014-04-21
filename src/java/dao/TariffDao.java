@@ -8,6 +8,7 @@ import filters.TariffFilter;
 import java.util.List;
 import objects.Service;
 import objects.Tariff;
+import objects.User;
 
 /**
  *

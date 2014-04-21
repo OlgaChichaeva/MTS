@@ -17,6 +17,7 @@ import objects.Tariff;
 import dao.TariffDao;
 import filters.TariffFilter;
 import javax.sql.DataSource;
+import objects.User;
 import pack.Abstract;
 
 
@@ -41,13 +42,7 @@ import pack.Abstract;
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery("select * from tariff_list");
             while (rs.next()) {
-                int IdTariff = rs.getInt("ID_tariff");
-                String nameTariff = rs.getString("name_tariff");
-                String description = rs.getString("description");
-                Tariff tariff= new Tariff();
-                tariff.setIdTariff(IdTariff);
-                tariff.setNameTariff(nameTariff);
-                tariff.setDescription(description);                
+                Tariff tariff= makeTariff(rs);            
                 tariffs.add(tariff);
             }
 
@@ -66,14 +61,7 @@ import pack.Abstract;
                         ps.setInt(1, idTariff);
                         ResultSet rs = ps.executeQuery("select * from tariff_list");
                         rs.next();
-                            int IdTariff = rs.getInt(" ID_tariff");
-                            String nameTariff = rs.getString("name_tariff");
-                            String description = rs.getString("description");
-                            
-                            Tariff tariff= new Tariff();
-                            tariff.setIdTariff(IdTariff);
-                            tariff.setNameTariff(nameTariff);
-                            tariff.setDescription(description);                                  
+                            Tariff tariff= makeTariff(rs);                                 
            
 
                         return  tariff;
@@ -109,7 +97,7 @@ import pack.Abstract;
     @Override
     public void addSTariffList(Tariff tariff) {
          try (Connection con = getConn()) {
-            PreparedStatement ps = con.prepareStatement("INSERT INTO tariff_list (name_tariff,description ) VALUES (?,?)");
+            PreparedStatement ps = con.prepareStatement("INSERT INTO tariff_list (name_tariff,description) VALUES (?,?)");
              ps.setString(1, tariff.getNameTariff());
             ps.setString(2,tariff.getDescription());
                     ps.executeUpdate();

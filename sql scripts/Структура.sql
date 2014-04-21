@@ -52,8 +52,7 @@ CREATE TABLE users (
 Create table tariff_list(
   ID_tariff number CONSTRAINT tariff_list_pk_tariff_id   PRIMARY KEY,
   name_tariff varchar(255),
-  description varchar(255),
-  id_user number CONSTRAINT tariff_list_fk_id_user REFERENCES users(id_user) -- Юзер, создавший тариф (Если null, то тариф будет доступен для всех)
+  description varchar(255)
 );
 
 Create table service_in_tariff(
@@ -61,7 +60,7 @@ Create table service_in_tariff(
   ON DELETE CASCADE,
   ID_service number CONSTRAINT sit_fk_service_id REFERENCES service(ID_service)
   ON DELETE CASCADE,
-  CONSTRAINT key PRIMARY KEY( ID_tariff,ID_service)
+  CONSTRAINT sit_unique_combination PRIMARY KEY( ID_tariff,ID_service)
 );
 
 create table sim
@@ -70,6 +69,14 @@ create table sim
   ID_tariff         NUMBER NOT NULL CONSTRAINT sim_fk_tariff_id REFERENCES tariff_list(ID_tariff),
   account           NUMBER 
 );        
+
+Create table service_in_sim(
+  sim_id number CONSTRAINT sis_fk_sim_id REFERENCES sim(sim_id)
+  ON DELETE CASCADE,
+  ID_service number CONSTRAINT sis_fk_service_id REFERENCES service(ID_service)
+  ON DELETE CASCADE,
+  CONSTRAINT sis_unique_combination PRIMARY KEY(sim_id,ID_service)
+);
 
 create table traffic(
   sim_id    number NOT NULL CONSTRAINT traffic_fk_sim_id REFERENCES sim(sim_id)

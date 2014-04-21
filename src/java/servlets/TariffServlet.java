@@ -5,6 +5,7 @@
 package servlets;
 
 import dao.ServiceInTariffDao;
+import dao.SimDao;
 import dao.TariffDao;
 import filters.TariffFilter;
 import java.io.IOException;
@@ -15,7 +16,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import objects.ServiceInTariff;
+import objects.Sim;
 import objects.Tariff;
+import objects.User;
 import pack.DaoMaster;
 
 /**
@@ -25,12 +28,14 @@ import pack.DaoMaster;
 @WebServlet(name = "TariffServlet", loadOnStartup = 1, urlPatterns = {
     "/SelectAllTariff/",
     "/TariffFilter/",
-    "/ShowTariff/"
+    "/ShowTariff/",
+    "/AddServiceToTariff/"
 })
 public class TariffServlet extends HttpServlet {
 
     private final TariffDao tariffDao = DaoMaster.getTariffDao();
     private final ServiceInTariffDao servInTarDao = DaoMaster.getServiceInTariffDao();
+    private final SimDao simDao = DaoMaster.getSimDao();
     
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -74,7 +79,13 @@ public class TariffServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        String userPath = request.getServletPath();
+        switch (userPath) {
+            case "/AddServiceToTariff/": {
+                addServiceToTariff(request, response);
+                break;
+            }
+        }
     }
 
     /**
@@ -126,5 +137,10 @@ public class TariffServlet extends HttpServlet {
         List<ServiceInTariff> servInTarList = servInTarDao.getIdTariff(idTariff);
         request.setAttribute("servInTarList", servInTarList);
         request.getRequestDispatcher("/tariff/showTariff.jsp").forward(request, response);
+    }
+
+    private void addServiceToTariff(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
     }
 }

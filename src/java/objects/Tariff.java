@@ -19,7 +19,6 @@ public class Tariff {
     private int idTariff;
     private String nameTariff;
     private String description;
-    int idUser;
 
     /**
      * @return the idTariff
