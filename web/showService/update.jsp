@@ -64,6 +64,7 @@
 
             %>
             <br>
+            <input type="checkbox" name="optional" value="true" <%= serviceToUpdate.isOptional()? "checked" : ""%>/>Опционально
             <br>
             <input type="submit" value="OK" />
 

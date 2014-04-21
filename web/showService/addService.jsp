@@ -50,8 +50,9 @@
 
 
             %>
-      <br>
-      <br>
+            <br>
+            <input type="checkbox" name="optional" value="true" />Опционально
+            <br>
             <input type="submit" value="OK" />
             
         </form>

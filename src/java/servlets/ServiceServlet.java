@@ -85,9 +85,11 @@ public class ServiceServlet extends HttpServlet {
         int idType = Integer.parseInt(convert(request.getParameter("ID_type")));
         String nameService = convert(request.getParameter("name_service"));
         double cost = Double.parseDouble(convert(request.getParameter("cost")));
+        boolean optional = request.getParameter("optional") != null; // Если параметр не null, значит флажок был выбран
         service.setIdType(idType);
         service.setNameService(nameService);
         service.setCost(cost);
+        service.setOptional(optional);
         serviceDao.addService(service);
         response.sendRedirect(request.getContextPath() + "/SelectAllService/");
     }
@@ -142,10 +144,12 @@ public class ServiceServlet extends HttpServlet {
         String nameService = convert(request.getParameter("name_service"));
         double cost = Double.parseDouble(convert(request.getParameter("cost")));
         int idService = Integer.parseInt(convert(request.getParameter("ID_Service")));
+        boolean optional = request.getParameter("optional") != null; // Если параметр не null, значит флажок был выбран
         service.setIdService(idService);
         service.setIdType(idType);
         service.setNameService(nameService);
         service.setCost(cost);
+        service.setOptional(optional);
         serviceDao.updateService(service);
         response.sendRedirect("/MTSweb/SelectAllService/");
     }

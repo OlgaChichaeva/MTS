@@ -76,6 +76,9 @@
                 <% if (acceptedToChange) { // Показываем кнопки только тогда, когда юзер имеет права для редактирования %>
                 <%= HTMLHelper.makeUpdateAndDelete(ROOT+"/ServiceUpdateForm/", ROOT+"/ServiceDelete/", "ID_Service", service.getIdService())%>
                 <%
+                    // Если юзер вошёл и услуга опциональная, то дать возможность подключиться.
+                    } else if (currentUser.getIdRole() != SecurityBean.NOT_LOGGED && service.isOptional()) {
+                        out.print("Подключить услугу");
                     } else {
                         out.print("<hr>");
                     }

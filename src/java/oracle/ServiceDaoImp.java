@@ -75,11 +75,12 @@ class ServiceDaoImp extends Abstract implements ServiceDao {
     @Override
     public void updateService(Service service) {
         try (Connection con = getConn()) {
-            PreparedStatement ps = con.prepareStatement("update Service set name_service=?,cost=?,ID_type = ? where Id_Service = ? ");
+            PreparedStatement ps = con.prepareStatement("update Service set name_service=?,cost=?,ID_type = ?, optional=? where Id_Service = ? ");
             ps.setString(1, service.getNameService());
             ps.setDouble(2, service.getCost());
             ps.setInt(3, service.getIdType());
-            ps.setInt(4, service.getIdService());
+            ps.setBoolean(4, service.isOptional());
+            ps.setInt(5, service.getIdService());
             ps.executeUpdate();
 
         } catch (SQLException ex) {
@@ -99,10 +100,11 @@ class ServiceDaoImp extends Abstract implements ServiceDao {
     @Override
     public void addService(Service service) {
         try (Connection con = getConn()) {
-            PreparedStatement ps = con.prepareStatement("INSERT INTO Service (name_service, cost,ID_type) VALUES (?,?,?)");
+            PreparedStatement ps = con.prepareStatement("INSERT INTO Service (name_service, cost,ID_type, optional) VALUES (?,?,?,?)");
             ps.setString(1, service.getNameService());
             ps.setDouble(2, service.getCost());
             ps.setInt(3, service.getIdType());
+            ps.setBoolean(4, service.isOptional());
             ps.executeUpdate();
 
         } catch (SQLException ex) {

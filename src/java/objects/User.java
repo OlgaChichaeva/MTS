@@ -11,7 +11,7 @@ import security.SecurityBean;
  * @author Ivan
  */
 public class User {
-    private int idUser;
+    private int idUser = -1;
     private Role role;
     private String userName;
     private String userPassword;

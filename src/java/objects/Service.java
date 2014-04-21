@@ -17,6 +17,7 @@ public class Service {
     private TypeService typeService;
     private String nameService;
     private double cost;
+    private boolean optional = false;
     
   /* Service(int idService, int idType,String nameService,int cost){
       this.idService = idService;
@@ -73,5 +74,19 @@ public class Service {
      */
     public void setTypeService(TypeService typeService) {
         this.typeService = typeService;
+    }
+
+    /**
+     * @return the optional
+     */
+    public boolean isOptional() {
+        return optional;
+    }
+
+    /**
+     * @param optional the optional to set
+     */
+    public void setOptional(boolean optional) {
+        this.optional = optional;
     }
 }

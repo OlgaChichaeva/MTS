@@ -53,6 +53,7 @@ public abstract class Abstract {
         service.setCost(rs.getDouble("cost"));
         service.setIdService(rs.getInt("ID_Service"));
         service.setNameService(rs.getString("name_service"));
+        service.setOptional(rs.getBoolean("optional"));
         service.setTypeService(typeService);
         return service;
     }
