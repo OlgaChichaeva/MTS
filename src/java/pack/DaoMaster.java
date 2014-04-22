@@ -35,6 +35,7 @@ public class DaoMaster {
     private final static PhoneNumberDAO phoneNumberDao = factory.makePhoneNamber();
     private final static SimContrDAO simContrDao = factory.makeSimContr();
     private final static UserDAO userDao = factory.makeUser();
+    private final static ServiceInSimDAO serviceInSimDao = factory.makeServiceInSim();
 
     /**
      * @return the serviceDao
@@ -125,6 +126,13 @@ public class DaoMaster {
      */
     public static UserDAO getUserDao() {
         return userDao;
+    }
+
+    /**
+     * @return the serviceInSimDao
+     */
+    public static ServiceInSimDAO getServiceInSimDao() {
+        return serviceInSimDao;
     }
     
     /**

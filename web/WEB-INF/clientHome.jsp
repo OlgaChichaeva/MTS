@@ -5,6 +5,7 @@
 --%>
 
 
+<%@page import="security.SecurityBean"%>
 <%@page import="objects.Tariff"%>
 <%@page import="objects.Sim"%>
 <%@page import="objects.PhoneNumber"%>
@@ -17,6 +18,7 @@
 <jsp:include page="<%= HTMLHelper.CHECK_ACCEPT%>" flush="true"/>
 <jsp:include page="<%= HTMLHelper.CHOOSE_HEADER%>" />
 <jsp:useBean id="currentClient" scope="session" class="objects.Client" />
+<jsp:useBean id="currentUser" scope="session" class="objects.User" />
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -61,7 +63,7 @@
                             Баланс: <%= sim.getAccount()%><br>
                             <% Tariff tariff = sim.getTariff();%>
                             Тариф: 
-                            <a class="other" href="<%= ROOT %>/ShowTariff/?ID_tariff=<%= tariff.getIdTariff()%>">
+                            <a class="other" href="<%= ROOT %>/ShowTariff/?ID_tariff=<%= tariff.getIdTariff()%>&sim_id=<%= sim.getSimId()%>">
                                 <%= tariff.getNameTariff()%>
                             </a>
                         </td>

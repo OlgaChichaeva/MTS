@@ -85,21 +85,47 @@ class SimDaoImp extends Abstract implements SimDao {
     }
 
     @Override
-    public List<Sim> getAllType() {
+    public List<Sim> getAllSim() {
         try (Connection con = getConn()) {
             PreparedStatement ps = con.prepareStatement("Select s.*, t.name_tariff, t.description from Sim s "
                     + "INNER JOIN tariff_list t"
                     + " on s.ID_tariff=t.ID_tariff");
             ResultSet rs = ps.executeQuery();
-            List<Sim> sims = new ArrayList<Sim>();
+            List<Sim> sims = new ArrayList<>();
             while (rs.next()) {
                 Tariff tariff = makeTariff(rs);
                 Sim sim = makeSim(rs, tariff);
                 sims.add(sim);
             }
+            return sims;
         } catch (SQLException ex) {
-            Logger.getLogger(SimDaoImp.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
+            return null;
         }
-        return null;
+        
+    }
+
+    @Override
+    public List<Sim> getSimListByClientID(int clientID) {
+        try (Connection con = getConn()) {
+            PreparedStatement ps = con.prepareStatement("Select s.*, t.name_tariff, t.description "
+                    + " FROM client_contr cc, Sim s"
+                    + " INNER JOIN tariff_list t"
+                    + " on s.ID_tariff=t.ID_tariff"
+                    + " WHERE s.sim_id=cc.sim_id AND cc.client_id=?");
+            ps.setInt(1, clientID);
+            ResultSet rs = ps.executeQuery();
+            List<Sim> sims = new ArrayList<>();
+            while (rs.next()) {
+                Tariff tariff = makeTariff(rs);
+                Sim sim = makeSim(rs, tariff);
+                sims.add(sim);
+            }
+            return sims;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        
     }
 }

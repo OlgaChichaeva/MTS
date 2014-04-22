@@ -105,4 +105,9 @@ public class OracleTableFactory extends TableFactory {
     public UserDAO makeUser() {
         return new OracleUserDAO(sour);
     }
+
+    @Override
+    public ServiceInSimDAO makeServiceInSim() {
+        return new ServiceInSimDaoImp(sour);
+    }
 }

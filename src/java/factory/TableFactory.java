@@ -41,4 +41,6 @@ public abstract class TableFactory {
     public abstract SimContrDAO makeSimContr();
     
     public abstract UserDAO makeUser();
+    
+    public abstract ServiceInSimDAO makeServiceInSim();
 }

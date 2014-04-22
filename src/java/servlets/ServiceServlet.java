@@ -67,7 +67,7 @@ public class ServiceServlet extends HttpServlet {
             throws ServletException, IOException {
         List<TypeService> typeServices = serviceTypeDao.getAllType();
         request.setAttribute("TypeServiceList", typeServices);
-        request.getRequestDispatcher("/showService/addService.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/showService/addService.jsp").forward(request, response);
     }
 
     /**
@@ -107,7 +107,7 @@ public class ServiceServlet extends HttpServlet {
             throws ServletException, IOException {
         int idService = Integer.parseInt(convert(request.getParameter("ID_Service")));
         serviceDao.deleteService(idService);
-        response.sendRedirect("/MTSweb/SelectAllService/");
+        response.sendRedirect(request.getContextPath() + "/SelectAllService/");
     }
 
     /**
@@ -125,7 +125,7 @@ public class ServiceServlet extends HttpServlet {
         Service serviceToUpdate = serviceDao.getService(Integer.parseInt(request.getParameter("ID_Service")));
         request.setAttribute("TypeServiceList", typeServices);
         request.setAttribute("serviceToUpdate", serviceToUpdate);
-        request.getRequestDispatcher("/showService/update.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/showService/update.jsp").forward(request, response);
     }
 
     /**
@@ -151,7 +151,7 @@ public class ServiceServlet extends HttpServlet {
         service.setCost(cost);
         service.setOptional(optional);
         serviceDao.updateService(service);
-        response.sendRedirect("/MTSweb/SelectAllService/");
+        response.sendRedirect(request.getContextPath() + "/SelectAllService/");
     }
 
     /**
@@ -189,7 +189,7 @@ public class ServiceServlet extends HttpServlet {
     private void goToSelect(List<Service> services, HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setAttribute("ServiceList", services);
-        request.getRequestDispatcher("/showService/showService.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/showService/showService.jsp").forward(request, response);
     }
 
     /**

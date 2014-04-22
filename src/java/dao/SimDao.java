@@ -12,10 +12,11 @@ import java.util.List;
  * @author Ольга
  */
 public interface SimDao {
-     public Sim getIdSim(int idSim);
+    public Sim getIdSim(int idSim);
     public void update(Sim sim);
     public void delete(int idSim);
     public void insert(Sim sim);
 
-    public List<Sim> getAllType(); 
+    public List<Sim> getAllSim();
+    public List<Sim> getSimListByClientID(int clientID); 
 }

@@ -29,7 +29,7 @@ class OracleClientContrDAO extends OracleUniversalDAO<ClientContr> implements Cl
     private static final String DOC_COL = "contr_doc";
     private static final String DATE_COL = "begin_date";
     private static final String SELECT_FOR_ALL = "SELECT con.contr_id, con.contr_doc, con.begin_date,"
-                + " cl.*, sim.*, tar.name_tariff, tar.description, tar.id_user"
+                + " cl.*, sim.*, tar.name_tariff, tar.description"
                 + " FROM " + TABLE_NAME + " con"
                 + " INNER JOIN client cl on con.client_id=cl.client_id"
                 + " INNER JOIN sim on con.sim_id=sim.sim_id"

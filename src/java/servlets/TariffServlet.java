@@ -116,7 +116,7 @@ public class TariffServlet extends HttpServlet {
     private void goToSelect(List<Tariff> tariffList, HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setAttribute("TariffList", tariffList);
-        request.getRequestDispatcher("/tariff/showTariffList.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/tariff/showTariffList.jsp").forward(request, response);
     }
 
     private void tariffFilter(HttpServletRequest request, HttpServletResponse response)
@@ -136,7 +136,7 @@ public class TariffServlet extends HttpServlet {
         int idTariff = Integer.parseInt(request.getParameter("ID_tariff"));
         List<ServiceInTariff> servInTarList = servInTarDao.getIdTariff(idTariff);
         request.setAttribute("servInTarList", servInTarList);
-        request.getRequestDispatcher("/tariff/showTariff.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/tariff/showTariff.jsp").forward(request, response);
     }
 
     private void addServiceToTariff(HttpServletRequest request, HttpServletResponse response)

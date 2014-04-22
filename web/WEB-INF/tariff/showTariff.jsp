@@ -60,7 +60,12 @@
                         </td>
                     </tr>
                     <%
+                            
                 }
+                if (request.getParameter("sim_id") != null) {
+                                out.print("asd");
+                                
+                            }
             %>
         </table>
     </body>
