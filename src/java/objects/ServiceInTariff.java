@@ -4,9 +4,6 @@
  */
 package objects;
 
-import objects.Service;
-import objects.Tariff;
-
 /**
  *
  * @author Ольга

@@ -14,6 +14,10 @@ import oracle.conditions.ConditionCreator;
 import oracle.conditions.IntegerConditionCreator;
 import objects.SimContr;
 import dao.SimContrDAO;
+import objects.LegalContr;
+import objects.LegalEntity;
+import objects.Sim;
+import objects.Tariff;
 
 /**
  *
@@ -80,7 +84,7 @@ class OracleSimContrDAO extends OracleUniversalDAO<SimContr> implements SimContr
 
     @Override
     public List<SimContr> getAllSimContrs() {
-        return getAllObjects(TABLE_NAME);
+        return getAllObjectsByCustomQuery(SELECT_FOR_ALL);
     }
 
     @Override
@@ -136,8 +140,12 @@ class OracleSimContrDAO extends OracleUniversalDAO<SimContr> implements SimContr
     @Override
     protected SimContr makeObject(ResultSet rs) throws SQLException {
         SimContr newSimContr = new SimContr();
-        newSimContr.setSimID(rs.getInt(SIM_ID_COL));
-        newSimContr.setContrID(rs.getInt(CONTR_ID_COL));
+        Tariff tariff = makeTariff(rs);
+        Sim sim = makeSim(rs, tariff);
+        LegalEntity entity = makeLegalEntity(rs);
+        LegalContr contr = makeLegalContr(rs, entity);
+        newSimContr.setSim(sim);
+        newSimContr.setLegalContr(contr);
         return newSimContr;
     }
 

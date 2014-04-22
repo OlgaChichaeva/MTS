@@ -4,9 +4,6 @@
  */
 package objects;
 
-import objects.Sim;
-import objects.LegalContr;
-
 /**
  *
  * @author Ivan
@@ -19,33 +16,61 @@ public class SimContr {
      * @return the simID
      */
     public int getSimID() {
-        return sim.getSimId();
+        return getSim().getSimId();
     }
 
     /**
      * @param simID the simID to set
      */
     public void setSimID(int simID) {
-        if (sim == null) {
-            sim = new Sim();
+        if (getSim() == null) {
+            setSim(new Sim());
         }
-        sim.setSimId(simID);
+        getSim().setSimId(simID);
     }
 
     /**
      * @return the contrID
      */
     public int getContrID() {
-        return legalContr.getContrID();
+        return getLegalContr().getContrID();
     }
 
     /**
      * @param contrID the contrID to set
      */
     public void setContrID(int contrID) {
-        if (legalContr == null) {
-            legalContr = new LegalContr();
+        if (getLegalContr() == null) {
+            setLegalContr(new LegalContr());
         }
-        legalContr.setContrID(contrID);
+        getLegalContr().setContrID(contrID);
+    }
+
+    /**
+     * @return the sim
+     */
+    public Sim getSim() {
+        return sim;
+    }
+
+    /**
+     * @param sim the sim to set
+     */
+    public void setSim(Sim sim) {
+        this.sim = sim;
+    }
+
+    /**
+     * @return the legalContr
+     */
+    public LegalContr getLegalContr() {
+        return legalContr;
+    }
+
+    /**
+     * @param legalContr the legalContr to set
+     */
+    public void setLegalContr(LegalContr legalContr) {
+        this.legalContr = legalContr;
     }
 }
