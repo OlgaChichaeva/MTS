@@ -78,7 +78,9 @@
                 <%
                     // Если юзер вошёл и услуга опциональная, то дать возможность подключиться.
                     } else if (currentUser.getIdRole() != SecurityBean.NOT_LOGGED && service.isOptional()) {
-                        out.print("Подключить услугу");
+                        %>
+                        <a class="other" href="<%= ROOT%>/ChooseSim/">Подключить услугу</a>
+                        <%
                     } else {
                         out.print("<hr>");
                     }

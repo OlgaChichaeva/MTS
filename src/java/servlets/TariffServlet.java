@@ -4,6 +4,8 @@
  */
 package servlets;
 
+import dao.ClientContrDAO;
+import dao.ServiceInSimDAO;
 import dao.ServiceInTariffDao;
 import dao.SimDao;
 import dao.TariffDao;
@@ -15,11 +17,15 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import objects.ClientContr;
+import objects.ServiceInSim;
 import objects.ServiceInTariff;
 import objects.Sim;
 import objects.Tariff;
 import objects.User;
 import pack.DaoMaster;
+import security.SecurityBean;
 
 /**
  *
@@ -28,14 +34,14 @@ import pack.DaoMaster;
 @WebServlet(name = "TariffServlet", loadOnStartup = 1, urlPatterns = {
     "/SelectAllTariff/",
     "/TariffFilter/",
-    "/ShowTariff/",
-    "/AddServiceToTariff/"
+    "/ShowTariff/"
 })
 public class TariffServlet extends HttpServlet {
 
     private final TariffDao tariffDao = DaoMaster.getTariffDao();
     private final ServiceInTariffDao servInTarDao = DaoMaster.getServiceInTariffDao();
-    private final SimDao simDao = DaoMaster.getSimDao();
+    private final ClientContrDAO clientContrDao = DaoMaster.getClientContrDao();
+    private final ServiceInSimDAO sisDao = DaoMaster.getServiceInSimDao();
     
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -80,12 +86,9 @@ public class TariffServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String userPath = request.getServletPath();
-        switch (userPath) {
-            case "/AddServiceToTariff/": {
-                addServiceToTariff(request, response);
-                break;
-            }
-        }
+        /*switch (userPath) {
+            
+        }*/
     }
 
     /**
@@ -136,11 +139,42 @@ public class TariffServlet extends HttpServlet {
         int idTariff = Integer.parseInt(request.getParameter("ID_tariff"));
         List<ServiceInTariff> servInTarList = servInTarDao.getIdTariff(idTariff);
         request.setAttribute("servInTarList", servInTarList);
-        request.getRequestDispatcher("/WEB-INF/tariff/showTariff.jsp").forward(request, response);
-    }
-
-    private void addServiceToTariff(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+        String stringSimId = request.getParameter("sim_id");
+        HttpSession session = request.getSession(true);
+        User user = (User) session.getAttribute("currentUser");
+       
+        List<ServiceInSim> sisList = null; // Список услуг, подключенных к сим-карте
         
+        // Проверяем, имеет ли юзер право смотреть услуги для этой сим-карты
+        if (stringSimId != null) {
+            boolean accept = false;
+            int simID = Integer.parseInt(stringSimId);
+            switch (user.getIdRole()) {
+                case SecurityBean.CLIENT : {
+                    // Проверяем, есть ли среди договоров клиента договор на эту сим-карту.
+                    int clientID = user.getIdClient();
+                    for (ClientContr contr : clientContrDao.getContrsByClientID(clientID)) {
+                        if (contr.getSimID()==simID) {
+                            accept = true;
+                            break;
+                        }
+                    }
+                    break;
+                }
+                case SecurityBean.LEGAL_ENTITY : {
+                    break;
+                }
+                case SecurityBean.ADMIN : {
+                    accept = true;
+                    break;
+                }
+            }
+            if (accept) {
+                sisList = sisDao.getIdSim(simID);
+            } 
+        }
+        request.setAttribute("sisList", sisList);
+        
+        request.getRequestDispatcher("/WEB-INF/tariff/showTariff.jsp").forward(request, response);
     }
 }

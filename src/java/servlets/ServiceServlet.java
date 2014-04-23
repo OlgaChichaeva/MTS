@@ -4,20 +4,29 @@
  */
 package servlets;
 
+import dao.PhoneNumberDAO;
 import objects.Service;
 import dao.ServiceDao;
+import dao.SimDao;
 import objects.TypeService;
 import dao.TypeServiceDao;
 import filters.ServiceFilter;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import objects.PhoneNumber;
+import objects.Sim;
+import objects.User;
 import pack.DaoMaster;
 import static pack.EncodingConverter.convert; // Чтобы писать меньше
+import security.SecurityBean;
 
 /**
  * Сервлет для работы с услугами.
@@ -32,12 +41,16 @@ import static pack.EncodingConverter.convert; // Чтобы писать мен�
     "/ServiceUpdate/",
     "/ServiceFilter/",
     "/ServiceAddForm/",
-    "/ServiceUpdateForm/"
+    "/ServiceUpdateForm/",
+    "/AddServiceToSim/",
+    "/ChooseSim/"
 })
 public class ServiceServlet extends HttpServlet {
 
     private final ServiceDao serviceDao = DaoMaster.getServiceDao();
     private final TypeServiceDao serviceTypeDao = DaoMaster.getTypeServiceDao();
+    private final SimDao simDao = DaoMaster.getSimDao();
+    private final PhoneNumberDAO phoneNumberDao = DaoMaster.getPhoneNumberDao();
 
     /**
      * Перенаправляет на страницу со списком всех сервисов. Сначала получает
@@ -191,6 +204,37 @@ public class ServiceServlet extends HttpServlet {
         request.setAttribute("ServiceList", services);
         request.getRequestDispatcher("/WEB-INF/showService/showService.jsp").forward(request, response);
     }
+    
+    /**
+     * Загружает сим-карты и телефоны, загружает их в Map и перенаправляет
+     * на страницу выбора сим-карт.
+     * @param request берём из методов doGet/doPost
+     * @param response берём из методов doGet/doPost
+     * @throws ServletException
+     * @throws IOException 
+     */
+    private void chooseSim(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession(true);
+        User user = (User) session.getAttribute("currentUser");
+        if (user == null) {
+            // что-нибудь сделать
+            return;
+        }
+        List<Sim> simList = null;
+        Map<Sim, PhoneNumber> simAndNumbers = null;
+        if (user.getIdRole() == SecurityBean.CLIENT) {
+            simList = simDao.getSimListByClientID(user.getIdClient());
+        }
+        if (simList != null) {
+            simAndNumbers = new HashMap<>();
+            for (Sim sim : simList) {
+                simAndNumbers.put(sim, phoneNumberDao.getNumberBySimID(sim.getSimId()));
+            }
+        }
+        request.setAttribute("simAndNumbers", simAndNumbers); // Кладём список всех контрактов в запрос.
+        request.getRequestDispatcher("/WEB-INF/showService/chooseSim.jsp").forward(request, response);
+    }
 
     /**
      * Handles the HTTP
@@ -218,6 +262,10 @@ public class ServiceServlet extends HttpServlet {
             }
             case "/ServiceAddForm/": {
                 serviceAddForm(request, response);
+                break;
+            }
+            case "/ChooseSim/": {
+                chooseSim(request, response);
                 break;
             }
             default: {
@@ -257,6 +305,7 @@ public class ServiceServlet extends HttpServlet {
             }
             case "/ServiceUpdateForm/": {
                 serviceUpdateForm(request, response);
+                break;
             }
         }
 
