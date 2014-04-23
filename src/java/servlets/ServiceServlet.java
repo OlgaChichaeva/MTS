@@ -7,6 +7,7 @@ package servlets;
 import dao.PhoneNumberDAO;
 import objects.Service;
 import dao.ServiceDao;
+import dao.ServiceInSimDAO;
 import dao.SimDao;
 import objects.TypeService;
 import dao.TypeServiceDao;
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import objects.PhoneNumber;
+import objects.ServiceInSim;
 import objects.Sim;
 import objects.User;
 import pack.DaoMaster;
@@ -51,6 +53,7 @@ public class ServiceServlet extends HttpServlet {
     private final TypeServiceDao serviceTypeDao = DaoMaster.getTypeServiceDao();
     private final SimDao simDao = DaoMaster.getSimDao();
     private final PhoneNumberDAO phoneNumberDao = DaoMaster.getPhoneNumberDao();
+    private final ServiceInSimDAO serviceInSimDao = DaoMaster.getServiceInSimDao();
 
     /**
      * Перенаправляет на страницу со списком всех сервисов. Сначала получает
@@ -235,6 +238,22 @@ public class ServiceServlet extends HttpServlet {
         request.setAttribute("simAndNumbers", simAndNumbers); // Кладём список всех контрактов в запрос.
         request.getRequestDispatcher("/WEB-INF/showService/chooseSim.jsp").forward(request, response);
     }
+    
+    /**
+     * Добавляет выбранную услугу к сим-карте.
+     * @param request берём из методов doGet/doPost
+     * @param response берём из методов doGet/doPost 
+     */
+    private void addServiceToSim(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        int idSim = Integer.parseInt(request.getParameter("sim_id"));
+        int idService = Integer.parseInt(request.getParameter("ID_service"));
+        ServiceInSim sis = new ServiceInSim();
+        sis.setIdService(idService);
+        sis.setIdSim(idSim);
+        serviceInSimDao.insert(sis);
+        response.sendRedirect(request.getContextPath() + "/SelectAllService/");
+    }
 
     /**
      * Handles the HTTP
@@ -305,6 +324,10 @@ public class ServiceServlet extends HttpServlet {
             }
             case "/ServiceUpdateForm/": {
                 serviceUpdateForm(request, response);
+                break;
+            }
+            case "/AddServiceToSim/" : {
+                addServiceToSim(request, response);
                 break;
             }
         }
