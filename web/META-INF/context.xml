@@ -1,2 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context antiJARLocking="true" path="/MTSweb"/>
+<Context antiJARLocking="true" path="/MTSweb">
+    <Resource name="jdbc/MTSDataSource"
+              auth="Container"
+              type="javax.sql.DataSource"
+              maxActive="100"
+              maxIdle="30"
+              maxWait="10000"
+              username="MTS"
+              password="MTS" 
+              driverClassName="oracle.jdbc.driver.OracleDriver"
+              url="jdbc:oracle:thin:@localhost:1521:XE"
+              poolPreparedStatements="true"
+              maxOpenPreparedStatements="100"
+    />
+</Context>

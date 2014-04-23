@@ -6,9 +6,10 @@ package oracle;
 
 import factory.*;
 import dao.*;
-import java.sql.SQLException;
 import java.util.Locale;
-import oracle.jdbc.pool.OracleDataSource;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 
 /**
  *
@@ -16,28 +17,17 @@ import oracle.jdbc.pool.OracleDataSource;
  */
 public class OracleTableFactory extends TableFactory {
 
-    OracleDataSource sour;
-    static String user = "MTS";
-    static String pass = "MTS";
-    static String url = "jdbc:oracle:thin:@localhost";
+    DataSource sour;
 
     public OracleTableFactory() {
-
-        super();
-         Locale.setDefault(Locale.ENGLISH);
+        Locale.setDefault(Locale.ENGLISH);
         try {
-
-            sour = new OracleDataSource();
-            sour.setURL(url);
-
-            sour.setUser(user);
-
-            sour.setPassword(pass);
-
-        } catch (SQLException ex) {
-            //Logger.getLogger(OracleTableFactory.class.getName()).log(Level.SEVERE, null, ex);
+            InitialContext initContext;
+            initContext = new InitialContext();
+            sour = (DataSource) initContext.lookup("java:comp/env/jdbc/MTSDataSource");
+        } catch (NamingException ex) {
+            ex.printStackTrace();
         }
-
     }
 
     @Override
