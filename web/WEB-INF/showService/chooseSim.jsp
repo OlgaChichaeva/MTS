@@ -45,6 +45,7 @@
                         <td class="withform">
                             <form name="Choose Sim Form" action="<%= ROOT %>/AddServiceToSim/" method="POST">
                                 <input name="sim_id" type="hidden" value="<%= sim.getSimId()%>" />
+                                <input name="ID_service" type="hidden" value="<%= request.getParameter("ID_service")%>" />
                                 <input type="submit" value="Выбрать" />
                             </form>
                         </td>
