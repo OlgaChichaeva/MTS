@@ -64,7 +64,7 @@
             %>
             <%
                 List<ServiceInSim> sisList = (List<ServiceInSim>) request.getAttribute("sisList");
-                if (sisList != null && sisList.isEmpty()) {
+                if (sisList != null && !sisList.isEmpty()) {
                     %>
                     <tr><td class="select" colspan="2" align="center"><b>Услуги, подключенные к данной сим-карте:</b></td></tr>
                     <%
