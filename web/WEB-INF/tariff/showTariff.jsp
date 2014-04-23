@@ -4,6 +4,7 @@
     Author     : Ivan
 --%>
 
+<%@page import="objects.ServiceInSim"%>
 <%@page import="security.SecurityBean"%>
 <%@page import="objects.Service"%>
 <%@page import="objects.ServiceInTariff"%>
@@ -47,9 +48,8 @@
                              (<%= service.getCost()%> / <%= service.getTypeService().getMeasure()%>)
                         </td>
                         <td>
-                            <%-- Если юзер - админ или услуга опциональна, то разрешаем её отключить
-                            (при условии, что юзер вошёл в систему) --%>
-                            <%if (acceptedToChange || (service.isOptional() && currentUser.getIdRole() != SecurityBean.NOT_LOGGED)) {
+                            <%-- Если юзер - админ то разрешаем её отключить --%>
+                            <%if (acceptedToChange) {
                                 %>
                                 Отключить услугу
                                 <%
@@ -59,13 +59,29 @@
                             %>
                         </td>
                     </tr>
-                    <%
-                            
+                    <%                  
                 }
-                if (request.getParameter("sim_id") != null) {
-                                out.print("asd");
-                                
-                            }
+            %>
+            <%
+                List<ServiceInSim> sisList = (List<ServiceInSim>) request.getAttribute("sisList");
+                if (sisList != null && sisList.isEmpty()) {
+                    %>
+                    <tr><td class="select" colspan="2" align="center"><b>Услуги, подключенные к данной сим-карте:</b></td></tr>
+                    <%
+                    for (ServiceInSim sis : sisList) {
+                        Service service = sis.getService();
+                        %>
+                    <tr>
+                        <td class="select">
+                            <%= service.getNameService()%>
+                             (<%= service.getCost()%> / <%= service.getTypeService().getMeasure()%>)
+                        </td>
+                        <td>
+                             Отключить услугу
+                        </td>
+                    </tr><%
+                    }
+                }
             %>
         </table>
     </body>
