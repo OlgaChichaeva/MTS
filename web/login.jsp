@@ -16,6 +16,8 @@
         <%= HTMLHelper.includeCSS(ROOT) %>
     </head>
     <body align="center">
+        <jsp:useBean id="message" class="pack.MessageBean" scope="request" />
+        <font color="red"><jsp:getProperty name="message" property="message" /></font>
         <form name="Login Form" action="<%= ROOT%><%= LOGIN%>" method="POST">
             Введите логин:<br>
             <input class="other" type="text" name="username" value="" autofocus=""/><br>

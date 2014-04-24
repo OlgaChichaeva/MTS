@@ -20,6 +20,7 @@ import pack.DaoMaster;
 import security.SecurityBean;
 import static pack.PathConstants.*;
 import static pack.LogManager.LOG;
+import pack.MessageBean;
 
 /**
  *
@@ -116,8 +117,11 @@ public class LoginServlet extends HttpServlet {
                     LOG.debug("Юзер не найден.");
                 }
             }
+            MessageBean message = new MessageBean();
+            message.setMessage("Неправильные имя пользователя и/или пароль");
+            request.setAttribute("message", message);
+            request.getRequestDispatcher("/login.jsp").forward(request, response);
             return;
-            // выкинуть на страницу с ошибкой
         }
         HttpSession session = request.getSession(true);
         session.setAttribute("currentUser", user);
