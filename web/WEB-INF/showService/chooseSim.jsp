@@ -20,9 +20,6 @@
     </head>
     <body>
         <jsp:useBean id="currentUser" scope="session" class="objects.User" />
-        <jsp:include page="<%= HTMLHelper.ACCEPT_CLIENT%>" flush="true"/>
-        <jsp:include page="<%= HTMLHelper.ACCEPT_LEGAL%>" flush="true"/>
-        <jsp:include page="<%= HTMLHelper.CHECK_ACCEPT %>" flush="true"/>
         <jsp:include page="<%= HTMLHelper.CHOOSE_HEADER%>" flush="true"/>
         <h1>Выберите сим-карту:</h1>
         <%

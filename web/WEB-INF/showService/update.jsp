@@ -19,7 +19,6 @@
         <%= HTMLHelper.includeCSS(ROOT) %>
     </head>
     <body>
-        <jsp:include page="<%= HTMLHelper.CHECK_ACCEPT %>" flush="true"/>
         <jsp:include page="<%= HTMLHelper.CHOOSE_HEADER %>" flush="true"/>
         <h1>Service</h1>
         <%

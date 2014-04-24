@@ -16,12 +16,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import objects.Client;
 import objects.ClientContr;
 import objects.PhoneNumber;
 import objects.User;
 import pack.DaoMaster;
+import pack.HTMLHelper;
 import static pack.PathConstants.*;
 import static pack.LogManager.LOG;
 import security.SecurityBean;
@@ -95,35 +94,16 @@ public class ClientServlet extends HttpServlet {
      */
     private void clientHome(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession(true);
-        User user = (User) session.getAttribute("currentUser");
-        if (user == null) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Юзера нет в сессии.");
-            }
-            SecurityBean.denyAccess();
-            return;
-        } else if (user.getClient() == null) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Юзер не является клиентом.");
-            }
-            SecurityBean.denyAccess();
-            return;
-        }
+        User user = HTMLHelper.getUser(request);
+        SecurityBean.checkAccept(user, SecurityBean.CLIENT);
         Map<ClientContr, PhoneNumber> phonesMap = new HashMap<>();
         try {
             List<ClientContr> contrs = clientContrDao.getContrsByClientID(user.getIdClient());
             if (!contrs.isEmpty()) {
-
-                // Можем взять клиента из первого элмента, так как проверили, что список не пустой.
-                Client client = contrs.get(0).getClient();
-                session.setAttribute("currentClient", client);
-
                 // Соотносим телефонные номера с договорами.
                 for (ClientContr contr : contrs) {
                     phonesMap.put(contr, phoneNumberDao.getNumberBySimID(contr.getSimID()));
                 }
-
             } else {
                 if (LOG.isDebugEnabled()) {
                     LOG.debug("У клиента №" + user.getIdClient() + " нет договоров.");

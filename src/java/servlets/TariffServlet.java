@@ -24,6 +24,7 @@ import objects.ServiceInTariff;
 import objects.Tariff;
 import objects.User;
 import pack.DaoMaster;
+import pack.HTMLHelper;
 import security.SecurityBean;
 import static pack.PathConstants.*;
 import static pack.LogManager.LOG;
@@ -133,6 +134,7 @@ public class TariffServlet extends HttpServlet {
     }
 
     private void removeServiceFromTariff(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        SecurityBean.checkAccept(HTMLHelper.getUser(request));
         int idService = Integer.parseInt(request.getParameter("ID_service"));
         int idTariff = Integer.parseInt(request.getParameter("ID_tariff"));
         ServiceInTariff sInT = new ServiceInTariff();
@@ -195,28 +197,14 @@ public class TariffServlet extends HttpServlet {
             throw ex;
         }
         String stringSimId = request.getParameter("sim_id");
-        HttpSession session = request.getSession(true);
-        User user = (User) session.getAttribute("currentUser");
+        User user = HTMLHelper.getUser(request);
 
         List<ServiceInSim> sisList = null; // Список услуг, подключенных к сим-карте
 
         // Проверяем, имеет ли юзер право смотреть услуги для этой сим-карты
         if (stringSimId != null && user != null) {
-            boolean accept = false;
             int simID = Integer.parseInt(stringSimId);
-            switch (user.getIdRole()) {
-                case SecurityBean.CLIENT: {
-                    accept = isClientAcceptedForSim(user.getIdClient(), simID);
-                    break;
-                }
-                case SecurityBean.LEGAL_ENTITY: {
-                    break;
-                }
-                case SecurityBean.ADMIN: {
-                    accept = true;
-                    break;
-                }
-            }
+            boolean accept = isClientAcceptedForSim(user, simID);
             if (accept) { // Если есть право смотреть сим-карту, то загружаем
                 try {     // подключенные к сим-карте услуги.
                     sisList = sisDao.getIdSim(simID);
@@ -236,22 +224,34 @@ public class TariffServlet extends HttpServlet {
     }
 
     /**
-     * Проверяет, имеет ли право клиент смотреть информацию о сим-карте.
-     * @param clientId ИД клиента
+     * Проверяет, имеет ли право пользоватеь смотреть информацию о сим-карте.
+     *
+     * @param user пользоватеь
      * @param simId ИД сим-карты
      * @return true, если есть право просмотра, иначе false
      */
-    private boolean isClientAcceptedForSim(int clientId, int simId) {
-        try {
-            // Проверяем, есть ли среди договоров клиента договор на эту сим-карту.
-            for (ClientContr contr : clientContrDao.getContrsByClientID(clientId)) {
-                if (contr.getSimID() == simId) {
-                    return true;
+    private boolean isClientAcceptedForSim(User user, int simId) {
+        switch (user.getIdRole()) {
+            case SecurityBean.CLIENT: {
+                try {
+                    // Проверяем, есть ли среди договоров клиента договор на эту сим-карту.
+                    for (ClientContr contr : clientContrDao.getContrsByClientID(user.getIdClient())) {
+                        if (contr.getSimID() == simId) {
+                            return true;
+                        }
+                    }
+                    return false;
+                } catch (DaoException ex) {
+                    LOG.error("Ошибка чтения договоров клиента.", ex);
+                    throw ex;
                 }
             }
-        } catch (DaoException ex) {
-            LOG.error("Ошибка чтения договоров клиента.", ex);
-            throw ex;
+            case SecurityBean.LEGAL_ENTITY: {
+                break; // Временно
+            }
+            case SecurityBean.ADMIN: {
+                return true;
+            }
         }
         return false;
     }
