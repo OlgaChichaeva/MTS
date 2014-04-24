@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import objects.Client;
 import objects.User;
 import pack.DaoMaster;
 import security.SecurityBean;
@@ -127,7 +128,8 @@ public class LoginServlet extends HttpServlet {
             }
             case SecurityBean.CLIENT: {
                 try {
-                    clientDao.getClientByID(user.getIdClient());
+                    Client client = clientDao.getClientByID(user.getIdClient());
+                    session.setAttribute("currentClient", client);
                 } catch (DaoException ex) {
                     LOG.error("Ошибка загрузки клиента.", ex);
                     throw ex;
