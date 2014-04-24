@@ -4,6 +4,7 @@
  */
 package oracle;
 
+import dao.DaoException;
 import objects.Service;
 import objects.Sim;
 import objects.Tariff;
@@ -16,8 +17,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.sql.DataSource;
 import pack.Abstract;
 
@@ -52,9 +51,8 @@ class TrafficDaoImp extends Abstract implements TrafficDao {
             }
             return traffics;
         } catch (SQLException ex) {
-            Logger.getLogger(TrafficDaoImp.class.getName()).log(Level.SEVERE, null, ex);
+            throw new DaoException(ex);
         }
-        return null;
     }
 
     @Override
@@ -69,7 +67,7 @@ class TrafficDaoImp extends Abstract implements TrafficDao {
             ResultSet rs = ps.executeQuery();
             ps.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(TrafficDaoImp.class.getName()).log(Level.SEVERE, null, ex);
+            throw new DaoException(ex);
         }
     }
 
@@ -82,7 +80,7 @@ class TrafficDaoImp extends Abstract implements TrafficDao {
             ResultSet rs = ps.executeQuery();
             ps.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(TrafficDaoImp.class.getName()).log(Level.SEVERE, null, ex);
+            throw new DaoException(ex);
         }
     }
 
@@ -97,7 +95,7 @@ class TrafficDaoImp extends Abstract implements TrafficDao {
             ps.setDate(5, new java.sql.Date(traffic.getDate().getTime()));
             ResultSet rs = ps.executeQuery();
         } catch (SQLException ex) {
-            Logger.getLogger(TrafficDaoImp.class.getName()).log(Level.SEVERE, null, ex);
+            throw new DaoException(ex);
         }
     }
 
@@ -122,9 +120,8 @@ class TrafficDaoImp extends Abstract implements TrafficDao {
             }
             return traffics;
         } catch (SQLException ex) {
-            Logger.getLogger(TrafficDaoImp.class.getName()).log(Level.SEVERE, null, ex);
+            throw new DaoException(ex);
         }
-        return null;
     }
 
     private Traffic makeTraffic(ResultSet rs) throws SQLException {

@@ -12,10 +12,10 @@ import objects.PhoneNumber;
  * @author Ivan
  */
 public interface PhoneNumberDAO {
-    boolean addNumber(long number);
-    boolean deleteNumber(long number);
-    boolean updateNumber(PhoneNumber number);
-    List<PhoneNumber> getAllNumbers();
-    PhoneNumber getNumber(long number);
-    PhoneNumber getNumberBySimID(int simID);
+    boolean addNumber(long number) throws DaoException;
+    boolean deleteNumber(long number) throws DaoException;
+    boolean updateNumber(PhoneNumber number) throws DaoException;
+    List<PhoneNumber> getAllNumbers() throws DaoException;
+    PhoneNumber getNumber(long number) throws DaoException;
+    PhoneNumber getNumberBySimID(int simID) throws DaoException;
 }

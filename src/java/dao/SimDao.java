@@ -12,11 +12,11 @@ import java.util.List;
  * @author Ольга
  */
 public interface SimDao {
-    public Sim getIdSim(int idSim);
-    public void update(Sim sim);
-    public void delete(int idSim);
-    public void insert(Sim sim);
+    public Sim getIdSim(int idSim) throws DaoException;
+    public void update(Sim sim) throws DaoException;
+    public void delete(int idSim) throws DaoException;
+    public void insert(Sim sim) throws DaoException;
 
-    public List<Sim> getAllSim();
-    public List<Sim> getSimListByClientID(int clientID); 
+    public List<Sim> getAllSim() throws DaoException;
+    public List<Sim> getSimListByClientID(int clientID) throws DaoException; 
 }

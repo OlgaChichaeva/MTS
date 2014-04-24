@@ -14,15 +14,15 @@ import objects.Tariff;
  */
 public interface TariffDao {
     
-    public List<Tariff> getAllTariffList();
+    public List<Tariff> getAllTariffList() throws DaoException;
 
-    public Tariff getTariffList(int idTariff);
+    public Tariff getTariffList(int idTariff) throws DaoException;
 
-    public void updateTariffList(Tariff tariff);
+    public void updateTariffList(Tariff tariff) throws DaoException;
 
-    public void deleteTariffList(int idTariff);
+    public void deleteTariffList(int idTariff) throws DaoException;
     
-    public void addSTariffList(Tariff tariff);
+    public void addSTariffList(Tariff tariff) throws DaoException;
     
-    List<Tariff> getFilteredTariffList(TariffFilter tariff);
+    List<Tariff> getFilteredTariffList(TariffFilter tariff) throws DaoException;
 }

@@ -4,6 +4,7 @@
  */
 package oracle;
 
+import dao.DaoException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -78,7 +79,7 @@ class OracleSimContrDAO extends OracleUniversalDAO<SimContr> implements SimContr
             ps.executeUpdate();
             return true;
         } catch (SQLException ex) {
-            return false;
+            throw new DaoException(ex);
         }
     }
 

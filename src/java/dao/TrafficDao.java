@@ -12,9 +12,9 @@ import java.util.List;
  * @author Ольга
  */
 public interface TrafficDao {
-     public List<Traffic> getBySimId(int simID);
-    public void update(Traffic traffic);
-    public void delete(int idService);
-    public void insert(Traffic traffic);
-    public List<Traffic> getByIDService(int idService);
+     public List<Traffic> getBySimId(int simID) throws DaoException;
+    public void update(Traffic traffic) throws DaoException;
+    public void delete(int idService) throws DaoException;
+    public void insert(Traffic traffic) throws DaoException;
+    public List<Traffic> getByIDService(int idService) throws DaoException;
 }

@@ -4,12 +4,12 @@
  */
 package oracle;
 
+import dao.DaoException;
 import objects.Service;
 import objects.ServiceInTariff;
 import dao.ServiceInTariffDao;
 import objects.Tariff;
 import objects.TypeService;
-import factory.TableFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,8 +17,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.sql.DataSource;
 import pack.Abstract;
 
@@ -57,9 +55,8 @@ class ServiceInTariffDaoImp extends Abstract implements ServiceInTariffDao {
             }
             return list;
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            throw new DaoException(ex);
         }
-        return null;
     }
 
     @Override
@@ -71,7 +68,7 @@ class ServiceInTariffDaoImp extends Abstract implements ServiceInTariffDao {
             ps.setInt(2, sInT.getIdService());
             ps.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(ServiceInTariffDaoImp.class.getName()).log(Level.SEVERE, null, ex);
+            throw new DaoException(ex);
         }
     }
 
@@ -82,7 +79,7 @@ class ServiceInTariffDaoImp extends Abstract implements ServiceInTariffDao {
             ps.setInt(1, idTariff);
             ps.executeUpdate();
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            throw new DaoException(ex);
         }
     }
 
@@ -95,7 +92,7 @@ class ServiceInTariffDaoImp extends Abstract implements ServiceInTariffDao {
             ps.setInt(2, sInT.getIdService());
             ps.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(ServiceInTariffDaoImp.class.getName()).log(Level.SEVERE, null, ex);
+            throw new DaoException(ex);
         }
     }
 
@@ -122,9 +119,8 @@ class ServiceInTariffDaoImp extends Abstract implements ServiceInTariffDao {
             }
             return services;
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            throw new DaoException(ex);
         }
-        return null;
     }
 
     @Override
@@ -136,7 +132,7 @@ class ServiceInTariffDaoImp extends Abstract implements ServiceInTariffDao {
             ps.setInt(2, sInT.getIdService());
             ps.executeUpdate();
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            throw new DaoException(ex);
         }
     }
 }

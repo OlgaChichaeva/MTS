@@ -5,6 +5,10 @@
             30
         </session-timeout>
     </session-config>
+    <error-page>
+        <exception-type>dao.DaoException</exception-type>
+        <location>/WEB-INF/daoExceptionPage.jsp</location>
+    </error-page>
     <resource-ref>
         <res-ref-name>jdbc/MTSDataSource</res-ref-name>
         <res-type>javax.sql.DataSource</res-type>

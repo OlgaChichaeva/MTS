@@ -13,11 +13,11 @@ import filters.LegalContrFilter;
  * @author Ivan
  */
 public interface LegalContrDAO {
-    boolean addLegalContr(LegalContr contr);
-    boolean deleteLegalContr(int contrID);
-    boolean updateLegalContr(LegalContr contr);
-    List<LegalContr> getAllContracts();
-    LegalContr getContrByID(int contrID);
-    List<LegalContr> getContractsByCompanyID(int companyID);
-    List<LegalContr> getFilteredContracts(LegalContrFilter legalContr);
+    boolean addLegalContr(LegalContr contr) throws DaoException;
+    boolean deleteLegalContr(int contrID) throws DaoException;
+    boolean updateLegalContr(LegalContr contr) throws DaoException;
+    List<LegalContr> getAllContracts() throws DaoException;
+    LegalContr getContrByID(int contrID) throws DaoException;
+    List<LegalContr> getContractsByCompanyID(int companyID) throws DaoException;
+    List<LegalContr> getFilteredContracts(LegalContrFilter legalContr) throws DaoException;
 }

@@ -4,6 +4,7 @@
  */
 package oracle;
 
+import dao.DaoException;
 import objects.Sim;
 import dao.SimDao;
 import objects.Tariff;
@@ -13,8 +14,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.sql.DataSource;
 import pack.Abstract;
 
@@ -41,10 +40,8 @@ class SimDaoImp extends Abstract implements SimDao {
             Sim sim = makeSim(rs, tariff);
             return sim;
         } catch (SQLException ex) {
-            Logger.getLogger(SimDaoImp.class.getName()).log(Level.SEVERE, null, ex);
+            throw new DaoException(ex);
         }
-        return null;
-
     }
 
     @Override
@@ -53,10 +50,9 @@ class SimDaoImp extends Abstract implements SimDao {
             PreparedStatement ps = con.prepareStatement("Update  Sim set(ID_tariff,account) =?,? where sim_id  = ?");
             ps.setInt(1, sim.getTariffId());
             ps.setDouble(2, sim.getAccount());
-            ResultSet rs = ps.executeQuery();
             ps.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(SimDaoImp.class.getName()).log(Level.SEVERE, null, ex);
+            throw new DaoException(ex);
         }
     }
 
@@ -65,10 +61,9 @@ class SimDaoImp extends Abstract implements SimDao {
         try (Connection con = getConn()) {
             PreparedStatement ps = con.prepareStatement("Delete ID_tariff where sim_id = ? ");
             ps.setInt(1, idSim);
-            ResultSet rs = ps.executeQuery();
             ps.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(SimDaoImp.class.getName()).log(Level.SEVERE, null, ex);
+            throw new DaoException(ex);
         }
     }
 
@@ -80,7 +75,7 @@ class SimDaoImp extends Abstract implements SimDao {
             ps.setDouble(2, sim.getAccount());
             ResultSet rs = ps.executeQuery();
         } catch (SQLException ex) {
-            Logger.getLogger(SimDaoImp.class.getName()).log(Level.SEVERE, null, ex);
+            throw new DaoException(ex);
         }
     }
 
@@ -99,8 +94,7 @@ class SimDaoImp extends Abstract implements SimDao {
             }
             return sims;
         } catch (SQLException ex) {
-            ex.printStackTrace();
-            return null;
+            throw new DaoException(ex);
         }
         
     }
@@ -123,8 +117,7 @@ class SimDaoImp extends Abstract implements SimDao {
             }
             return sims;
         } catch (SQLException ex) {
-            ex.printStackTrace();
-            return null;
+            throw new DaoException(ex);
         }
         
     }

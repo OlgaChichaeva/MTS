@@ -4,6 +4,7 @@
  */
 package oracle;
 
+import dao.DaoException;
 import dao.ServiceInSimDAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -71,7 +72,7 @@ class ServiceInSimDaoImp extends OracleUniversalDAO<ServiceInSim> implements Ser
             ps.executeUpdate();
             return true;
         } catch (SQLException ex) {
-            return false;
+            throw new DaoException(ex);
         }
     }
     

@@ -12,12 +12,12 @@ import objects.SimContr;
  * @author Ivan
  */
 public interface SimContrDAO {
-    boolean addSimContr(SimContr simContr);
-    boolean deleteSimContrBySimID(int simID);
-    boolean deleteSimContrsByContrID(int contrID);
-    boolean deleteSimContr(SimContr simContr);
-    List<SimContr> getAllSimContrs();
-    List<SimContr> getSimContrsBySimID(int simID);
-    List<SimContr> getSimContrsByContrID(int contrID);
-    SimContr getConcreteSimContr(SimContr simContr);
+    boolean addSimContr(SimContr simContr) throws DaoException;
+    boolean deleteSimContrBySimID(int simID) throws DaoException;
+    boolean deleteSimContrsByContrID(int contrID) throws DaoException;
+    boolean deleteSimContr(SimContr simContr) throws DaoException;
+    List<SimContr> getAllSimContrs() throws DaoException;
+    List<SimContr> getSimContrsBySimID(int simID) throws DaoException;
+    List<SimContr> getSimContrsByContrID(int contrID) throws DaoException;
+    SimContr getConcreteSimContr(SimContr simContr) throws DaoException;
 }

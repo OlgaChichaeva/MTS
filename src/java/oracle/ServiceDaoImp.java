@@ -4,6 +4,7 @@
  */
 package oracle;
 
+import dao.DaoException;
 import dao.ServiceDao;
 import objects.Service;
 import filters.ServiceFilter;
@@ -45,11 +46,8 @@ class ServiceDaoImp extends Abstract implements ServiceDao {
             return services;
 
         } catch (SQLException ex) {
-            //System.out.println("DAO Exception");
-            ex.printStackTrace();
+            throw new DaoException(ex);
         }
-        return null;
-
     }
 
     @Override
@@ -67,9 +65,8 @@ class ServiceDaoImp extends Abstract implements ServiceDao {
 
             return service;
         } catch (SQLException ex) {
+            throw new DaoException(ex);
         }
-        return null;
-
     }
 
     @Override
@@ -84,7 +81,8 @@ class ServiceDaoImp extends Abstract implements ServiceDao {
             ps.executeUpdate();
 
         } catch (SQLException ex) {
-    }
+            throw new DaoException(ex);
+        }
     }
 
     @Override
@@ -94,6 +92,7 @@ class ServiceDaoImp extends Abstract implements ServiceDao {
             ps.setInt(1, idService);
             ps.executeUpdate();
         } catch (SQLException ex) {
+            throw new DaoException(ex);
         }
     }
 
@@ -108,6 +107,7 @@ class ServiceDaoImp extends Abstract implements ServiceDao {
             ps.executeUpdate();
 
         } catch (SQLException ex) {
+            throw new DaoException(ex);
         }
 
     }
@@ -135,9 +135,7 @@ class ServiceDaoImp extends Abstract implements ServiceDao {
             return services;
 
         } catch (SQLException ex) {
-            //System.out.println("DAO Exception");
-            ex.printStackTrace();
+            throw new DaoException(ex);
         }
-        return null;
     }
 }

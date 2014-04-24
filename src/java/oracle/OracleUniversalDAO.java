@@ -4,6 +4,7 @@
  */
 package oracle;
 
+import dao.DaoException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -37,7 +38,7 @@ abstract class OracleUniversalDAO<T> extends Abstract {
             ps.executeUpdate();
             return true;
         } catch (SQLException ex) {
-            return false;
+            throw new DaoException(ex);
         }
     }
 
@@ -52,7 +53,7 @@ abstract class OracleUniversalDAO<T> extends Abstract {
             ps.executeUpdate();
             return true;
         } catch (SQLException ex) {
-            return false;
+            throw new DaoException(ex);
         }
     }
 
@@ -67,7 +68,7 @@ abstract class OracleUniversalDAO<T> extends Abstract {
             ps.executeUpdate();
             return true;
         } catch (SQLException ex) {
-            return false;
+            throw new DaoException(ex);
         }
 
     }
@@ -89,7 +90,7 @@ abstract class OracleUniversalDAO<T> extends Abstract {
             List<T> entityList = selectObjects(ps);
             return entityList;
         } catch (SQLException ex) {
-            return null;
+            throw new DaoException(ex);
         }
     }
 
@@ -105,8 +106,7 @@ abstract class OracleUniversalDAO<T> extends Abstract {
             List<T> objectList = selectObjects(ps);
             return objectList;
         } catch (SQLException ex) {
-            ex.printStackTrace();
-            return null;
+            throw new DaoException(ex);
         }
     }
 

@@ -4,6 +4,7 @@
  */
 package oracle;
 
+import dao.DaoException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,13 +12,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import objects.Tariff;
 import dao.TariffDao;
 import filters.TariffFilter;
 import javax.sql.DataSource;
-import objects.User;
 import pack.Abstract;
 
 
@@ -49,8 +47,7 @@ import pack.Abstract;
             return tariffs;
 
         } catch (SQLException ex) {
-            ex.printStackTrace();
-             return null;
+            throw new DaoException(ex);
         }
     }
 
@@ -66,9 +63,8 @@ import pack.Abstract;
 
                         return  tariff;
         } catch (SQLException ex) {
-            Logger.getLogger(TariffDaoImp.class.getName()).log(Level.SEVERE, null, ex);
+            throw new DaoException(ex);
         }
-        return null;
     }
 
     @Override
@@ -81,6 +77,7 @@ import pack.Abstract;
             ps.executeUpdate();
 
         } catch (SQLException ex) {
+            throw new DaoException(ex);
         }
     }
 
@@ -91,6 +88,7 @@ import pack.Abstract;
             ps.setInt(1, idTariff);
             ps.executeUpdate();
         } catch (SQLException ex) {
+            throw new DaoException(ex);
         }
     }
 
@@ -103,6 +101,7 @@ import pack.Abstract;
                     ps.executeUpdate();
             
         } catch (SQLException ex) {
+            throw new DaoException(ex);
         }
 
     }   
@@ -126,10 +125,8 @@ import pack.Abstract;
             return tariffList;
 
         } catch (SQLException ex) {
-            //System.out.println("DAO Exception");
-            ex.printStackTrace();
+            throw new DaoException(ex);
         }
-        return null;
     }
 }
 

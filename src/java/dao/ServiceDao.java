@@ -5,7 +5,6 @@
 package dao;
 
 import objects.Service;
-import objects.Service;
 import filters.ServiceFilter;
 import java.util.List;
 
@@ -15,15 +14,15 @@ import java.util.List;
  */
 public interface ServiceDao {
 
-    public List<Service> getAllServices();
+    public List<Service> getAllServices() throws DaoException;
 
-    public Service getService(int idService);
+    public Service getService(int idService) throws DaoException;
 
-    public void updateService(Service service);
+    public void updateService(Service service) throws DaoException;
 
-    public void deleteService(int idService);
+    public void deleteService(int idService) throws DaoException;
     
-    public void addService(Service service);
+    public void addService(Service service) throws DaoException;
     
-    List<Service> getFilteredServices(ServiceFilter service);
+    List<Service> getFilteredServices(ServiceFilter service) throws DaoException;
 }

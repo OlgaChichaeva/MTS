@@ -12,9 +12,9 @@ import objects.ServiceInSim;
  * @author Ivan
  */
 public interface ServiceInSimDAO {
-    public List<ServiceInSim> getIdSim(int idSim);
-    boolean deleteBySimID(int simID);
-    boolean deleteConcreteServiceInSim(ServiceInSim sInS);
-    public boolean insert(ServiceInSim sInS);
-    public List<ServiceInSim> getAll();
+    public List<ServiceInSim> getIdSim(int idSim) throws DaoException;
+    boolean deleteBySimID(int simID) throws DaoException;
+    boolean deleteConcreteServiceInSim(ServiceInSim sInS) throws DaoException;
+    public boolean insert(ServiceInSim sInS) throws DaoException;
+    public List<ServiceInSim> getAll() throws DaoException;
 }

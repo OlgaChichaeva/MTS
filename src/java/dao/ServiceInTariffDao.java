@@ -12,10 +12,10 @@ import java.util.List;
  * @author Ольга
  */
 public interface ServiceInTariffDao {
-    public List<ServiceInTariff> getIdTariff(int idTariff);
-    public void update(ServiceInTariff sInT);
-    public void delete(int idTariff);
-    public void deleteConcreteServiceInTariff(ServiceInTariff sInT);
-    public void insert(ServiceInTariff sInT);
-    public List<ServiceInTariff> getAllType();
+    public List<ServiceInTariff> getIdTariff(int idTariff) throws DaoException;
+    public void update(ServiceInTariff sInT) throws DaoException;
+    public void delete(int idTariff) throws DaoException;
+    public void deleteConcreteServiceInTariff(ServiceInTariff sInT) throws DaoException;
+    public void insert(ServiceInTariff sInT) throws DaoException;
+    public List<ServiceInTariff> getAllType() throws DaoException;
 }

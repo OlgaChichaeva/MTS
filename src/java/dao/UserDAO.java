@@ -12,9 +12,9 @@ import objects.User;
  * @author Ivan
  */
 public interface UserDAO {
-    boolean addUser(User user);
-    boolean deleteUser(int userID);
-    boolean updateUser(User user);
-    List<User> getAllUsers();
-    User getUserByUserName(String userName);
+    boolean addUser(User user) throws DaoException;
+    boolean deleteUser(int userID) throws DaoException;
+    boolean updateUser(User user) throws DaoException;
+    List<User> getAllUsers() throws DaoException;
+    User getUserByUserName(String userName) throws DaoException;
 }
