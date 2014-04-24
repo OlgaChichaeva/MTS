@@ -82,7 +82,7 @@ class ServiceInTariffDaoImp extends Abstract implements ServiceInTariffDao {
             ps.setInt(1, idTariff);
             ps.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(ServiceInTariffDaoImp.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
     }
 
@@ -122,8 +122,21 @@ class ServiceInTariffDaoImp extends Abstract implements ServiceInTariffDao {
             }
             return services;
         } catch (SQLException ex) {
-            Logger.getLogger(ServiceInTariffDaoImp.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public void deleteConcreteServiceInTariff(ServiceInTariff sInT) {
+        try (Connection con = getConn()) {
+            PreparedStatement ps = con.prepareStatement("delete from  service_in_tariff "
+                    + "where ID_tariff = ? AND ID_service = ?");
+            ps.setInt(1, sInT.getIdTariff());
+            ps.setInt(2, sInT.getIdService());
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
 }

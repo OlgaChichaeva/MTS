@@ -15,6 +15,7 @@ public interface ServiceInTariffDao {
     public List<ServiceInTariff> getIdTariff(int idTariff);
     public void update(ServiceInTariff sInT);
     public void delete(int idTariff);
+    public void deleteConcreteServiceInTariff(ServiceInTariff sInT);
     public void insert(ServiceInTariff sInT);
     public List<ServiceInTariff> getAllType();
 }
