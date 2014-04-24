@@ -5,6 +5,7 @@
 package servlets;
 
 import dao.ClientContrDAO;
+import dao.DaoException;
 import dao.ServiceInSimDAO;
 import dao.ServiceInTariffDao;
 import dao.TariffDao;
@@ -25,6 +26,7 @@ import objects.User;
 import pack.DaoMaster;
 import security.SecurityBean;
 import static pack.PathConstants.*;
+import static pack.LogManager.LOG;
 
 /**
  *
@@ -42,7 +44,7 @@ public class TariffServlet extends HttpServlet {
     private final ServiceInTariffDao servInTarDao = DaoMaster.getServiceInTariffDao();
     private final ClientContrDAO clientContrDao = DaoMaster.getClientContrDao();
     private final ServiceInSimDAO sisDao = DaoMaster.getServiceInSimDao();
-    
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP
@@ -103,13 +105,18 @@ public class TariffServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-    
+
     private void selectAllTariff(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<Tariff> tariffList = tariffDao.getAllTariffList();
-        goToSelect(tariffList, request, response);
+        try {
+            List<Tariff> tariffList = tariffDao.getAllTariffList();
+            goToSelect(tariffList, request, response);
+        } catch (DaoException ex) {
+            LOG.error("Ошибка загрузки тарифов.", ex);
+            throw ex;
+        }
     }
-    
+
     /**
      * Перенаправляет на страницу показа списка тарифов.
      *
@@ -125,24 +132,29 @@ public class TariffServlet extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/tariff/showTariffList.jsp").forward(request, response);
     }
 
-    
     private void removeServiceFromTariff(HttpServletRequest request, HttpServletResponse response) throws IOException {
         int idService = Integer.parseInt(request.getParameter("ID_service"));
         int idTariff = Integer.parseInt(request.getParameter("ID_tariff"));
         ServiceInTariff sInT = new ServiceInTariff();
         sInT.setIdService(idService);
         sInT.setIdTariff(idTariff);
-        servInTarDao.deleteConcreteServiceInTariff(sInT);
+        try {
+            servInTarDao.deleteConcreteServiceInTariff(sInT);
+        } catch (DaoException ex) {
+            LOG.error("Ошибка отключения сервиса от тарифа.", ex);
+            throw ex;
+        }
         response.sendRedirect(request.getContextPath() + SHOW_TARIFF + "?ID_tariff=" + idTariff);
     }
-    
+
     /**
-     * Ищет тарифы согласно критерию фильтра и перенаправляет на страинцу
-     * вывода тарифов.
+     * Ищет тарифы согласно критерию фильтра и перенаправляет на страинцу вывода
+     * тарифов.
+     *
      * @param request
      * @param response
      * @throws ServletException
-     * @throws IOException 
+     * @throws IOException
      */
     private void tariffFilter(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -152,61 +164,95 @@ public class TariffServlet extends HttpServlet {
         filter.setNameTariff(nameTariff);
         filter.setDescription(description);
 
-        List<Tariff> tariffList = tariffDao.getFilteredTariffList(filter);
-        goToSelect(tariffList, request, response);
+        try {
+            List<Tariff> tariffList = tariffDao.getFilteredTariffList(filter);
+            goToSelect(tariffList, request, response);
+        } catch (DaoException ex) {
+            LOG.error("Ошибка загрузки отфильтрованных тарифов.", ex);
+            throw ex;
+        }
     }
 
     /**
-     * Загружает данные о тарифе и направляет на страницу с тарифом.
-     * Если просматривается тариф для конкретной сим-карты и юзер
-     * имеет право просмотреть эту сим-карту, то также загружаются
-     * услуги, подключенные к сим-карте.
+     * Загружает данные о тарифе и направляет на страницу с тарифом. Если
+     * просматривается тариф для конкретной сим-карты и юзер имеет право
+     * просмотреть эту сим-карту, то также загружаются услуги, подключенные к
+     * сим-карте.
+     *
      * @param request
      * @param response
      * @throws ServletException
-     * @throws IOException 
+     * @throws IOException
      */
-    private void showTariff(HttpServletRequest request, HttpServletResponse response) 
+    private void showTariff(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int idTariff = Integer.parseInt(request.getParameter("ID_tariff"));
-        List<ServiceInTariff> servInTarList = servInTarDao.getIdTariff(idTariff);
-        request.setAttribute("servInTarList", servInTarList);
+        try {
+            List<ServiceInTariff> servInTarList = servInTarDao.getIdTariff(idTariff);
+            request.setAttribute("servInTarList", servInTarList);
+        } catch (DaoException ex) {
+            LOG.error("Ошибка загрузки тарифа.", ex);
+            throw ex;
+        }
         String stringSimId = request.getParameter("sim_id");
         HttpSession session = request.getSession(true);
         User user = (User) session.getAttribute("currentUser");
-       
+
         List<ServiceInSim> sisList = null; // Список услуг, подключенных к сим-карте
-        
+
         // Проверяем, имеет ли юзер право смотреть услуги для этой сим-карты
         if (stringSimId != null && user != null) {
             boolean accept = false;
             int simID = Integer.parseInt(stringSimId);
             switch (user.getIdRole()) {
-                case SecurityBean.CLIENT : {
-                    // Проверяем, есть ли среди договоров клиента договор на эту сим-карту.
-                    int clientID = user.getIdClient();
-                    for (ClientContr contr : clientContrDao.getContrsByClientID(clientID)) {
-                        if (contr.getSimID()==simID) {
-                            accept = true;
-                            break;
-                        }
-                    }
+                case SecurityBean.CLIENT: {
+                    accept = isClientAcceptedForSim(user.getIdClient(), simID);
                     break;
                 }
-                case SecurityBean.LEGAL_ENTITY : {
+                case SecurityBean.LEGAL_ENTITY: {
                     break;
                 }
-                case SecurityBean.ADMIN : {
+                case SecurityBean.ADMIN: {
                     accept = true;
                     break;
                 }
             }
-            if (accept) {
-                sisList = sisDao.getIdSim(simID);
-            } 
+            if (accept) { // Если есть право смотреть сим-карту, то загружаем
+                try {     // подключенные к сим-карте услуги.
+                    sisList = sisDao.getIdSim(simID);
+                } catch (DaoException ex) {
+                    LOG.error("Ошибка загрузки сим-карты.", ex);
+                    throw ex;
+                }
+            }
+        } else if (user == null) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Юзер отсутствует в сессии.");
+            }
         }
         request.setAttribute("sisList", sisList);
-        
+
         request.getRequestDispatcher("/WEB-INF/tariff/showTariff.jsp").forward(request, response);
+    }
+
+    /**
+     * Проверяет, имеет ли право клиент смотреть информацию о сим-карте.
+     * @param clientId ИД клиента
+     * @param simId ИД сим-карты
+     * @return true, если есть право просмотра, иначе false
+     */
+    private boolean isClientAcceptedForSim(int clientId, int simId) {
+        try {
+            // Проверяем, есть ли среди договоров клиента договор на эту сим-карту.
+            for (ClientContr contr : clientContrDao.getContrsByClientID(clientId)) {
+                if (contr.getSimID() == simId) {
+                    return true;
+                }
+            }
+        } catch (DaoException ex) {
+            LOG.error("Ошибка чтения договоров клиента.", ex);
+            throw ex;
+        }
+        return false;
     }
 }

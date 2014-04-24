@@ -4,6 +4,7 @@
  */
 package servlets;
 
+import dao.DaoException;
 import dao.UserDAO;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -16,6 +17,7 @@ import objects.User;
 import pack.DaoMaster;
 import security.SecurityBean;
 import static pack.PathConstants.*;
+import static pack.LogManager.LOG;
 
 /**
  *
@@ -28,6 +30,7 @@ import static pack.PathConstants.*;
 public class LoginServlet extends HttpServlet {
 
     private UserDAO userDao = DaoMaster.getUserDao();
+
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -96,9 +99,20 @@ public class LoginServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        User user = userDao.getUserByUserName(username);
+        User user;
+        try {
+            user = userDao.getUserByUserName(username);
+        } catch (DaoException ex) {
+            LOG.error("Ошибка заагрузки пользователя.", ex);
+            throw ex;
+        }
         if (user == null || !user.getUserPassword().equals(password)) {
-            System.out.println("wrong!");
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Имя пользователя или пароль неверны.");
+                if (user == null) {
+                    LOG.debug("Юзер не найден.");
+                }
+            }
             return;
             // выкинуть на страницу с ошибкой
         }
@@ -117,6 +131,9 @@ public class LoginServlet extends HttpServlet {
                 // юр. лицо
                 break;
             }
+        }
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Юзер неизвестной категории.");
         }
         response.sendRedirect(request.getContextPath());
     }

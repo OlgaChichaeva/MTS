@@ -10,6 +10,7 @@ import java.util.Locale;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+import static pack.LogManager.LOG;
 
 /**
  *
@@ -26,7 +27,7 @@ public class OracleTableFactory extends TableFactory {
             initContext = new InitialContext();
             sour = (DataSource) initContext.lookup("java:comp/env/jdbc/MTSDataSource");
         } catch (NamingException ex) {
-            ex.printStackTrace();
+            LOG.error("Ошибка чтения ресурса базы данных.", ex);
         }
     }
 

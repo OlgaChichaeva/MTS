@@ -9,13 +9,13 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <% String ROOT = request.getContextPath();%>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
     </head>
     <body>
-        <%
-            PrintWriter pw = response.getWriter();
-            exception.printStackTrace(pw);
-        %>
+        <h1>Произошла ошибка базы данных.</h1>
+        Подробнее в логах.
+        <a class="other" href="<%= ROOT%>">На главную</a>
     </body>
 </html>

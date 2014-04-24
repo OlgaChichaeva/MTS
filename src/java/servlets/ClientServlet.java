@@ -5,6 +5,7 @@
 package servlets;
 
 import dao.ClientContrDAO;
+import dao.DaoException;
 import dao.PhoneNumberDAO;
 import java.io.IOException;
 import java.util.HashMap;
@@ -22,14 +23,14 @@ import objects.PhoneNumber;
 import objects.User;
 import pack.DaoMaster;
 import static pack.PathConstants.*;
+import static pack.LogManager.LOG;
 
 /**
  *
  * @author Ivan
  */
 @WebServlet(name = "ClientServlet", loadOnStartup = 1, urlPatterns = {
-    CLIENT_HOME,
-})
+    CLIENT_HOME,})
 public class ClientServlet extends HttpServlet {
 
     private final ClientContrDAO clientContrDao = DaoMaster.getClientContrDao();
@@ -96,22 +97,34 @@ public class ClientServlet extends HttpServlet {
         HttpSession session = request.getSession(true);
         User user = (User) session.getAttribute("currentUser");
         if (user == null) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Юзера нет в сессии.");
+            }
             // что-нибудь сделать
             return;
         }
-        List<ClientContr> contrs = clientContrDao.getContrsByClientID(user.getIdClient());
-        if (contrs.isEmpty()) {
-            // что-нибудь сделать
-            return;
-        }
-        // Можем взять клиента из первого элмента, так как проверили, что список не пустой.
-        Client client = contrs.get(0).getClient();
-        session.setAttribute("currentClient", client);
-        
-        // Соотносим телефонные номера с договорами.
         Map<ClientContr, PhoneNumber> phonesMap = new HashMap<>();
-        for (ClientContr contr: contrs) {
-            phonesMap.put(contr, phoneNumberDao.getNumberBySimID(contr.getSimID()));
+        try {
+            List<ClientContr> contrs = clientContrDao.getContrsByClientID(user.getIdClient());
+            if (!contrs.isEmpty()) {
+
+                // Можем взять клиента из первого элмента, так как проверили, что список не пустой.
+                Client client = contrs.get(0).getClient();
+                session.setAttribute("currentClient", client);
+
+                // Соотносим телефонные номера с договорами.
+                for (ClientContr contr : contrs) {
+                    phonesMap.put(contr, phoneNumberDao.getNumberBySimID(contr.getSimID()));
+                }
+
+            } else {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("У клиента №" + user.getIdClient() + " нет договоров.");
+                }
+            }
+        } catch (DaoException ex) {
+            LOG.error("Ошибка загрузки списка договров клиента.", ex);
+            throw ex;
         }
         request.setAttribute("phonesMap", phonesMap); // Кладём список всех контрактов в запрос.
         request.getRequestDispatcher("/WEB-INF/clientHome.jsp").forward(request, response);

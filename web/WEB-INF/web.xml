@@ -7,7 +7,11 @@
     </session-config>
     <error-page>
         <exception-type>dao.DaoException</exception-type>
-        <location>/WEB-INF/daoExceptionPage.jsp</location>
+        <location>/WEB-INF/errors/daoExceptionPage.jsp</location>
+    </error-page>
+    <error-page>
+        <exception-type>java.lang.Exception</exception-type>
+        <location>/WEB-INF/errors/allErrors.jsp</location>
     </error-page>
     <resource-ref>
         <res-ref-name>jdbc/MTSDataSource</res-ref-name>
