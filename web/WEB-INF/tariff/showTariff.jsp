@@ -47,7 +47,7 @@
                             <%= service.getNameService()%>
                              (<%= service.getCost()%> / <%= service.getTypeService().getMeasure()%>)
                         </td>
-                        <td>
+                        <td class="withform">
                             <%-- Если юзер - админ то разрешаем её отключить --%>
                             <%if (acceptedToChange) {
                                 %>
@@ -76,8 +76,12 @@
                             <%= service.getNameService()%>
                              (<%= service.getCost()%> / <%= service.getTypeService().getMeasure()%>)
                         </td>
-                        <td>
-                             Отключить услугу
+                        <td class="withform">
+                            <form name="Remove Service Form" method="POST" action="<%= ROOT%>/RemoveServiceFromSim/">
+                                <input type="hidden" name="sim_id" value="<%= sis.getIdSim()%>" />
+                                <input type="hidden" name="ID_service" value="<%= sis.getIdService()%>" />
+                                <input type="submit" value="Отключить услугу" />
+                            </form>
                         </td>
                     </tr><%
                     }

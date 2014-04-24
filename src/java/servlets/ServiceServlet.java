@@ -45,7 +45,8 @@ import security.SecurityBean;
     "/ServiceAddForm/",
     "/ServiceUpdateForm/",
     "/AddServiceToSim/",
-    "/ChooseSim/"
+    "/ChooseSim/",
+    "/RemoveServiceFromSim/"
 })
 public class ServiceServlet extends HttpServlet {
 
@@ -207,14 +208,15 @@ public class ServiceServlet extends HttpServlet {
         request.setAttribute("ServiceList", services);
         request.getRequestDispatcher("/WEB-INF/showService/showService.jsp").forward(request, response);
     }
-    
+
     /**
-     * Загружает сим-карты и телефоны, загружает их в Map и перенаправляет
-     * на страницу выбора сим-карт.
+     * Загружает сим-карты и телефоны, загружает их в Map и перенаправляет на
+     * страницу выбора сим-карт.
+     *
      * @param request берём из методов doGet/doPost
      * @param response берём из методов doGet/doPost
      * @throws ServletException
-     * @throws IOException 
+     * @throws IOException
      */
     private void chooseSim(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -238,11 +240,12 @@ public class ServiceServlet extends HttpServlet {
         request.setAttribute("simAndNumbers", simAndNumbers); // Кладём список всех контрактов в запрос.
         request.getRequestDispatcher("/WEB-INF/showService/chooseSim.jsp").forward(request, response);
     }
-    
+
     /**
      * Добавляет выбранную услугу к сим-карте.
+     *
      * @param request берём из методов doGet/doPost
-     * @param response берём из методов doGet/doPost 
+     * @param response берём из методов doGet/doPost
      */
     private void addServiceToSim(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -252,6 +255,21 @@ public class ServiceServlet extends HttpServlet {
         sis.setIdService(idService);
         sis.setIdSim(idSim);
         serviceInSimDao.insert(sis);
+        response.sendRedirect(request.getContextPath() + "/SelectAllService/");
+    }
+
+    /**
+     * Отключает услугу от сим-карты.
+     * @param request
+     * @param response
+     */
+    private void removeServiceFromSim(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        int idSim = Integer.parseInt(request.getParameter("sim_id"));
+        int idService = Integer.parseInt(request.getParameter("ID_service"));
+        ServiceInSim sis = new ServiceInSim();
+        sis.setIdService(idService);
+        sis.setIdSim(idSim);
+        serviceInSimDao.deleteConcreteServiceInSim(sis);
         response.sendRedirect(request.getContextPath() + "/SelectAllService/");
     }
 
@@ -326,8 +344,12 @@ public class ServiceServlet extends HttpServlet {
                 serviceUpdateForm(request, response);
                 break;
             }
-            case "/AddServiceToSim/" : {
+            case "/AddServiceToSim/": {
                 addServiceToSim(request, response);
+                break;
+            }
+            case "/RemoveServiceFromSim/": {
+                removeServiceFromSim(request, response);
                 break;
             }
         }

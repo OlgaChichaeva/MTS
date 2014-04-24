@@ -62,7 +62,7 @@ class ServiceInSimDaoImp extends OracleUniversalDAO<ServiceInSim> implements Ser
     }
 
     @Override
-    public boolean deleteSimContr(ServiceInSim sInS) {
+    public boolean deleteConcreteServiceInSim(ServiceInSim sInS) {
         try ( Connection con = getConn()) {
             PreparedStatement ps =
                 con.prepareStatement("DELETE FROM service_in_sim WHERE sim_id = ? AND ID_service = ?");

@@ -14,7 +14,7 @@ import objects.ServiceInSim;
 public interface ServiceInSimDAO {
     public List<ServiceInSim> getIdSim(int idSim);
     boolean deleteBySimID(int simID);
-    boolean deleteSimContr(ServiceInSim sInS);
+    boolean deleteConcreteServiceInSim(ServiceInSim sInS);
     public boolean insert(ServiceInSim sInS);
     public List<ServiceInSim> getAll();
 }
