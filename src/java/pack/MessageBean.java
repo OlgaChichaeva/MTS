@@ -16,7 +16,7 @@ public class MessageBean {
      * @return the message
      */
     public String getMessage() {
-        return message;
+        return (message == null ? "" : message);
     }
 
     /**
