@@ -9,6 +9,10 @@
         <exception-type>dao.DaoException</exception-type>
         <location>/WEB-INF/errors/daoExceptionPage.jsp</location>
     </error-page>
+        <error-page>
+        <exception-type>security.SecurityException</exception-type>
+        <location>/WEB-INF/errors/securityExceptionPage.jsp</location>
+    </error-page>
     <error-page>
         <exception-type>java.lang.Exception</exception-type>
         <location>/WEB-INF/errors/allErrors.jsp</location>

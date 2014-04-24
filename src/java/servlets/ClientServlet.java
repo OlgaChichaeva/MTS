@@ -24,6 +24,7 @@ import objects.User;
 import pack.DaoMaster;
 import static pack.PathConstants.*;
 import static pack.LogManager.LOG;
+import security.SecurityBean;
 
 /**
  *
@@ -100,7 +101,13 @@ public class ClientServlet extends HttpServlet {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Юзера нет в сессии.");
             }
-            // что-нибудь сделать
+            SecurityBean.denyAccess();
+            return;
+        } else if (user.getClient() == null) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Юзер не является клиентом.");
+            }
+            SecurityBean.denyAccess();
             return;
         }
         Map<ClientContr, PhoneNumber> phonesMap = new HashMap<>();

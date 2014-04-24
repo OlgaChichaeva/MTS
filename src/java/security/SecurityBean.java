@@ -46,6 +46,10 @@ public class SecurityBean {
         acceptedRoles.add(ADMIN);
     }
     
+    public static void denyAccess() {
+        throw new SecurityException();
+    }
+    
     /**
      * Добавить роль в список допустимых. Название метода не addRole, чтобы
      * допустить использование jsp:setProperty.
