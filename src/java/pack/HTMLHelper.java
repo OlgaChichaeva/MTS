@@ -4,6 +4,9 @@
  */
 package pack;
 
+import javax.servlet.http.HttpServletRequest;
+import objects.User;
+
 /**
  * Класс для помощи в составлении HTML-страниц.
  * Берёт на себя рутинную работу. Всё, что придётся
@@ -38,26 +41,6 @@ public class HTMLHelper {
     public static final String CSS = "/css/style.css";
     
     /**
-     * Путь к папке со страницами, разграничивающими доступ.
-     */
-    public static final String SECURITY = "/WEB-INF/security";
-    
-    /**
-     * Путь к странице, дающей клиенту доступ.
-     */
-    public static final String ACCEPT_CLIENT = SECURITY + "/acceptClient.jsp";
-    
-    /**
-     * Путь к странице, дающей юр. лицу доступ.
-     */
-    public static final String ACCEPT_LEGAL = SECURITY + "/acceptLegalEntity.jsp";
-    
-    /**
-     * Путь к странице, дающей юр. лицу доступ.
-     */
-    public static final String CHECK_ACCEPT = SECURITY + "/checkAccept.jsp";
-    
-    /**
      * Путь к заголовочной странице, используемой по умолчанию.
      */
     public static final String DEFAULT_HEADER = HEADERS + "/defaultHeader.jsp";
@@ -82,6 +65,14 @@ public class HTMLHelper {
      */
     public static final String CHOOSE_HEADER = HEADERS + "/chooseHeader.jsp";
     
+    /**
+     * Получает пользователя из сессии, к которой относится запрос
+     * @param request запрос
+     * @return пользователь (может быть null, если в сессии нет юзера)
+     */
+    public static User getUser(HttpServletRequest request) {
+        return (User) request.getSession(true).getAttribute("currentUser");
+    }
     /**
      * Получаем кнопки Update и Delete
      * @param updatePath путь для update
