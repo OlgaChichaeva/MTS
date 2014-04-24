@@ -4,6 +4,7 @@
  */
 package servlets;
 
+import dao.ClientDAO;
 import dao.DaoException;
 import dao.UserDAO;
 import java.io.IOException;
@@ -30,7 +31,7 @@ import static pack.LogManager.LOG;
 public class LoginServlet extends HttpServlet {
 
     private UserDAO userDao = DaoMaster.getUserDao();
-
+    private ClientDAO clientDao = DaoMaster.getClientDao();
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -86,13 +87,14 @@ public class LoginServlet extends HttpServlet {
     }// </editor-fold>
 
     /**
-     * Попытка авторизации пользователя. В случае успеха перенаправляет
-     * на домашнюю страницу (специфична для типа пользователя).
-     * Что делать в случае неудачи - нужно определиться.
+     * Попытка авторизации пользователя. В случае успеха перенаправляет на
+     * домашнюю страницу (специфична для типа пользователя). Что делать в случае
+     * неудачи - нужно определиться.
+     *
      * @param request берём из методов doGet/doPost
      * @param response берём из методов doGet/doPost
      * @throws ServletException
-     * @throws IOException 
+     * @throws IOException
      */
     private void login(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -124,6 +126,12 @@ public class LoginServlet extends HttpServlet {
                 break;
             }
             case SecurityBean.CLIENT: {
+                try {
+                    clientDao.getClientByID(user.getIdClient());
+                } catch (DaoException ex) {
+                    LOG.error("Ошибка загрузки клиента.", ex);
+                    throw ex;
+                }
                 response.sendRedirect(request.getContextPath() + CLIENT_HOME);
                 return;
             }
@@ -131,19 +139,23 @@ public class LoginServlet extends HttpServlet {
                 // юр. лицо
                 break;
             }
-        }
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Юзер неизвестной категории.");
+            default: {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Юзер неизвестной категории.");
+                }
+                break;
+            }
         }
         response.sendRedirect(request.getContextPath());
     }
 
     /**
      * Выход пользователя и перенаправление на корневой каталог сайта.
+     *
      * @param request берём из методов doGet/doPost
      * @param response берём из методов doGet/doPost
      * @throws ServletException
-     * @throws IOException 
+     * @throws IOException
      */
     private void logout(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
