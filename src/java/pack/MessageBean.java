@@ -1,0 +1,28 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package pack;
+
+/**
+ * JavaBean для передачи сообщений между страницами.
+ * @author Ivan
+ */
+public class MessageBean {
+    
+    private String message = null;
+
+    /**
+     * @return the message
+     */
+    public String getMessage() {
+        return message;
+    }
+
+    /**
+     * @param message the message to set
+     */
+    public void setMessage(String message) {
+        this.message = message;
+    }
+}
