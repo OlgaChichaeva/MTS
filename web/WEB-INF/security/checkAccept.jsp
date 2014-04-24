@@ -17,8 +17,9 @@
 <jsp:useBean id="currentUser" scope="session" class="objects.User" />
 <%
     if ( !security.isUserAccepted(currentUser)) {
-        out.print("You shall no pass! ");
-        out.print("<a href=\"" + request.getContextPath()+ "\">На главную</a>");
+        %>
+            <jsp:include page="/WEB-INF/errors/securityExceptionPage.jsp" flush="true" />
+        <%
         out.close();
         return;
     }

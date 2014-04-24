@@ -3,7 +3,9 @@
     Created on : 24.04.2014, 17:22:36
     Author     : Ivan
 --%>
-
+<%--
+    Сюда попадаем, если не обработано DaoException.
+--%>
 <%@page import="java.io.PrintWriter"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>

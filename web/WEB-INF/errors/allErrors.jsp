@@ -3,7 +3,12 @@
     Created on : 24.04.2014, 21:36:28
     Author     : Ivan
 --%>
-
+<%--
+    На эту страницу происходит перенаправление,
+    если исключение не отловлено и другие страницы
+    типа errorPage его не обрабатывают. Здесь же 
+    исключение заносится в лог.
+--%>
 <%@page contentType="text/html" pageEncoding="UTF-8" isErrorPage="true"%>
 <%@page import="static pack.LogManager.LOG" %>
 <!DOCTYPE html>

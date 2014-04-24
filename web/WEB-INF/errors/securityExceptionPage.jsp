@@ -3,7 +3,9 @@
     Created on : 24.04.2014, 21:51:41
     Author     : Ivan
 --%>
-
+<%--
+    Сюда попадаем, если не обработано SecurityException.
+--%>
 <%@page contentType="text/html" pageEncoding="UTF-8" isErrorPage="true"%>
 <%@page import="static pack.LogManager.LOG" %>
 <!DOCTYPE html>
