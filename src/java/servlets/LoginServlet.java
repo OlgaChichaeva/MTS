@@ -6,7 +6,6 @@ package servlets;
 
 import dao.UserDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,35 +14,20 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import objects.User;
 import pack.DaoMaster;
-import pack.HTMLHelper;
 import security.SecurityBean;
+import static pack.PathConstants.*;
 
 /**
  *
  * @author Ivan
  */
 @WebServlet(name = "LoginServlet", loadOnStartup = 1, urlPatterns = {
-    "/Login/",
-    "/Logout/"
+    LOGIN,
+    LOGOUT
 })
 public class LoginServlet extends HttpServlet {
 
     private UserDAO userDao = DaoMaster.getUserDao();
-
-    /**
-     * Processes requests for both HTTP
-     * <code>GET</code> and
-     * <code>POST</code> methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -60,7 +44,7 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         String userPath = request.getServletPath();
         switch (userPath) {
-            case "/Logout/": {
+            case LOGOUT: {
                 logout(request, response);
                 break;
             }
@@ -81,7 +65,7 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         String userPath = request.getServletPath();
         switch (userPath) {
-            case "/Login/": {
+            case LOGIN: {
                 login(request, response);
                 break;
             }
@@ -126,7 +110,7 @@ public class LoginServlet extends HttpServlet {
                 break;
             }
             case SecurityBean.CLIENT: {
-                response.sendRedirect(request.getContextPath() + "/clientHome/");
+                response.sendRedirect(request.getContextPath() + CLIENT_HOME);
                 return;
             }
             case SecurityBean.LEGAL_ENTITY: {

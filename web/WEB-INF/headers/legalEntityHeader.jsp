@@ -7,6 +7,7 @@
 <%@page import="pack.HTMLHelper"%>
 <%@page import="objects.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="static pack.PathConstants.*"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -23,12 +24,12 @@
                 </td>
                 <td width="70%">
                     <a class="headerlink" href="<%= ROOT%>/">Home</a>
-                    <a class="headerlink" href="<%= ROOT%>/SelectAllService/">Service</a>
+                    <a class="headerlink" href="<%= ROOT%><%= SELECT_ALL_SERVICE%>">Service</a>
                 </td>
                 <td>
                     <p align="right">
                         Здравствуйте, <%= currentUser.getUserName()%>
-                        <a class="other" href="<%= request.getContextPath()%>/Logout/">Выйти</a>
+                        <a class="other" href="<%= ROOT%><%= LOGOUT%>">Выйти</a>
                     </p>
                 </td>
             </tr>

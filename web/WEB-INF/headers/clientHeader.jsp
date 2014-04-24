@@ -6,6 +6,7 @@
 
 <%@page import="pack.HTMLHelper"%>
 <%@page import="objects.User"%>
+<%@page import="static pack.PathConstants.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -22,14 +23,14 @@
                     <img src="<%= ROOT%>/pics/boring.jpg" alt=":("/>
                 </td>
                 <td width="70%">
-                    <a class="headerlink" href="<%= ROOT%>/clientHome/">Home</a>
-                    <a class="headerlink" href="<%= ROOT%>/SelectAllService/">Услуги</a>                 
-                    <a class="headerlink" href="<%= ROOT%>/SelectAllTariff/">Тарифы</a>  
+                    <a class="headerlink" href="<%= ROOT%><%=CLIENT_HOME%>">Home</a>
+                    <a class="headerlink" href="<%= ROOT%><%=SELECT_ALL_SERVICE%>">Услуги</a>                 
+                    <a class="headerlink" href="<%= ROOT%><%=SELECT_ALL_TARIFF%>">Тарифы</a>  
                 </td>
                 <td>
                     <p align="right">
                         <%= currentClient.getLastname() + " " + currentClient.getFirstname() + " " + currentClient.getMiddlename()%>
-                        <a class="other" href="<%= request.getContextPath()%>/Logout/">Выйти</a>
+                        <a class="other" href="<%= ROOT%><%=LOGOUT%>">Выйти</a>
                     </p>
                 </td>
             </tr>

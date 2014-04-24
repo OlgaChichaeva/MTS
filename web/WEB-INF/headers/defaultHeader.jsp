@@ -6,6 +6,7 @@
 
 <%@page import="security.SecurityBean"%>
 <%@page import="pack.HTMLHelper"%>
+<%@page import="static pack.PathConstants.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -23,8 +24,8 @@
                 </td>
                 <td width="80%">
                     <a class="headerlink" href="<%= ROOT%>/">Home</a>                
-                    <a class="headerlink" href="<%= ROOT%>/SelectAllService/">Услуги</a>                 
-                    <a class="headerlink" href="<%= ROOT%>/SelectAllTariff/">Тарифы</a>              
+                    <a class="headerlink" href="<%= ROOT%><%= SELECT_ALL_SERVICE%>">Услуги</a>                 
+                    <a class="headerlink" href="<%= ROOT%><%= SELECT_ALL_TARIFF%>">Тарифы</a>              
                     <a class="headerlink" href="<%= ROOT%>/showService/">Type service</a>                 
                     <a class="headerlink" href="<%= ROOT%>/showService/">Sim</a>                 
                     <a class="headerlink" href="<%= ROOT%>/showService/">Traffic</a>                
@@ -46,7 +47,7 @@
                             } else {
                                 %>
                                     Здравствуйте, <%= currentUser.getUserName()%>
-                                    <a class="other" href="<%= ROOT%>/Logout/">Выйти</a>
+                                    <a class="other" href="<%= ROOT%><%= LOGOUT%>">Выйти</a>
                                 <%
                             }
                         %>

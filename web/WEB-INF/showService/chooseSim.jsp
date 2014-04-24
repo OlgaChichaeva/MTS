@@ -8,6 +8,7 @@
 <%@page import="java.util.Map"%>
 <%@page import="objects.Sim"%>
 <%@page import="pack.HTMLHelper"%>
+<%@page import="static pack.PathConstants.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -43,7 +44,7 @@
                              (№ сим-карты: <%= sim.getSimId()%>)
                         </td>
                         <td class="withform">
-                            <form name="Choose Sim Form" action="<%= ROOT %>/AddServiceToSim/" method="POST">
+                            <form name="Choose Sim Form" action="<%= ROOT %><%= ADD_SERVICE_TO_SIM%>" method="POST">
                                 <input name="sim_id" type="hidden" value="<%= sim.getSimId()%>" />
                                 <input name="ID_service" type="hidden" value="<%= request.getParameter("ID_service")%>" />
                                 <input type="submit" value="Выбрать" />

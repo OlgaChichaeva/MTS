@@ -10,6 +10,7 @@
 <%@page import="objects.ServiceInTariff"%>
 <%@page import="java.util.List"%>
 <%@page import="pack.HTMLHelper"%>
+<%@page import="static pack.PathConstants.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -51,7 +52,7 @@
                             <%-- Если юзер - админ то разрешаем её отключить --%>
                             <%if (acceptedToChange) {
                                 %>
-                                <form name="Remove Service Form" method="POST" action="<%= ROOT%>/RemoveServiceFromTariff/">
+                                <form name="Remove Service Form" method="POST" action="<%= ROOT%><%= REMOVE_SERVICE_FROM_TARIFF%>">
                                 <input type="hidden" name="ID_tariff" value="<%= sInt.getIdTariff()%>" />
                                 <input type="hidden" name="ID_service" value="<%= sInt.getIdService()%>" />
                                 <input type="submit" value="Отключить услугу" />
@@ -81,7 +82,7 @@
                              (<%= service.getCost()%> / <%= service.getTypeService().getMeasure()%>)
                         </td>
                         <td class="withform">
-                            <form name="Remove Service Form" method="POST" action="<%= ROOT%>/RemoveServiceFromSim/">
+                            <form name="Remove Service Form" method="POST" action="<%= ROOT%><%= REMOVE_SERVICE_FROM_SIM%>">
                                 <input type="hidden" name="sim_id" value="<%= sis.getIdSim()%>" />
                                 <input type="hidden" name="ID_service" value="<%= sis.getIdService()%>" />
                                 <input type="submit" value="Отключить услугу" />

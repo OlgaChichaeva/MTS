@@ -8,6 +8,7 @@
 <%@page import="security.SecurityBean"%>
 <%@page import="pack.HTMLHelper"%>
 <%@page import="java.util.List"%>
+<%@page import="static pack.PathConstants.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -35,7 +36,7 @@
                 <th class="select" width="50%">Описание</th>
                 <th class="select" width="25%">Действия</th>
             </tr>
-            <form action="<%= ROOT %>/TariffFilter/" method="GET">
+            <form action="<%= ROOT %><%= TARIFF_FILTER %>" method="GET">
                 <tr>
                     <td class="withform">
                         <input class="intable" type="text" name="name_tariff" value="<%= enteredName%>" />
@@ -53,7 +54,7 @@
                     %>
                     <tr>
                         <td class="select">
-                            <a class="other" href="<%= ROOT %>/ShowTariff/?ID_tariff=<%= tariff.getIdTariff()%>">
+                            <a class="other" href="<%= ROOT %><%= SHOW_TARIFF%>?ID_tariff=<%= tariff.getIdTariff()%>">
                                 <%= tariff.getNameTariff()%>
                             </a>
                         </td>
@@ -65,7 +66,7 @@
 
             <td class="withform">
                 <% if (acceptedToChange) { // Показываем кнопки только тогда, когда юзер имеет права для редактирования %>
-                <%= HTMLHelper.makeUpdateAndDelete(ROOT+"/TariffUpdateForm/", ROOT+"/TariffDelete/", "ID_tariff", tariff.getIdTariff())%>
+                <%= HTMLHelper.makeUpdateAndDelete(ROOT+TARIFF_UPDATE_FORM, ROOT+TARIFF_DELETE, "ID_tariff", tariff.getIdTariff())%>
                 <%
                     } else {
                         out.print("<hr>");
@@ -80,7 +81,7 @@
 
         </table>
         <% if (acceptedToChange) {%>
-            <a href="<%= request.getContextPath()%>/TariffAddForm/">add</a>
+            <a href="<%= request.getContextPath()%><%= TARIFF_ADD_FORM%>">add</a>
         <%}%>
     </body>
 </html>

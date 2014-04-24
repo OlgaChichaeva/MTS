@@ -12,6 +12,7 @@
 <%@page import="java.util.Map"%>
 <%@page import="objects.ClientContr"%>
 <%@page import="pack.HTMLHelper"%>
+<%@page import="static pack.PathConstants.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <jsp:include page="<%= HTMLHelper.ACCEPT_CLIENT%>" flush="true"/>
@@ -63,7 +64,7 @@
                             Баланс: <%= sim.getAccount()%><br>
                             <% Tariff tariff = sim.getTariff();%>
                             Тариф: 
-                            <a class="other" href="<%= ROOT %>/ShowTariff/?ID_tariff=<%= tariff.getIdTariff()%>&sim_id=<%= sim.getSimId()%>">
+                            <a class="other" href="<%= ROOT %><%= SHOW_TARIFF%>?ID_tariff=<%= tariff.getIdTariff()%>&sim_id=<%= sim.getSimId()%>">
                                 <%= tariff.getNameTariff()%>
                             </a>
                         </td>

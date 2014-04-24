@@ -6,6 +6,7 @@
 
 <%@page import="pack.HTMLHelper"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="static pack.PathConstants.*"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -15,7 +16,7 @@
         <%= HTMLHelper.includeCSS(ROOT) %>
     </head>
     <body align="center">
-        <form name="Login Form" action='<%= request.getContextPath() + "/Login/"%>' method="POST">
+        <form name="Login Form" action="<%= ROOT%><%= LOGIN%>" method="POST">
             Введите логин:<br>
             <input class="other" type="text" name="username" value="" autofocus=""/><br>
             Введите пароль:<br>

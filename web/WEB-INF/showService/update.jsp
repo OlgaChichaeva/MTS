@@ -8,12 +8,15 @@
 <%@page import="objects.TypeService"%>
 <%@page import="java.util.List"%>
 <%@page import="objects.Service"%>
+<%@page import="static pack.PathConstants.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+        <% String ROOT = request.getContextPath();%>
+        <%= HTMLHelper.includeCSS(ROOT) %>
     </head>
     <body>
         <jsp:include page="<%= HTMLHelper.CHECK_ACCEPT %>" flush="true"/>
@@ -30,7 +33,7 @@
             List<TypeService> TypeServices = (List<TypeService>) o;
         %>
 
-        <form name="Data Input Form" action="/MTSweb/ServiceUpdate/" method="POST">
+        <form name="Data Input Form" action="<%= ROOT%><%= SERVICE_UPDATE%>" method="POST">
             Enter name_service:<br>
             <input type="hidden" name="ID_Service" value="<%= serviceToUpdate.getIdService()%>">
             <input type="text" name="name_service" value="<%= serviceToUpdate.getNameService()%>" />

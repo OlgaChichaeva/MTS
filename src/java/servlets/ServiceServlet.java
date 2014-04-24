@@ -29,6 +29,7 @@ import objects.User;
 import pack.DaoMaster;
 import static pack.EncodingConverter.convert; // Чтобы писать меньше
 import security.SecurityBean;
+import static pack.PathConstants.*;
 
 /**
  * Сервлет для работы с услугами.
@@ -37,16 +38,16 @@ import security.SecurityBean;
  */
 @WebServlet(name = "ContrillerServlet", loadOnStartup = 1,
         urlPatterns = {
-    "/SelectAllService/",
-    "/ServiceAdd/",
-    "/ServiceDelete/",
-    "/ServiceUpdate/",
-    "/ServiceFilter/",
-    "/ServiceAddForm/",
-    "/ServiceUpdateForm/",
-    "/AddServiceToSim/",
-    "/ChooseSim/",
-    "/RemoveServiceFromSim/"
+    SELECT_ALL_SERVICE,
+    SERVICE_ADD,
+    SERVICE_DELETE,
+    SERVICE_UPDATE,
+    SERVICE_FILTER,
+    SERVICE_ADD_FORM,
+    SERVICE_UPDATE_FORM,
+    ADD_SERVICE_TO_SIM,
+    CHOOSE_SIM,
+    REMOVE_SERVICE_FROM_SIM
 })
 public class ServiceServlet extends HttpServlet {
 
@@ -108,7 +109,7 @@ public class ServiceServlet extends HttpServlet {
         service.setCost(cost);
         service.setOptional(optional);
         serviceDao.addService(service);
-        response.sendRedirect(request.getContextPath() + "/SelectAllService/");
+        response.sendRedirect(request.getContextPath() + SELECT_ALL_SERVICE);
     }
 
     /**
@@ -124,7 +125,7 @@ public class ServiceServlet extends HttpServlet {
             throws ServletException, IOException {
         int idService = Integer.parseInt(convert(request.getParameter("ID_Service")));
         serviceDao.deleteService(idService);
-        response.sendRedirect(request.getContextPath() + "/SelectAllService/");
+        response.sendRedirect(request.getContextPath() + SELECT_ALL_SERVICE);
     }
 
     /**
@@ -168,7 +169,7 @@ public class ServiceServlet extends HttpServlet {
         service.setCost(cost);
         service.setOptional(optional);
         serviceDao.updateService(service);
-        response.sendRedirect(request.getContextPath() + "/SelectAllService/");
+        response.sendRedirect(request.getContextPath() + SELECT_ALL_SERVICE);
     }
 
     /**
@@ -255,7 +256,7 @@ public class ServiceServlet extends HttpServlet {
         sis.setIdService(idService);
         sis.setIdSim(idSim);
         serviceInSimDao.insert(sis);
-        response.sendRedirect(request.getContextPath() + "/SelectAllService/");
+        response.sendRedirect(request.getContextPath() + SELECT_ALL_SERVICE);
     }
 
     /**
@@ -270,7 +271,7 @@ public class ServiceServlet extends HttpServlet {
         sis.setIdService(idService);
         sis.setIdSim(idSim);
         serviceInSimDao.deleteConcreteServiceInSim(sis);
-        response.sendRedirect(request.getContextPath() + "/SelectAllService/");
+        response.sendRedirect(request.getContextPath() + SELECT_ALL_SERVICE);
     }
 
     /**
@@ -289,19 +290,19 @@ public class ServiceServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
 
         switch (userPath) {
-            case "/SelectAllService/": {
+            case SELECT_ALL_SERVICE: {
                 selectAllService(request, response);
                 break;
             }
-            case "/ServiceFilter/": {
+            case SERVICE_FILTER: {
                 serviceFilter(request, response);
                 break;
             }
-            case "/ServiceAddForm/": {
+            case SERVICE_ADD_FORM: {
                 serviceAddForm(request, response);
                 break;
             }
-            case "/ChooseSim/": {
+            case CHOOSE_SIM: {
                 chooseSim(request, response);
                 break;
             }
@@ -328,27 +329,27 @@ public class ServiceServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
 
         switch (userPath) {
-            case "/ServiceAdd/": {
+            case SERVICE_ADD: {
                 serviceAdd(request, response);
                 break;
             }
-            case "/ServiceDelete/": {
+            case SERVICE_DELETE: {
                 serviceDelete(request, response);
                 break;
             }
-            case "/ServiceUpdate/": {
+            case SERVICE_UPDATE: {
                 serviceUpdate(request, response);
                 break;
             }
-            case "/ServiceUpdateForm/": {
+            case SERVICE_UPDATE_FORM: {
                 serviceUpdateForm(request, response);
                 break;
             }
-            case "/AddServiceToSim/": {
+            case ADD_SERVICE_TO_SIM: {
                 addServiceToSim(request, response);
                 break;
             }
-            case "/RemoveServiceFromSim/": {
+            case REMOVE_SERVICE_FROM_SIM: {
                 removeServiceFromSim(request, response);
                 break;
             }

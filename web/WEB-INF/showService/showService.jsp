@@ -8,6 +8,7 @@
 <%@page import="pack.HTMLHelper"%>
 <%@page import="objects.Service"%>
 <%@page import="java.util.List"%>
+<%@page import="static pack.PathConstants.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -38,7 +39,7 @@
                 <th class="select" width="25%">Стоимость</th>
                 <th class="select" width="25%">Действия</th>
             </tr>
-            <form action="<%= ROOT %>/ServiceFilter/" method="GET">
+            <form action="<%= ROOT %><%= SERVICE_FILTER%>" method="GET">
                 <tr>
                     <td class="withform">
                         <input class="intable" type="text" name="name_service" value="<%= enteredName%>" />
@@ -50,7 +51,7 @@
                         <input class="intable" type="text" name="cost" value="<%= enteredCost%>" />
                     </td>
                     <td class="withform">
-                        <input type="submit" value="Filter" />
+                        <input type="submit" value="Найти" />
                     </td>
                 </tr>
             </form>
@@ -74,12 +75,12 @@
 
             <td class="withform">
                 <% if (acceptedToChange) { // Показываем кнопки только тогда, когда юзер имеет права для редактирования %>
-                <%= HTMLHelper.makeUpdateAndDelete(ROOT+"/ServiceUpdateForm/", ROOT+"/ServiceDelete/", "ID_Service", service.getIdService())%>
+                <%= HTMLHelper.makeUpdateAndDelete(ROOT+SERVICE_UPDATE_FORM, ROOT+SERVICE_DELETE, "ID_Service", service.getIdService())%>
                 <%
                     // Если юзер вошёл и услуга опциональная, то дать возможность подключиться.
                     } else if (currentUser.getIdRole() != SecurityBean.NOT_LOGGED && service.isOptional()) {
                         %>
-                        <a class="other" href="<%= ROOT%>/ChooseSim/?ID_service=<%= service.getIdService()%>">Подключить услугу</a>
+                        <a class="other" href="<%= ROOT%><%= CHOOSE_SIM%>?ID_service=<%= service.getIdService()%>">Подключить услугу</a>
                         <%
                     } else {
                         out.print("<hr>");
@@ -94,7 +95,7 @@
 
         </table>
         <% if (acceptedToChange) {%>
-            <a href="<%= request.getContextPath()%>/ServiceAddForm/">add</a>
+            <a href="<%= request.getContextPath()%><%= SERVICE_ADD_FORM%>">add</a>
         <%}%>
     </body>
 </html>

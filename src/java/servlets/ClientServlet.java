@@ -21,13 +21,14 @@ import objects.ClientContr;
 import objects.PhoneNumber;
 import objects.User;
 import pack.DaoMaster;
+import static pack.PathConstants.*;
 
 /**
  *
  * @author Ivan
  */
 @WebServlet(name = "ClientServlet", loadOnStartup = 1, urlPatterns = {
-    "/clientHome/",
+    CLIENT_HOME,
 })
 public class ClientServlet extends HttpServlet {
 
@@ -49,7 +50,7 @@ public class ClientServlet extends HttpServlet {
             throws ServletException, IOException {
         String userPath = request.getServletPath();
         switch (userPath) {
-            case "/clientHome/": {
+            case CLIENT_HOME: {
                 clientHome(request, response);
                 break;
             }

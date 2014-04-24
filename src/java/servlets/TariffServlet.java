@@ -24,16 +24,17 @@ import objects.Tariff;
 import objects.User;
 import pack.DaoMaster;
 import security.SecurityBean;
+import static pack.PathConstants.*;
 
 /**
  *
  * @author Ivan
  */
 @WebServlet(name = "TariffServlet", loadOnStartup = 1, urlPatterns = {
-    "/SelectAllTariff/",
-    "/TariffFilter/",
-    "/ShowTariff/",
-    "/RemoveServiceFromTariff/"
+    SELECT_ALL_TARIFF,
+    TARIFF_FILTER,
+    SHOW_TARIFF,
+    REMOVE_SERVICE_FROM_TARIFF
 })
 public class TariffServlet extends HttpServlet {
 
@@ -57,15 +58,15 @@ public class TariffServlet extends HttpServlet {
             throws ServletException, IOException {
         String userPath = request.getServletPath();
         switch (userPath) {
-            case "/SelectAllTariff/": {
+            case SELECT_ALL_TARIFF: {
                 selectAllTariff(request, response);
                 break;
             }
-            case "/TariffFilter/": {
+            case TARIFF_FILTER: {
                 tariffFilter(request, response);
                 break;
             }
-            case "/ShowTariff/": {
+            case SHOW_TARIFF: {
                 showTariff(request, response);
                 break;
             }
@@ -86,7 +87,7 @@ public class TariffServlet extends HttpServlet {
             throws ServletException, IOException {
         String userPath = request.getServletPath();
         switch (userPath) {
-            case "/RemoveServiceFromTariff/": {
+            case REMOVE_SERVICE_FROM_TARIFF: {
                 removeServiceFromTariff(request, response);
                 break;
             }
@@ -132,7 +133,7 @@ public class TariffServlet extends HttpServlet {
         sInT.setIdService(idService);
         sInT.setIdTariff(idTariff);
         servInTarDao.deleteConcreteServiceInTariff(sInT);
-        response.sendRedirect(request.getContextPath() + "/ShowTariff/?ID_tariff="+idTariff);
+        response.sendRedirect(request.getContextPath() + SHOW_TARIFF + "?ID_tariff=" + idTariff);
     }
     
     /**
@@ -155,6 +156,16 @@ public class TariffServlet extends HttpServlet {
         goToSelect(tariffList, request, response);
     }
 
+    /**
+     * Загружает данные о тарифе и направляет на страницу с тарифом.
+     * Если просматривается тариф для конкретной сим-карты и юзер
+     * имеет право просмотреть эту сим-карту, то также загружаются
+     * услуги, подключенные к сим-карте.
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void showTariff(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         int idTariff = Integer.parseInt(request.getParameter("ID_tariff"));
