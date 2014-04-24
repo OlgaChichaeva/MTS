@@ -51,7 +51,11 @@
                             <%-- Если юзер - админ то разрешаем её отключить --%>
                             <%if (acceptedToChange) {
                                 %>
-                                Отключить услугу
+                                <form name="Remove Service Form" method="POST" action="<%= ROOT%>/RemoveServiceFromTariff/">
+                                <input type="hidden" name="ID_tariff" value="<%= sInt.getIdTariff()%>" />
+                                <input type="hidden" name="ID_service" value="<%= sInt.getIdService()%>" />
+                                <input type="submit" value="Отключить услугу" />
+                            </form>
                                 <%
                             } else {
                                 out.print("<hr>");

@@ -7,7 +7,6 @@ package servlets;
 import dao.ClientContrDAO;
 import dao.ServiceInSimDAO;
 import dao.ServiceInTariffDao;
-import dao.SimDao;
 import dao.TariffDao;
 import filters.TariffFilter;
 import java.io.IOException;
@@ -21,7 +20,6 @@ import javax.servlet.http.HttpSession;
 import objects.ClientContr;
 import objects.ServiceInSim;
 import objects.ServiceInTariff;
-import objects.Sim;
 import objects.Tariff;
 import objects.User;
 import pack.DaoMaster;
@@ -34,7 +32,8 @@ import security.SecurityBean;
 @WebServlet(name = "TariffServlet", loadOnStartup = 1, urlPatterns = {
     "/SelectAllTariff/",
     "/TariffFilter/",
-    "/ShowTariff/"
+    "/ShowTariff/",
+    "/RemoveServiceFromTariff/"
 })
 public class TariffServlet extends HttpServlet {
 
@@ -86,9 +85,12 @@ public class TariffServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String userPath = request.getServletPath();
-        /*switch (userPath) {
-            
-        }*/
+        switch (userPath) {
+            case "/RemoveServiceFromTariff/": {
+                removeServiceFromTariff(request, response);
+                break;
+            }
+        }
     }
 
     /**
@@ -122,6 +124,25 @@ public class TariffServlet extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/tariff/showTariffList.jsp").forward(request, response);
     }
 
+    
+    private void removeServiceFromTariff(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        int idService = Integer.parseInt(request.getParameter("ID_service"));
+        int idTariff = Integer.parseInt(request.getParameter("ID_tariff"));
+        ServiceInTariff sInT = new ServiceInTariff();
+        sInT.setIdService(idService);
+        sInT.setIdTariff(idTariff);
+        servInTarDao.deleteConcreteServiceInTariff(sInT);
+        response.sendRedirect(request.getContextPath() + "/ShowTariff/?ID_tariff="+idTariff);
+    }
+    
+    /**
+     * Ищет тарифы согласно критерию фильтра и перенаправляет на страинцу
+     * вывода тарифов.
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void tariffFilter(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         TariffFilter filter = new TariffFilter();
@@ -146,7 +167,7 @@ public class TariffServlet extends HttpServlet {
         List<ServiceInSim> sisList = null; // Список услуг, подключенных к сим-карте
         
         // Проверяем, имеет ли юзер право смотреть услуги для этой сим-карты
-        if (stringSimId != null) {
+        if (stringSimId != null && user != null) {
             boolean accept = false;
             int simID = Integer.parseInt(stringSimId);
             switch (user.getIdRole()) {
