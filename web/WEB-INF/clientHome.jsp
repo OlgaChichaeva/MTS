@@ -15,8 +15,6 @@
 <%@page import="static pack.PathConstants.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<jsp:include page="<%= HTMLHelper.ACCEPT_CLIENT%>" flush="true"/>
-<jsp:include page="<%= HTMLHelper.CHECK_ACCEPT%>" flush="true"/>
 <jsp:include page="<%= HTMLHelper.CHOOSE_HEADER%>" />
 <jsp:useBean id="currentClient" scope="session" class="objects.Client" />
 <jsp:useBean id="currentUser" scope="session" class="objects.User" />
