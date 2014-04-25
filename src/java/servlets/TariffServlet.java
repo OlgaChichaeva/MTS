@@ -38,7 +38,8 @@ import static pack.LogManager.LOG;
     SHOW_TARIFF,
     REMOVE_SERVICE_FROM_TARIFF,
     TARIFF_ADD_FORM,
-    TARIFF_ADD
+    TARIFF_ADD,
+    TARIFF_DELETE
 })
 public class TariffServlet extends HttpServlet {
 
@@ -107,6 +108,10 @@ public class TariffServlet extends HttpServlet {
             }
             case TARIFF_ADD: {
                 tariffAdd(request, response);
+                break;
+            }
+            case TARIFF_DELETE: {
+                tariffDelete(request, response);
                 break;
             }
             default: {
@@ -280,6 +285,23 @@ public class TariffServlet extends HttpServlet {
         tariff.setNameTariff(nameTariff);
         tariff.setDescription(description);
         tariffDao.addSTariffList(tariff);
+        response.sendRedirect(request.getContextPath() + SELECT_ALL_TARIFF);
+    }
+    
+    /**
+     * Удаляет тариф с ID, полученным из запроса. Затем перенаправляет на
+     * страницу вывода всех тарифов.
+     *
+     * @param request берём из методов doGet/doPost
+     * @param response берём из методов doGet/doPost
+     * @throws ServletException
+     * @throws IOException
+     */
+    protected void tariffDelete(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        SecurityBean.checkAccept(HTMLHelper.getUser(request));
+        int idTariff = Integer.parseInt(convert(request.getParameter("ID_tariff")));
+        tariffDao.deleteTariffList(idTariff);
         response.sendRedirect(request.getContextPath() + SELECT_ALL_TARIFF);
     }
 }
