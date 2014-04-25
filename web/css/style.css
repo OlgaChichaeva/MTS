@@ -154,3 +154,26 @@ a.other:hover {
     color: #cc0000;
     text-decoration: none;
 }
+
+/*
+    Для форм с полями для заполнения
+*/
+fieldset.fillform {
+    margin-left: 20px;
+    font: normal 0.9em tahoma;
+    line-height: 2;
+    display: inline-block;
+    background-color:#fafafa;
+    border-collapse: collapse;
+    border: 1px solid silver;
+}
+input.fillform {
+    padding: 5px 3px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #cc0000;
+    font: normal 0.8em tahoma;
+}
+form.fillform {
+    text-align: left;
+}

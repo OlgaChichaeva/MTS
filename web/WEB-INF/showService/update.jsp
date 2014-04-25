@@ -20,7 +20,7 @@
     </head>
     <body>
         <jsp:include page="<%= HTMLHelper.CHOOSE_HEADER %>" flush="true"/>
-        <h1>Service</h1>
+        <h2>Service</h2>
         <%
             Object o = request.getAttribute("TypeServiceList");
             Object serv = request.getAttribute("serviceToUpdate");
@@ -32,13 +32,14 @@
             List<TypeService> TypeServices = (List<TypeService>) o;
         %>
 
-        <form name="Data Input Form" action="<%= ROOT%><%= SERVICE_UPDATE%>" method="POST">
+        <form class="fillform" name="Data Input Form" action="<%= ROOT%><%= SERVICE_UPDATE%>" method="POST">
+            <fieldset class="fillform">
             Enter name_service:<br>
             <input type="hidden" name="ID_Service" value="<%= serviceToUpdate.getIdService()%>">
-            <input type="text" name="name_service" value="<%= serviceToUpdate.getNameService()%>" />
+            <input class="fillform" type="text" name="name_service" value="<%= serviceToUpdate.getNameService()%>" />
 
             <br>Enter cost:<br>
-            <input type="text" name="cost" value="<%= serviceToUpdate.getCost()%>" />
+            <input class="fillform" type="text" name="cost" value="<%= serviceToUpdate.getCost()%>" />
 
             <br>
 
@@ -47,7 +48,7 @@
                 
 
 
-                out.print("<select name=\"ID_type\">");
+                out.print("<select class=\"fillform\" name=\"ID_type\">");
                 int id = serviceToUpdate.getIdType();
 
                 for (TypeService S : TypeServices) {
@@ -66,10 +67,10 @@
 
             %>
             <br>
-            <input type="checkbox" name="optional" value="true" <%= serviceToUpdate.isOptional()? "checked" : ""%>/>Опционально
+            <input class="fillform" type="checkbox" name="optional" value="true" <%= serviceToUpdate.isOptional()? "checked" : ""%>/>Опционально
             <br>
             <input type="submit" value="OK" />
-
+        </fieldset>
         </form>
     </body>
 </html>

@@ -20,13 +20,14 @@
     </head>
     <body>
         <jsp:include page="<%= HTMLHelper.CHOOSE_HEADER %>" flush="true"/>
-        <h1>Service</h1>
-        <form name="Data Input Form" action="<%= ROOT%><%= SERVICE_ADD%>" method="POST">
+        <h2>Service</h2>
+        <form class="fillform" name="Data Input Form" action="<%= ROOT%><%= SERVICE_ADD%>" method="POST">
+            <fieldset class="fillform">
             Enter name_service:<br>
-            <input type="text" name="name_service" value="" />
+            <input class="fillform" type="text" name="name_service" value="" />
 
             <br>Enter cost:<br>
-            <input type="text" name="cost" value="" />
+            <input class="fillform" type="text" name="cost" value="" />
           
             <br>
             
@@ -39,7 +40,7 @@
                 }
                 List<TypeService> TypeServices = (List<TypeService>) o;
 
-                out.print("<select name=\"ID_type\">");
+                out.print("<select class=\"fillform\" name=\"ID_type\">");
 
                 for (TypeService S : TypeServices) {
 
@@ -53,10 +54,10 @@
 
             %>
             <br>
-            <input type="checkbox" name="optional" value="true" />Опционально
+            <input class="fillform" type="checkbox" name="optional" value="true" />Опционально
             <br>
             <input type="submit" value="OK" />
-            
+            </fieldset>
         </form>
     </body>
 </html>
