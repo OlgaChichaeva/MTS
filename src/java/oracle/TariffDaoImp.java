@@ -17,15 +17,13 @@ import dao.TariffDao;
 import filters.TariffFilter;
 import javax.sql.DataSource;
 import pack.Abstract;
-
+import static pack.LogManager.LOG;
 
 /**
  *
  * @author Ольга
  */
- class TariffDaoImp extends Abstract implements TariffDao {
-
-  
+class TariffDaoImp extends Abstract implements TariffDao {
 
     public TariffDaoImp(DataSource sour) {
         super(sour);
@@ -34,13 +32,13 @@ import pack.Abstract;
 
     @Override
     public List<Tariff> getAllTariffList() {
-       try (Connection con = getConn()) {
+        try (Connection con = getConn()) {
 
             List<Tariff> tariffs = new ArrayList<Tariff>();
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery("select * from tariff_list");
             while (rs.next()) {
-                Tariff tariff= makeTariff(rs);            
+                Tariff tariff = makeTariff(rs);
                 tariffs.add(tariff);
             }
 
@@ -53,15 +51,15 @@ import pack.Abstract;
 
     @Override
     public Tariff getTariffList(int idTariff) {
-        try (Connection con = getConn()){
+        try (Connection con = getConn()) {
             PreparedStatement ps = con.prepareStatement("select * from tariff_list where ID_tariff=?");
-                        ps.setInt(1, idTariff);
-                        ResultSet rs = ps.executeQuery("select * from tariff_list");
-                        rs.next();
-                            Tariff tariff= makeTariff(rs);                                 
-           
+            ps.setInt(1, idTariff);
+            ResultSet rs = ps.executeQuery("select * from tariff_list");
+            rs.next();
+            Tariff tariff = makeTariff(rs);
 
-                        return  tariff;
+
+            return tariff;
         } catch (SQLException ex) {
             throw new DaoException(ex);
         }
@@ -69,11 +67,11 @@ import pack.Abstract;
 
     @Override
     public void updateTariffList(Tariff tariff) {
-    try (Connection con = getConn()) {
-        PreparedStatement ps = con.prepareStatement("update tariff_list set ID_tariff=?,name_tariff=?,description = ? where ID_tariff = ? "); 
-        ps.setInt(1,tariff.getIdTariff() );
-            ps.setString(2,tariff.getNameTariff());
-            ps.setString(3,tariff.getDescription());
+        try (Connection con = getConn()) {
+            PreparedStatement ps = con.prepareStatement("update tariff_list set ID_tariff=?,name_tariff=?,description = ? where ID_tariff = ? ");
+            ps.setInt(1, tariff.getIdTariff());
+            ps.setString(2, tariff.getNameTariff());
+            ps.setString(3, tariff.getDescription());
             ps.executeUpdate();
 
         } catch (SQLException ex) {
@@ -84,7 +82,7 @@ import pack.Abstract;
     @Override
     public void deleteTariffList(int idTariff) {
         try (Connection con = getConn()) {
-           PreparedStatement ps = con.prepareStatement("delete from tariff_list where ID_tariff = ?");
+            PreparedStatement ps = con.prepareStatement("delete from tariff_list where ID_tariff = ?");
             ps.setInt(1, idTariff);
             ps.executeUpdate();
         } catch (SQLException ex) {
@@ -94,17 +92,20 @@ import pack.Abstract;
 
     @Override
     public void addSTariffList(Tariff tariff) {
-         try (Connection con = getConn()) {
+        try (Connection con = getConn()) {
             PreparedStatement ps = con.prepareStatement("INSERT INTO tariff_list (name_tariff,description) VALUES (?,?)");
-             ps.setString(1, tariff.getNameTariff());
-            ps.setString(2,tariff.getDescription());
-                    ps.executeUpdate();
-            
+            ps.setString(1, tariff.getNameTariff());
+            ps.setNString(2, tariff.getDescription());
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Имя тарифа: " + tariff.getNameTariff() + ", описание: " + tariff.getDescription());
+            }
+            ps.executeUpdate();
+
         } catch (SQLException ex) {
             throw new DaoException(ex);
         }
 
-    }   
+    }
 
     @Override
     public List<Tariff> getFilteredTariffList(TariffFilter tariff) {
@@ -129,4 +130,3 @@ import pack.Abstract;
         }
     }
 }
-
