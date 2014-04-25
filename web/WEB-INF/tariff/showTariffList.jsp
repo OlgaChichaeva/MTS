@@ -45,7 +45,7 @@
                         <input class="intable" type="text" name="description" value="<%= enteredDescription%>" />
                     </td>
                     <td class="withform">
-                        <input type="submit" value="Filter" />
+                        <input type="submit" value="Найти" />
                     </td>
                 </tr>
             </form>
