@@ -16,21 +16,21 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
         <% String ROOT = request.getContextPath();%>
-        <%= HTMLHelper.includeCSS(ROOT) %>
+        <%= HTMLHelper.includeCSS(ROOT)%>
     </head>
     <body>
-        <jsp:include page="<%= HTMLHelper.CHOOSE_HEADER %>" flush="true"/>
+        <jsp:include page="<%= HTMLHelper.CHOOSE_HEADER%>" flush="true"/>
         <h2>Добавить тариф</h2>
         <form class="fillform" name="Data Input Form" action="<%= ROOT%><%= TARIFF_ADD%>" method="POST">
             <fieldset class="fillform">
-            Название тарифа:<br>
-            <input class="fillform" type="text" name="name_tariff" value="" />
+                Название тарифа:<br>
+                <input class="fillform" type="text" name="name_tariff" value="" autofocus/>
 
-            <br>Описание тарифа:<br>
-            <input class="fillform" type="textarea" name="description" value="" />
+                <br>Описание тарифа:<br>
+                <input class="fillform" type="text" name="description" value=""/>
 
-            <br>
-            <input type="submit" value="Добавить" />
+                <br>
+                <input type="submit" value="Добавить" />
             </fieldset>
         </form>
     </body>

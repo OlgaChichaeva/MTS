@@ -22,6 +22,7 @@ import objects.ServiceInTariff;
 import objects.Tariff;
 import objects.User;
 import pack.DaoMaster;
+import static pack.EncodingConverter.convert;
 import pack.HTMLHelper;
 import security.SecurityBean;
 import static pack.PathConstants.*;
@@ -77,6 +78,12 @@ public class TariffServlet extends HttpServlet {
                 tariffAddForm(request, response);
                 break;
             }
+            default: {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Действия для пути [" + userPath + "] не определены, либо ожидается POST.");
+                }
+                break;
+            }
         }
     }
 
@@ -96,6 +103,16 @@ public class TariffServlet extends HttpServlet {
         switch (userPath) {
             case REMOVE_SERVICE_FROM_TARIFF: {
                 removeServiceFromTariff(request, response);
+                break;
+            }
+            case TARIFF_ADD: {
+                tariffAdd(request, response);
+                break;
+            }
+            default: {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Действия для пути [" + userPath + "] не определены.");
+                }
                 break;
             }
         }
@@ -240,6 +257,29 @@ public class TariffServlet extends HttpServlet {
      */
     private void tariffAddForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        SecurityBean.checkAccept(HTMLHelper.getUser(request));
         request.getRequestDispatcher("/WEB-INF/tariff/addTariff.jsp").forward(request, response);
+    }
+    
+    /**
+     * Добавляет тариф со значениями, взятыми из запроса. Затем перенаправляет
+     * на страницу вывода всех тарифов.
+     *
+     * @param request берём из методов doGet/doPost
+     * @param response берём из методов doGet/doPost
+     * @throws ServletException
+     * @throws IOException
+     */
+    protected void tariffAdd(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        SecurityBean.checkAccept(HTMLHelper.getUser(request));
+        
+        String nameTariff = convert(request.getParameter("name_tariff"));
+        String description = convert(request.getParameter("description"));
+        Tariff tariff = new Tariff();
+        tariff.setNameTariff(nameTariff);
+        tariff.setDescription(description);
+        tariffDao.addSTariffList(tariff);
+        response.sendRedirect(request.getContextPath() + SELECT_ALL_TARIFF);
     }
 }

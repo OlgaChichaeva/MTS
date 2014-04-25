@@ -17,8 +17,8 @@
     </head>
     <body>
         <%
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Ошибка доступа.", exception);
+            if (LOG.isTraceEnabled()) {
+                LOG.trace("Ошибка доступа.", exception);
             }
         %>
         <h1>Ошибка доступа!</h1>
