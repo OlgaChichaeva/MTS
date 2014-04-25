@@ -310,7 +310,9 @@ public class ServiceServlet extends HttpServlet {
                 break;
             }
             default: {
-                //doPost(request, response);
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Действия для пути [" + userPath + "] не определены, либо ожидается POST.");
+                }
                 break;
             }
         }
@@ -354,6 +356,12 @@ public class ServiceServlet extends HttpServlet {
             }
             case REMOVE_SERVICE_FROM_SIM: {
                 removeServiceFromSim(request, response);
+                break;
+            }
+            default: {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Действия для пути [" + userPath + "] не определены.");
+                }
                 break;
             }
         }
