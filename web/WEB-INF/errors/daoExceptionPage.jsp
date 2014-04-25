@@ -6,8 +6,8 @@
 <%--
     Сюда попадаем, если не обработано DaoException.
 --%>
-<%@page import="java.io.PrintWriter"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="static pack.LogManager.LOG" %>
+<%@page contentType="text/html" pageEncoding="UTF-8" isErrorPage="true"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -16,6 +16,9 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <%
+            LOG.error("Ошибка базы данных: " + exception.getMessage(), exception);
+        %>
         <h1>Произошла ошибка базы данных.</h1>
         Подробнее в логах.
         <a class="other" href="<%= ROOT%>">На главную</a>
