@@ -17,7 +17,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import objects.ClientContr;
 import objects.ServiceInSim;
 import objects.ServiceInTariff;
@@ -109,13 +108,8 @@ public class TariffServlet extends HttpServlet {
 
     private void selectAllTariff(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            List<Tariff> tariffList = tariffDao.getAllTariffList();
-            goToSelect(tariffList, request, response);
-        } catch (DaoException ex) {
-            LOG.error("Ошибка загрузки тарифов.", ex);
-            throw ex;
-        }
+        List<Tariff> tariffList = tariffDao.getAllTariffList();
+        goToSelect(tariffList, request, response);
     }
 
     /**
@@ -140,12 +134,7 @@ public class TariffServlet extends HttpServlet {
         ServiceInTariff sInT = new ServiceInTariff();
         sInT.setIdService(idService);
         sInT.setIdTariff(idTariff);
-        try {
-            servInTarDao.deleteConcreteServiceInTariff(sInT);
-        } catch (DaoException ex) {
-            LOG.error("Ошибка отключения сервиса от тарифа.", ex);
-            throw ex;
-        }
+        servInTarDao.deleteConcreteServiceInTariff(sInT);
         response.sendRedirect(request.getContextPath() + SHOW_TARIFF + "?ID_tariff=" + idTariff);
     }
 
@@ -166,13 +155,8 @@ public class TariffServlet extends HttpServlet {
         filter.setNameTariff(nameTariff);
         filter.setDescription(description);
 
-        try {
-            List<Tariff> tariffList = tariffDao.getFilteredTariffList(filter);
-            goToSelect(tariffList, request, response);
-        } catch (DaoException ex) {
-            LOG.error("Ошибка загрузки отфильтрованных тарифов.", ex);
-            throw ex;
-        }
+        List<Tariff> tariffList = tariffDao.getFilteredTariffList(filter);
+        goToSelect(tariffList, request, response);
     }
 
     /**
@@ -189,13 +173,8 @@ public class TariffServlet extends HttpServlet {
     private void showTariff(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int idTariff = Integer.parseInt(request.getParameter("ID_tariff"));
-        try {
-            List<ServiceInTariff> servInTarList = servInTarDao.getIdTariff(idTariff);
-            request.setAttribute("servInTarList", servInTarList);
-        } catch (DaoException ex) {
-            LOG.error("Ошибка загрузки тарифа.", ex);
-            throw ex;
-        }
+        List<ServiceInTariff> servInTarList = servInTarDao.getIdTariff(idTariff);
+        request.setAttribute("servInTarList", servInTarList);
         String stringSimId = request.getParameter("sim_id");
         User user = HTMLHelper.getUser(request);
 
@@ -206,12 +185,8 @@ public class TariffServlet extends HttpServlet {
             int simID = Integer.parseInt(stringSimId);
             boolean accept = isClientAcceptedForSim(user, simID);
             if (accept) { // Если есть право смотреть сим-карту, то загружаем
-                try {     // подключенные к сим-карте услуги.
-                    sisList = sisDao.getIdSim(simID);
-                } catch (DaoException ex) {
-                    LOG.error("Ошибка загрузки сим-карты.", ex);
-                    throw ex;
-                }
+                // подключенные к сим-карте услуги.
+                sisList = sisDao.getIdSim(simID);
             }
         } else if (user == null) {
             if (LOG.isDebugEnabled()) {
@@ -233,18 +208,13 @@ public class TariffServlet extends HttpServlet {
     private boolean isClientAcceptedForSim(User user, int simId) {
         switch (user.getIdRole()) {
             case SecurityBean.CLIENT: {
-                try {
-                    // Проверяем, есть ли среди договоров клиента договор на эту сим-карту.
-                    for (ClientContr contr : clientContrDao.getContrsByClientID(user.getIdClient())) {
-                        if (contr.getSimID() == simId) {
-                            return true;
-                        }
+                // Проверяем, есть ли среди договоров клиента договор на эту сим-карту.
+                for (ClientContr contr : clientContrDao.getContrsByClientID(user.getIdClient())) {
+                    if (contr.getSimID() == simId) {
+                        return true;
                     }
-                    return false;
-                } catch (DaoException ex) {
-                    LOG.error("Ошибка чтения договоров клиента.", ex);
-                    throw ex;
                 }
+                return false;
             }
             case SecurityBean.LEGAL_ENTITY: {
                 break; // Временно

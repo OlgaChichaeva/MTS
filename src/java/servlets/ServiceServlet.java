@@ -4,7 +4,6 @@
  */
 package servlets;
 
-import dao.DaoException;
 import dao.PhoneNumberDAO;
 import objects.Service;
 import dao.ServiceDao;
@@ -70,13 +69,8 @@ public class ServiceServlet extends HttpServlet {
      */
     protected void selectAllService(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            List<Service> services = serviceDao.getAllServices();
-            goToSelect(services, request, response);
-        } catch (DaoException ex) {
-            LOG.error("Ошибка загрузки сервисов.", ex);
-            throw ex;
-        }
+        List<Service> services = serviceDao.getAllServices();
+        goToSelect(services, request, response);
     }
 
     /**
@@ -91,14 +85,9 @@ public class ServiceServlet extends HttpServlet {
     protected void serviceAddForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         SecurityBean.checkAccept(HTMLHelper.getUser(request));
-        try {
-            List<TypeService> typeServices = serviceTypeDao.getAllType();
-            request.setAttribute("TypeServiceList", typeServices);
-            request.getRequestDispatcher("/WEB-INF/showService/addService.jsp").forward(request, response);
-        } catch (DaoException ex) {
-            LOG.error("Ошибка загрузки типов сервисов.", ex);
-            throw ex;
-        }
+        List<TypeService> typeServices = serviceTypeDao.getAllType();
+        request.setAttribute("TypeServiceList", typeServices);
+        request.getRequestDispatcher("/WEB-INF/showService/addService.jsp").forward(request, response);
     }
 
     /**
@@ -122,12 +111,7 @@ public class ServiceServlet extends HttpServlet {
         service.setNameService(nameService);
         service.setCost(cost);
         service.setOptional(optional);
-        try {
-            serviceDao.addService(service);
-        } catch (DaoException ex) {
-            LOG.error("Ошибка добавления сервиса.", ex);
-            throw ex;
-        }
+        serviceDao.addService(service);
         response.sendRedirect(request.getContextPath() + SELECT_ALL_SERVICE);
     }
 
@@ -144,12 +128,7 @@ public class ServiceServlet extends HttpServlet {
             throws ServletException, IOException {
         SecurityBean.checkAccept(HTMLHelper.getUser(request));
         int idService = Integer.parseInt(convert(request.getParameter("ID_Service")));
-        try {
-            serviceDao.deleteService(idService);
-        } catch (DaoException ex) {
-            LOG.error("Ошибка удаления сервиса.", ex);
-            throw ex;
-        }
+        serviceDao.deleteService(idService);
         response.sendRedirect(request.getContextPath() + SELECT_ALL_SERVICE);
     }
 
@@ -165,16 +144,11 @@ public class ServiceServlet extends HttpServlet {
     protected void serviceUpdateForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         SecurityBean.checkAccept(HTMLHelper.getUser(request));
-        try {
-            List<TypeService> typeServices = serviceTypeDao.getAllType();
-            Service serviceToUpdate = serviceDao.getService(Integer.parseInt(request.getParameter("ID_Service")));
-            request.setAttribute("TypeServiceList", typeServices);
-            request.setAttribute("serviceToUpdate", serviceToUpdate);
-            request.getRequestDispatcher("/WEB-INF/showService/update.jsp").forward(request, response);
-        } catch (DaoException ex) {
-            LOG.error("Ошибка загрузки формы обновления сервиса.", ex);
-            throw ex;
-        }
+        List<TypeService> typeServices = serviceTypeDao.getAllType();
+        Service serviceToUpdate = serviceDao.getService(Integer.parseInt(request.getParameter("ID_Service")));
+        request.setAttribute("TypeServiceList", typeServices);
+        request.setAttribute("serviceToUpdate", serviceToUpdate);
+        request.getRequestDispatcher("/WEB-INF/showService/update.jsp").forward(request, response);
     }
 
     /**
@@ -200,12 +174,7 @@ public class ServiceServlet extends HttpServlet {
         service.setNameService(nameService);
         service.setCost(cost);
         service.setOptional(optional);
-        try {
-            serviceDao.updateService(service);
-        } catch (DaoException ex) {
-            LOG.error("Ошибка обновления сервиса.", ex);
-            throw ex;
-        }
+        serviceDao.updateService(service);
         response.sendRedirect(request.getContextPath() + SELECT_ALL_SERVICE);
     }
 
@@ -228,13 +197,8 @@ public class ServiceServlet extends HttpServlet {
         filter.setNameService(nameService);
         filter.setTypeService(idType);
 
-        try {
-            List<Service> services = serviceDao.getFilteredServices(filter);
-            goToSelect(services, request, response);
-        } catch (DaoException ex) {
-            LOG.error("Ошибка загрузки отфильтрованных сервисов.", ex);
-            throw ex;
-        }
+        List<Service> services = serviceDao.getFilteredServices(filter);
+        goToSelect(services, request, response);
     }
 
     /**
@@ -267,19 +231,14 @@ public class ServiceServlet extends HttpServlet {
         SecurityBean.checkAccept(user, SecurityBean.CLIENT, SecurityBean.LEGAL_ENTITY);
         List<Sim> simList = null;
         Map<Sim, PhoneNumber> simAndNumbers = null;
-        try {
-            if (user.getIdRole() == SecurityBean.CLIENT) {
-                simList = simDao.getSimListByClientID(user.getIdClient());
+        if (user.getIdRole() == SecurityBean.CLIENT) {
+            simList = simDao.getSimListByClientID(user.getIdClient());
+        }
+        if (simList != null) {
+            simAndNumbers = new HashMap<>();
+            for (Sim sim : simList) {
+                simAndNumbers.put(sim, phoneNumberDao.getNumberBySimID(sim.getSimId()));
             }
-            if (simList != null) {
-                simAndNumbers = new HashMap<>();
-                for (Sim sim : simList) {
-                    simAndNumbers.put(sim, phoneNumberDao.getNumberBySimID(sim.getSimId()));
-                }
-            }
-        } catch (DaoException ex) {
-            LOG.error("Ошибка загрузки сим-карт для клиента.", ex);
-            throw ex;
         }
         request.setAttribute("simAndNumbers", simAndNumbers); // Кладём список всех контрактов в запрос.
         request.getRequestDispatcher("/WEB-INF/showService/chooseSim.jsp").forward(request, response);
@@ -298,12 +257,7 @@ public class ServiceServlet extends HttpServlet {
         ServiceInSim sis = new ServiceInSim();
         sis.setIdService(idService);
         sis.setIdSim(idSim);
-        try {
-            serviceInSimDao.insert(sis);
-        } catch (DaoException ex) {
-            LOG.error("Ошибка добавления сервиса.", ex);
-            throw ex;
-        }
+        serviceInSimDao.insert(sis);
         response.sendRedirect(request.getContextPath() + SELECT_ALL_SERVICE);
     }
 
@@ -319,12 +273,7 @@ public class ServiceServlet extends HttpServlet {
         ServiceInSim sis = new ServiceInSim();
         sis.setIdService(idService);
         sis.setIdSim(idSim);
-        try {
-            serviceInSimDao.deleteConcreteServiceInSim(sis);
-        } catch (DaoException ex) {
-            LOG.error("Ошибка отключения сервиса от сим-карты.", ex);
-            throw ex;
-        }
+        serviceInSimDao.deleteConcreteServiceInSim(sis);
         response.sendRedirect(request.getContextPath() + SELECT_ALL_SERVICE);
     }
 

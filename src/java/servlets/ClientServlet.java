@@ -5,7 +5,6 @@
 package servlets;
 
 import dao.ClientContrDAO;
-import dao.DaoException;
 import dao.PhoneNumberDAO;
 import java.io.IOException;
 import java.util.HashMap;
@@ -97,21 +96,16 @@ public class ClientServlet extends HttpServlet {
         User user = HTMLHelper.getUser(request);
         SecurityBean.checkAccept(user, SecurityBean.CLIENT);
         Map<ClientContr, PhoneNumber> phonesMap = new HashMap<>();
-        try {
-            List<ClientContr> contrs = clientContrDao.getContrsByClientID(user.getIdClient());
-            if (!contrs.isEmpty()) {
-                // Соотносим телефонные номера с договорами.
-                for (ClientContr contr : contrs) {
-                    phonesMap.put(contr, phoneNumberDao.getNumberBySimID(contr.getSimID()));
-                }
-            } else {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("У клиента №" + user.getIdClient() + " нет договоров.");
-                }
+        List<ClientContr> contrs = clientContrDao.getContrsByClientID(user.getIdClient());
+        if (!contrs.isEmpty()) {
+            // Соотносим телефонные номера с договорами.
+            for (ClientContr contr : contrs) {
+                phonesMap.put(contr, phoneNumberDao.getNumberBySimID(contr.getSimID()));
             }
-        } catch (DaoException ex) {
-            LOG.error("Ошибка загрузки списка договров клиента.", ex);
-            throw ex;
+        } else {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("У клиента №" + user.getIdClient() + " нет договоров.");
+            }
         }
         request.setAttribute("phonesMap", phonesMap); // Кладём список всех контрактов в запрос.
         request.getRequestDispatcher("/WEB-INF/clientHome.jsp").forward(request, response);

@@ -5,7 +5,6 @@
 package servlets;
 
 import dao.ClientDAO;
-import dao.DaoException;
 import dao.UserDAO;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -104,12 +103,7 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("password");
 
         User user;
-        try {
-            user = userDao.getUserByUserName(username);
-        } catch (DaoException ex) {
-            LOG.error("Ошибка заагрузки пользователя.", ex);
-            throw ex;
-        }
+        user = userDao.getUserByUserName(username);
         if (user == null || !user.getUserPassword().equals(password)) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Имя пользователя или пароль неверны.");
@@ -131,13 +125,8 @@ public class LoginServlet extends HttpServlet {
                 break;
             }
             case SecurityBean.CLIENT: {
-                try {
-                    Client client = clientDao.getClientByID(user.getIdClient());
-                    session.setAttribute("currentClient", client);
-                } catch (DaoException ex) {
-                    LOG.error("Ошибка загрузки клиента.", ex);
-                    throw ex;
-                }
+                Client client = clientDao.getClientByID(user.getIdClient());
+                session.setAttribute("currentClient", client);
                 response.sendRedirect(request.getContextPath() + CLIENT_HOME);
                 return;
             }
