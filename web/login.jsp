@@ -28,7 +28,7 @@
             <form class="fillform" name="Login Form" action="<%= ROOT%><%= LOGIN%>" method="POST">
                 <fieldset class="fillform">
                 Логин:<br>
-                <input class="fillform" type="text" name="username" value="" autofocus=""/><br>
+                <input class="fillform" type="text" name="username" value="" autofocus/><br>
                 Пароль:<br>
                 <input class="fillform" type="password" name="password" value="" /><br>
                 <input type="submit" value="Войти" />

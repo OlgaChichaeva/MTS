@@ -19,6 +19,8 @@ public interface PathConstants {
     String TARIFF_ADD_FORM = "/TariffAddForm";
     String TARIFF_UPDATE_FORM = "/TariffUpdateForm";
     String TARIFF_DELETE = "/TariffDelete";
+    String TARIFF_ADD = "/TariffAdd";
+    String TARIFF_UPDATE = "/TariffUpdate";
     String SELECT_ALL_TARIFF = "/SelectAllTariff";
     String REMOVE_SERVICE_FROM_SIM = "/RemoveServiceFromSim";
     String CHOOSE_SIM = "/ChooseSim";

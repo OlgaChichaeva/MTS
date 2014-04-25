@@ -5,7 +5,6 @@
 package servlets;
 
 import dao.ClientContrDAO;
-import dao.DaoException;
 import dao.ServiceInSimDAO;
 import dao.ServiceInTariffDao;
 import dao.TariffDao;
@@ -36,7 +35,9 @@ import static pack.LogManager.LOG;
     SELECT_ALL_TARIFF,
     TARIFF_FILTER,
     SHOW_TARIFF,
-    REMOVE_SERVICE_FROM_TARIFF
+    REMOVE_SERVICE_FROM_TARIFF,
+    TARIFF_ADD_FORM,
+    TARIFF_ADD
 })
 public class TariffServlet extends HttpServlet {
 
@@ -70,6 +71,10 @@ public class TariffServlet extends HttpServlet {
             }
             case SHOW_TARIFF: {
                 showTariff(request, response);
+                break;
+            }
+            case TARIFF_ADD_FORM: {
+                tariffAddForm(request, response);
                 break;
             }
         }
@@ -224,5 +229,17 @@ public class TariffServlet extends HttpServlet {
             }
         }
         return false;
+    }
+
+    /**
+     * Перенаправляет на страницу добавления тарифа.
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
+    private void tariffAddForm(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.getRequestDispatcher("/WEB-INF/tariff/addTariff.jsp").forward(request, response);
     }
 }
