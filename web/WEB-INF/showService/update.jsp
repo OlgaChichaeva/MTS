@@ -20,7 +20,7 @@
     </head>
     <body>
         <jsp:include page="<%= HTMLHelper.CHOOSE_HEADER %>" flush="true"/>
-        <h2>Service</h2>
+        <h2>Редактировать услугу</h2>
         <%
             Object o = request.getAttribute("TypeServiceList");
             Object serv = request.getAttribute("serviceToUpdate");
@@ -34,20 +34,14 @@
 
         <form class="fillform" name="Data Input Form" action="<%= ROOT%><%= SERVICE_UPDATE%>" method="POST">
             <fieldset class="fillform">
-            Enter name_service:<br>
+            Название улуги:<br>
             <input type="hidden" name="ID_Service" value="<%= serviceToUpdate.getIdService()%>">
             <input class="fillform" type="text" name="name_service" value="<%= serviceToUpdate.getNameService()%>" />
-
-            <br>Enter cost:<br>
+            <br>Стоимость услуги:<br>
             <input class="fillform" type="text" name="cost" value="<%= serviceToUpdate.getCost()%>" />
-
             <br>
-
-            Enter Type_Service:<br>
+            Тип услуги:<br>
             <%
-                
-
-
                 out.print("<select class=\"fillform\" name=\"ID_type\">");
                 int id = serviceToUpdate.getIdType();
 
@@ -58,13 +52,8 @@
                         out.print(" selected");
                     }
                     out.print(">" + S.getNameType() + "</option>");
-                    //out.print("<option value =" + S.getMeasua()+ ">" + S.getMeasua() + "</option>");
-
                 }
-
                 out.print("</select>");
-
-
             %>
             <br>
             <input class="fillform" type="checkbox" name="optional" value="true" <%= serviceToUpdate.isOptional()? "checked" : ""%>/>Опционально

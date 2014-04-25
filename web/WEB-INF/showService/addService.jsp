@@ -20,18 +20,15 @@
     </head>
     <body>
         <jsp:include page="<%= HTMLHelper.CHOOSE_HEADER %>" flush="true"/>
-        <h2>Service</h2>
+        <h2>Добавить услугу</h2>
         <form class="fillform" name="Data Input Form" action="<%= ROOT%><%= SERVICE_ADD%>" method="POST">
             <fieldset class="fillform">
-            Enter name_service:<br>
+            Название услуги:<br>
             <input class="fillform" type="text" name="name_service" value="" />
-
-            <br>Enter cost:<br>
-            <input class="fillform" type="text" name="cost" value="" />
-          
-            <br>
-            
-            Enter Type_Service:<br>
+            <br>Стоимость услуги:<br>
+            <input class="fillform" type="text" name="cost" value="" />          
+            <br>           
+            Тип услуги:<br>
             <%
                 Object o = request.getAttribute("TypeServiceList");
                 if (o == null) {
@@ -39,24 +36,16 @@
                     return;
                 }
                 List<TypeService> TypeServices = (List<TypeService>) o;
-
                 out.print("<select class=\"fillform\" name=\"ID_type\">");
-
                 for (TypeService S : TypeServices) {
-
                     out.print("<option value =" + S.getIdType() + ">" + S.getNameType() + "</option>");
-                    //out.print("<option value =" + S.getMeasua()+ ">" + S.getMeasua() + "</option>");
-
                 }
-
                 out.print("</select>");
-
-
             %>
             <br>
             <input class="fillform" type="checkbox" name="optional" value="true" />Опционально
             <br>
-            <input type="submit" value="OK" />
+            <input type="submit" value="Добавить" />
             </fieldset>
         </form>
     </body>
