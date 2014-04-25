@@ -35,8 +35,8 @@
         <form class="fillform" name="Data Input Form" action="<%= ROOT%><%= SERVICE_UPDATE%>" method="POST">
             <fieldset class="fillform">
             Название улуги:<br>
-            <input type="hidden" name="ID_Service" value="<%= serviceToUpdate.getIdService()%>">
-            <input class="fillform" type="text" name="name_service" value="<%= serviceToUpdate.getNameService()%>" />
+            <input type="hidden" name="ID_Service" value="<%= serviceToUpdate.getIdService()%>" />
+            <input class="fillform" type="text" name="name_service" value="<%= serviceToUpdate.getNameService()%>" autofocus/>
             <br>Стоимость услуги:<br>
             <input class="fillform" type="text" name="cost" value="<%= serviceToUpdate.getCost()%>" />
             <br>

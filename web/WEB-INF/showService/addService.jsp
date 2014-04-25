@@ -24,7 +24,7 @@
         <form class="fillform" name="Data Input Form" action="<%= ROOT%><%= SERVICE_ADD%>" method="POST">
             <fieldset class="fillform">
             Название услуги:<br>
-            <input class="fillform" type="text" name="name_service" value="" />
+            <input class="fillform" type="text" name="name_service" value="" autofocus/>
             <br>Стоимость услуги:<br>
             <input class="fillform" type="text" name="cost" value="" />          
             <br>           
