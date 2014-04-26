@@ -277,6 +277,7 @@ public class ServiceServlet extends HttpServlet {
         response.sendRedirect(request.getContextPath() + SELECT_ALL_SERVICE);
     }
 
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP
      * <code>GET</code> method.
