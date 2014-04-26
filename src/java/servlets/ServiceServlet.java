@@ -26,7 +26,6 @@ import objects.ServiceInSim;
 import objects.Sim;
 import objects.User;
 import pack.DaoMaster;
-import static pack.EncodingConverter.convert; // Чтобы писать меньше
 import pack.HTMLHelper;
 import security.SecurityBean;
 import static pack.PathConstants.*;
@@ -102,10 +101,13 @@ public class ServiceServlet extends HttpServlet {
     protected void serviceAdd(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         SecurityBean.checkAccept(HTMLHelper.getUser(request));
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Имя сервиса: " + request.getParameter("name_service"));
+        }
         Service service = new Service();
-        int idType = Integer.parseInt(convert(request.getParameter("ID_type")));
-        String nameService = convert(request.getParameter("name_service"));
-        double cost = Double.parseDouble(convert(request.getParameter("cost")));
+        int idType = Integer.parseInt(request.getParameter("ID_type"));
+        String nameService = request.getParameter("name_service");
+        double cost = Double.parseDouble(request.getParameter("cost"));
         boolean optional = request.getParameter("optional") != null; // Если параметр не null, значит флажок был выбран
         service.setIdType(idType);
         service.setNameService(nameService);
@@ -127,7 +129,7 @@ public class ServiceServlet extends HttpServlet {
     protected void serviceDelete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         SecurityBean.checkAccept(HTMLHelper.getUser(request));
-        int idService = Integer.parseInt(convert(request.getParameter("ID_Service")));
+        int idService = Integer.parseInt(request.getParameter("ID_Service"));
         serviceDao.deleteService(idService);
         response.sendRedirect(request.getContextPath() + SELECT_ALL_SERVICE);
     }
@@ -164,10 +166,10 @@ public class ServiceServlet extends HttpServlet {
             throws ServletException, IOException {
         SecurityBean.checkAccept(HTMLHelper.getUser(request));
         Service service = new Service();
-        int idType = Integer.parseInt(convert(request.getParameter("ID_type")));
-        String nameService = convert(request.getParameter("name_service"));
-        double cost = Double.parseDouble(convert(request.getParameter("cost")));
-        int idService = Integer.parseInt(convert(request.getParameter("ID_Service")));
+        int idType = Integer.parseInt(request.getParameter("ID_type"));
+        String nameService = request.getParameter("name_service");
+        double cost = Double.parseDouble(request.getParameter("cost"));
+        int idService = Integer.parseInt(request.getParameter("ID_Service"));
         boolean optional = request.getParameter("optional") != null; // Если параметр не null, значит флажок был выбран
         service.setIdService(idService);
         service.setIdType(idType);

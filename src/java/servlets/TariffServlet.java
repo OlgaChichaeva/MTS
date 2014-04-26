@@ -22,7 +22,6 @@ import objects.ServiceInTariff;
 import objects.Tariff;
 import objects.User;
 import pack.DaoMaster;
-import static pack.EncodingConverter.convert;
 import pack.HTMLHelper;
 import security.SecurityBean;
 import static pack.PathConstants.*;
@@ -294,8 +293,8 @@ public class TariffServlet extends HttpServlet {
             throws ServletException, IOException {
         SecurityBean.checkAccept(HTMLHelper.getUser(request));
         
-        String nameTariff = convert(request.getParameter("name_tariff"));
-        String description = convert(request.getParameter("description"));
+        String nameTariff = request.getParameter("name_tariff");
+        String description = request.getParameter("description");
         Tariff tariff = new Tariff();
         tariff.setNameTariff(nameTariff);
         tariff.setDescription(description);
@@ -315,7 +314,7 @@ public class TariffServlet extends HttpServlet {
     protected void tariffDelete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         SecurityBean.checkAccept(HTMLHelper.getUser(request));
-        int idTariff = Integer.parseInt(convert(request.getParameter("ID_tariff")));
+        int idTariff = Integer.parseInt(request.getParameter("ID_tariff"));
         tariffDao.deleteTariffList(idTariff);
         response.sendRedirect(request.getContextPath() + SELECT_ALL_TARIFF);
     }
@@ -349,9 +348,9 @@ public class TariffServlet extends HttpServlet {
             throws ServletException, IOException {
         SecurityBean.checkAccept(HTMLHelper.getUser(request));
 
-        String nameTariff = convert(request.getParameter("name_tariff"));
-        String description = convert(request.getParameter("description"));
-        int idTariff = Integer.parseInt(convert(request.getParameter("ID_tariff")));
+        String nameTariff = request.getParameter("name_tariff");
+        String description = request.getParameter("description");
+        int idTariff = Integer.parseInt(request.getParameter("ID_tariff"));
         Tariff tariff = new Tariff();
         tariff.setDescription(description);
         tariff.setIdTariff(idTariff);
@@ -362,15 +361,15 @@ public class TariffServlet extends HttpServlet {
 
     private void addServiceToTariff(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         SecurityBean.checkAccept(HTMLHelper.getUser(request));
-        int idTariff = Integer.parseInt(convert(request.getParameter("ID_tariff")));
-        int idService = Integer.parseInt(convert(request.getParameter("ID_service")));
+        int idTariff = Integer.parseInt(request.getParameter("ID_tariff"));
+        int idService = Integer.parseInt(request.getParameter("ID_service"));
         ServiceInTariff sit = new ServiceInTariff();
         sit.setIdService(idService);
         sit.setIdTariff(idTariff);
         if (LOG.isDebugEnabled()) {
-            LOG.debug("idTariff = " + idTariff + ", idService = " + idService);
+            LOG.debug("Добавление услуги к тарифу. idTariff = " + idTariff + ", idService = " + idService);
         }
         servInTarDao.insert(sit);
-        request.getRequestDispatcher(SELECT_ALL_SERVICE + "?ID_tariff=" + idTariff).forward(request, response);
+        response.sendRedirect(request.getContextPath() + SELECT_ALL_SERVICE + "?ID_tariff=" + idTariff);
     }
 }
