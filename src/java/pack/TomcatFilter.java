@@ -31,8 +31,8 @@ public class TomcatFilter implements Filter {
                 LOG.debug("Не удалось считать параметры кодировки. Применена кодировка " + encoding);
             }
         }
-        if (LOG.isInfoEnabled()) {
-            LOG.info("TomcatFilter запущен. Имя фильтра: " + filterConfig.getFilterName());
+        if (LOG.isTraceEnabled()) {
+            LOG.trace("TomcatFilter запущен. Имя фильтра: " + filterConfig.getFilterName());
         }
     }
 
@@ -42,8 +42,8 @@ public class TomcatFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         if (httpRequest.getMethod().equalsIgnoreCase("POST")) {
             request.setCharacterEncoding(encoding);
-            if (LOG.isInfoEnabled()) {
-                LOG.info("Перекодировка");
+            if (LOG.isTraceEnabled()) {
+                LOG.trace("Перекодировка");
             }
         }
         chain.doFilter(request, response);
@@ -51,8 +51,8 @@ public class TomcatFilter implements Filter {
 
     @Override
     public void destroy() {
-        if (LOG.isInfoEnabled()) {
-            LOG.info("TomcatFilter уничтожен.");
+        if (LOG.isTraceEnabled()) {
+            LOG.trace("TomcatFilter уничтожен.");
         }
     }
 }
