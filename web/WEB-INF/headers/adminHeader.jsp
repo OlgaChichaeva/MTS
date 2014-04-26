@@ -26,16 +26,16 @@
                     <a class="headerlink" href="<%= ROOT%>/">Home</a>                
                     <a class="headerlink" href="<%= ROOT%><%= SELECT_ALL_SERVICE%>">Услуги</a>                 
                     <a class="headerlink" href="<%= ROOT%><%= SELECT_ALL_TARIFF%>">Тарифы</a>               
-                    <a class="headerlink" href="<%= ROOT%>/showService/">Type service</a>                 
-                    <a class="headerlink" href="<%= ROOT%>/showService/">Sim</a>                 
-                    <a class="headerlink" href="<%= ROOT%>/showService/">Traffic</a>                
-                    <a class="headerlink" href="<%= ROOT%>/showService/">Tariff List</a>                             
-                    <a class="headerlink" href="<%= ROOT%>/showService/">Sim contract</a>                      
-                    <a class="headerlink" href="<%= ROOT%>/showService/">Phone number</a>             
-                    <a class="headerlink" href="<%= ROOT%>/showService/">Legal entity</a>
-                    <a class="headerlink" href="<%= ROOT%>/showService/">Legal contract</a>
-                    <a class="headerlink" href="<%= ROOT%>/showService/">Client</a>
-                    <a class="headerlink" href="<%= ROOT%>/showService/">Client contract</a>
+                    <a class="headerlink" href="<%= ROOT%>/notReady.jsp">Type service</a>                 
+                    <a class="headerlink" href="<%= ROOT%>/notReady.jsp">Sim</a>                 
+                    <a class="headerlink" href="<%= ROOT%>/notReady.jsp">Traffic</a>                
+                    <a class="headerlink" href="<%= ROOT%>/notReady.jsp">Tariff List</a>                             
+                    <a class="headerlink" href="<%= ROOT%>/notReady.jsp">Sim contract</a>                      
+                    <a class="headerlink" href="<%= ROOT%>/notReady.jsp">Phone number</a>             
+                    <a class="headerlink" href="<%= ROOT%>/notReady.jsp">Legal entity</a>
+                    <a class="headerlink" href="<%= ROOT%>/notReady.jsp">Legal contract</a>
+                    <a class="headerlink" href="<%= ROOT%>/notReady.jsp">Client</a>
+                    <a class="headerlink" href="<%= ROOT%>/notReady.jsp">Client contract</a>
                 </td>
                 <td>
                     <p align="right">
