@@ -39,7 +39,9 @@ import static pack.LogManager.LOG;
     REMOVE_SERVICE_FROM_TARIFF,
     TARIFF_ADD_FORM,
     TARIFF_ADD,
-    TARIFF_DELETE
+    TARIFF_DELETE,
+    TARIFF_UPDATE_FORM,
+    TARIFF_UPDATE
 })
 public class TariffServlet extends HttpServlet {
 
@@ -112,6 +114,14 @@ public class TariffServlet extends HttpServlet {
             }
             case TARIFF_DELETE: {
                 tariffDelete(request, response);
+                break;
+            }
+            case TARIFF_UPDATE_FORM: {
+                tariffUpdateForm(request, response);
+                break;
+            }
+            case TARIFF_UPDATE: {
+                tariffUpdate(request, response);
                 break;
             }
             default: {
@@ -302,6 +312,46 @@ public class TariffServlet extends HttpServlet {
         SecurityBean.checkAccept(HTMLHelper.getUser(request));
         int idTariff = Integer.parseInt(convert(request.getParameter("ID_tariff")));
         tariffDao.deleteTariffList(idTariff);
+        response.sendRedirect(request.getContextPath() + SELECT_ALL_TARIFF);
+    }
+    
+    /**
+     * Перенаправляет на страницу обновления тарифа.
+     *
+     * @param request берём из методов doGet/doPost
+     * @param response берём из методов doGet/doPost
+     * @throws ServletException
+     * @throws IOException
+     */
+    protected void tariffUpdateForm(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        SecurityBean.checkAccept(HTMLHelper.getUser(request));
+        Tariff tariffToUpdate = tariffDao.getTariffList(Integer.parseInt(request.getParameter("ID_tariff")));
+        request.setAttribute("tariffToUpdate", tariffToUpdate);
+        request.getRequestDispatcher("/WEB-INF/tariff/update.jsp").forward(request, response);
+    }
+    
+    /**
+     * Обновляет услугу в согласии со значениями из параметров запроса, потом
+     * перенаправляет на страницу вывода всех услуг.
+     *
+     * @param request берём из методов doGet/doPost
+     * @param response берём из методов doGet/doPost
+     * @throws ServletException
+     * @throws IOException
+     */
+    protected void tariffUpdate(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        SecurityBean.checkAccept(HTMLHelper.getUser(request));
+
+        String nameTariff = convert(request.getParameter("name_tariff"));
+        String description = convert(request.getParameter("description"));
+        int idTariff = Integer.parseInt(convert(request.getParameter("ID_tariff")));
+        Tariff tariff = new Tariff();
+        tariff.setDescription(description);
+        tariff.setIdTariff(idTariff);
+        tariff.setNameTariff(nameTariff);
+        tariffDao.updateTariffList(tariff);
         response.sendRedirect(request.getContextPath() + SELECT_ALL_TARIFF);
     }
 }

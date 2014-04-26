@@ -18,17 +18,19 @@
     </head>
     <body>
         <jsp:include page="<%= HTMLHelper.CHOOSE_HEADER%>" flush="true"/>
+        <jsp:useBean id="tariffToUpdate" scope="request" class="objects.Tariff"/>
         <h2>Добавить тариф</h2>
-        <form class="fillform" name="Data Input Form" action="<%= ROOT%><%= TARIFF_ADD%>" method="POST">
+        <form class="fillform" name="Data Input Form" action="<%= ROOT%><%= TARIFF_UPDATE%>" method="POST">
             <fieldset class="fillform">
+                <input type="hidden" name="ID_tariff" value="<%= tariffToUpdate.getIdTariff()%>" />
                 Название тарифа:<br>
-                <input class="fillform" type="text" name="name_tariff" value="" autofocus/>
+                <input class="fillform" type="text" name="name_tariff" value="<%= tariffToUpdate.getNameTariff()%>" autofocus/>
 
                 <br>Описание тарифа:<br>
-                <input class="fillform" type="text" name="description" value=""/>
+                <input class="fillform" type="text" name="description" value="<%= tariffToUpdate.getDescription()%>"/>
 
                 <br>
-                <input type="submit" value="Добавить" />
+                <input type="submit" value="Применить изменения" />
             </fieldset>
         </form>
     </body>
