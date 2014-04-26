@@ -16,6 +16,7 @@ import security.SecurityBean;
  */
 public class ServletHelper {
 
+    private final static ClientContrDAO clientContrDao = DaoMaster.getClientContrDao();
     /**
      * Получает пользователя из сессии, к которой относится запрос
      * @param request запрос
@@ -32,7 +33,10 @@ public class ServletHelper {
      * @param simId ИД сим-карты
      * @return true, если есть право просмотра, иначе false
      */
-    public static boolean isUserAcceptedForSim(User user, int simId, ClientContrDAO clientContrDao) {
+    public static boolean isUserAcceptedForSim(User user, int simId) {
+        if (user == null) {
+            return false;
+        }
         switch (user.getIdRole()) {
             case SecurityBean.CLIENT: {
                 // Проверяем, есть ли среди договоров клиента договор на эту сим-карту.

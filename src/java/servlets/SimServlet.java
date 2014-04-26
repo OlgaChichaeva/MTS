@@ -92,12 +92,17 @@ public class SimServlet extends HttpServlet {
     
     /**
      * Перенаправляет на страницу трафика для сим-карты, полученной из запроса.
+     * Если доступ невозможен, не пускает на страницу.
      * @param request
      * @param response 
      */
     private void showTraffic(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int simId = Integer.parseInt(request.getParameter("sim_id"));
+        if (!ServletHelper.isUserAcceptedForSim(ServletHelper.getUser(request), simId)) {
+            SecurityBean.denyAccess();
+            return;
+        } 
         List<Traffic> trafficList = trafficDao.getBySimId(simId);
         request.setAttribute("trafficList", trafficList);
         request.getRequestDispatcher("/WEB-INF/sim/showTraffic.jsp").forward(request, response);

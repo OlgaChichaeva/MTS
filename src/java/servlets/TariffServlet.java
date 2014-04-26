@@ -16,13 +16,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import objects.ClientContr;
 import objects.ServiceInSim;
 import objects.ServiceInTariff;
 import objects.Tariff;
 import objects.User;
 import pack.DaoMaster;
-import pack.HTMLHelper;
 import security.SecurityBean;
 import static pack.PathConstants.*;
 import static pack.LogManager.LOG;
@@ -49,7 +47,6 @@ public class TariffServlet extends HttpServlet {
 
     private final TariffDao tariffDao = DaoMaster.getTariffDao();
     private final ServiceInTariffDao servInTarDao = DaoMaster.getServiceInTariffDao();
-    private final ClientContrDAO clientContrDao = DaoMaster.getClientContrDao();
     private final ServiceInSimDAO sisDao = DaoMaster.getServiceInSimDao();
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -226,7 +223,7 @@ public class TariffServlet extends HttpServlet {
         // Проверяем, имеет ли юзер право смотреть услуги для этой сим-карты
         if (stringSimId != null && user != null) {
             int simID = Integer.parseInt(stringSimId);
-            boolean accept = ServletHelper.isUserAcceptedForSim(user, simID, clientContrDao);
+            boolean accept = ServletHelper.isUserAcceptedForSim(user, simID);
             if (accept) { // Если есть право смотреть сим-карту, то загружаем
                 // подключенные к сим-карте услуги.
                 sisList = sisDao.getIdSim(simID);
