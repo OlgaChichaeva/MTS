@@ -4,6 +4,7 @@
  */
 package servlets;
 
+import dao.DaoException;
 import dao.PhoneNumberDAO;
 import objects.Service;
 import dao.ServiceDao;
@@ -30,6 +31,7 @@ import pack.HTMLHelper;
 import security.SecurityBean;
 import static pack.PathConstants.*;
 import static pack.LogManager.LOG;
+import pack.MessageBean;
 
 /**
  * Сервлет для работы с услугами.
@@ -259,7 +261,16 @@ public class ServiceServlet extends HttpServlet {
         ServiceInSim sis = new ServiceInSim();
         sis.setIdService(idService);
         sis.setIdSim(idSim);
-        serviceInSimDao.insert(sis);
+        try {
+            serviceInSimDao.insert(sis);
+        } catch (DaoException ex)
+        {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Пользователь: " + HTMLHelper.getUser(request).getUserName() 
+                        + ". Ошибка добавления услуги " + idService + " к сим-карте " + idSim + ".", ex);
+            }
+            request.getSession(true).setAttribute(MessageBean.ATTR_NAME, new MessageBean("Услуга уже подключена."));
+        }
         response.sendRedirect(request.getContextPath() + SELECT_ALL_SERVICE);
     }
 
