@@ -113,7 +113,7 @@ public class SecurityBean {
      * предоставлен по умолчанию.
      */
     public static void checkAccept(User user, int... idRoles) {
-        if (isUserAccepted(user, idRoles)) {
+        if (!isUserAccepted(user, idRoles)) {
             denyAccess();
         }
     }
