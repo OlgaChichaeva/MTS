@@ -240,6 +240,25 @@ begin
 end;
 /
 
+---------------------------------------------------------------------------------------------------------------------------
+-- Для автоматического расчёта трафика
+CREATE OR REPLACE FUNCTION calculateTrafficCost(IDservice NUMBER, amount NUMBER) return NUMBER
+  IS
+    service_cost NUMBER;
+  BEGIN
+    SELECT cost INTO service_cost FROM service WHERE ID_service=IDservice;
+    RETURN service_cost*amount;
+  END;
+/
+
+CREATE OR REPLACE TRIGGER traffic_insert_trigger
+  BEFORE INSERT ON traffic
+  FOR EACH ROW
+  BEGIN
+    SELECT calculateTrafficCost(:NEW.ID_service, :NEW.amount) INTO:NEW.cost FROM dual;
+  END;
+/
+---------------------------------------------------------------------------------------------------------------------------
 
 -- Заполнение таблиц:
 INSERT INTO numbers(phone_number) VALUES(89111111111);
@@ -311,5 +330,25 @@ INSERT INTO users(id_role, user_name, user_password, client_id) VALUES(2, 'sidor
 INSERT INTO users(id_role, user_name, user_password, client_id) VALUES(2, 'ivan', 'ivan', 3);
 INSERT INTO users(id_role, user_name, user_password, company_id) VALUES(3, 'tsu', 'tsu', 1);
 INSERT INTO users(id_role, user_name, user_password, company_id) VALUES(3, 'vas', 'vas', 2);
+
+INSERT INTO traffic(sim_id, ID_service, amount, time) VALUES (1, 1, 3.46, SYSDATE);
+INSERT INTO traffic(sim_id, ID_service, amount, time) VALUES (1, 1, 0.12, SYSDATE);
+INSERT INTO traffic(sim_id, ID_service, amount, time) VALUES (1, 2, 1.13, SYSDATE);
+INSERT INTO traffic(sim_id, ID_service, amount, time) VALUES (1, 3, 1, SYSDATE);
+INSERT INTO traffic(sim_id, ID_service, amount, time) VALUES (1, 4, 19.6, SYSDATE);
+INSERT INTO traffic(sim_id, ID_service, amount, time) VALUES (1, 3, 1, SYSDATE);
+
+INSERT INTO traffic(sim_id, ID_service, amount, time) VALUES (2, 1, 1.45, SYSDATE);
+INSERT INTO traffic(sim_id, ID_service, amount, time) VALUES (2, 1, 2.2, SYSDATE);
+INSERT INTO traffic(sim_id, ID_service, amount, time) VALUES (2, 2, 0.13, SYSDATE);
+INSERT INTO traffic(sim_id, ID_service, amount, time) VALUES (2, 3, 1, SYSDATE);
+INSERT INTO traffic(sim_id, ID_service, amount, time) VALUES (2, 5, 3.3, SYSDATE);
+INSERT INTO traffic(sim_id, ID_service, amount, time) VALUES (2, 3, 1, SYSDATE);
+INSERT INTO traffic(sim_id, ID_service, amount, time) VALUES (2, 3, 1, SYSDATE);
+INSERT INTO traffic(sim_id, ID_service, amount, time) VALUES (2, 5, 1.002, SYSDATE);
+INSERT INTO traffic(sim_id, ID_service, amount, time) VALUES (2, 3, 1, SYSDATE);
+INSERT INTO traffic(sim_id, ID_service, amount, time) VALUES (2, 3, 1, SYSDATE);
+INSERT INTO traffic(sim_id, ID_service, amount, time) VALUES (2, 3, 1, SYSDATE);
+INSERT INTO traffic(sim_id, ID_service, amount, time) VALUES (2, 3, 1, SYSDATE);
 
 COMMIT;

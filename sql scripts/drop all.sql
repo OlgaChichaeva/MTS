@@ -23,3 +23,4 @@ drop sequence l_entity_seq$company_id;
 drop sequence sim_seq$sim_id;
 drop sequence roles_seq$id_role;
 drop sequence users_seq$id_user;
+drop function calculateTrafficCost;
