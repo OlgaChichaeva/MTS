@@ -12,6 +12,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <title>Ошибка базы данных</title>
         <% String ROOT = request.getContextPath();%>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <%= HTMLHelper.includeCSS(ROOT) %>

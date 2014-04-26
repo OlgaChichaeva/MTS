@@ -13,7 +13,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>МТС</title>
     </head>
     <body>
         <jsp:useBean id="currentUser" scope="session" class="objects.User" />
