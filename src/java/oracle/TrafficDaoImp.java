@@ -41,7 +41,8 @@ class TrafficDaoImp extends Abstract implements TrafficDao {
                     + " INNER JOIN tariff_list tar on sim.id_tariff=tar.id_tariff"
                     + " INNER JOIN service serv on tr.ID_service=serv.ID_service"
                     + " INNER JOIN type_service type on serv.ID_type=type.ID_type"
-                    + " where tr.sim_id =?");
+                    + " where tr.sim_id =?"
+                    + " ORDER BY time");
             ps.setInt(1, simId);
             ResultSet rs = ps.executeQuery();
             List<Traffic> traffics = new ArrayList<Traffic>();
@@ -107,7 +108,8 @@ class TrafficDaoImp extends Abstract implements TrafficDao {
                     + " INNER JOIN tariff_list tar on sim.id_tariff=tar.id_tariff"
                     + " INNER JOIN service serv on tr.ID_service=serv.ID_service"
                     + " INNER JOIN type_service type on serv.ID_type=type.ID_type"
-                    + " where tr.ID_service =?");
+                    + " where tr.ID_service =?"
+                    + " ORDER BY time");
             ps.setInt(1, idService);
             ResultSet rs = ps.executeQuery();
             List<Traffic> traffics = new ArrayList<Traffic>();
