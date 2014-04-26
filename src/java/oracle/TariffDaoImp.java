@@ -36,7 +36,7 @@ class TariffDaoImp extends Abstract implements TariffDao {
 
             List<Tariff> tariffs = new ArrayList<Tariff>();
             Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery("select * from tariff_list");
+            ResultSet rs = st.executeQuery("select * from tariff_list order by name_tariff");
             while (rs.next()) {
                 Tariff tariff = makeTariff(rs);
                 tariffs.add(tariff);
