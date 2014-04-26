@@ -22,6 +22,7 @@ import pack.DaoMaster;
 import pack.HTMLHelper;
 import static pack.PathConstants.*;
 import static pack.LogManager.LOG;
+import pack.ServletHelper;
 import security.SecurityBean;
 
 /**
@@ -93,7 +94,7 @@ public class ClientServlet extends HttpServlet {
      */
     private void clientHome(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        User user = HTMLHelper.getUser(request);
+        User user = ServletHelper.getUser(request);
         SecurityBean.checkAccept(user, SecurityBean.CLIENT);
         Map<ClientContr, PhoneNumber> phonesMap = new HashMap<>();
         List<ClientContr> contrs = clientContrDao.getContrsByClientID(user.getIdClient());

@@ -26,6 +26,7 @@ import pack.HTMLHelper;
 import static pack.PathConstants.*;
 import static pack.LogManager.LOG;
 import pack.MessageBean;
+import pack.ServletHelper;
 import security.SecurityBean;
 
 /**
@@ -54,7 +55,7 @@ public class SimServlet extends HttpServlet {
      */
     private void chooseSim(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        User user = HTMLHelper.getUser(request);
+        User user = ServletHelper.getUser(request);
         SecurityBean.checkAccept(user, SecurityBean.CLIENT, SecurityBean.LEGAL_ENTITY);
         List<Sim> simList = null;
         Map<Sim, PhoneNumber> simAndNumbers = null;

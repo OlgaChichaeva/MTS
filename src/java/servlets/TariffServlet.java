@@ -27,6 +27,7 @@ import security.SecurityBean;
 import static pack.PathConstants.*;
 import static pack.LogManager.LOG;
 import pack.MessageBean;
+import pack.ServletHelper;
 
 /**
  *
@@ -170,7 +171,7 @@ public class TariffServlet extends HttpServlet {
     }
 
     private void removeServiceFromTariff(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        SecurityBean.checkAccept(HTMLHelper.getUser(request));
+        SecurityBean.checkAccept(ServletHelper.getUser(request));
         int idService = Integer.parseInt(request.getParameter("ID_service"));
         int idTariff = Integer.parseInt(request.getParameter("ID_tariff"));
         ServiceInTariff sInT = new ServiceInTariff();
@@ -218,7 +219,7 @@ public class TariffServlet extends HttpServlet {
         List<ServiceInTariff> servInTarList = servInTarDao.getIdTariff(idTariff);
         request.setAttribute("servInTarList", servInTarList);
         String stringSimId = request.getParameter("sim_id");
-        User user = HTMLHelper.getUser(request);
+        User user = ServletHelper.getUser(request);
 
         List<ServiceInSim> sisList = null; // Список услуг, подключенных к сим-карте
 
@@ -277,7 +278,7 @@ public class TariffServlet extends HttpServlet {
      */
     private void tariffAddForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        SecurityBean.checkAccept(HTMLHelper.getUser(request));
+        SecurityBean.checkAccept(ServletHelper.getUser(request));
         request.getRequestDispatcher("/WEB-INF/tariff/addTariff.jsp").forward(request, response);
     }
     
@@ -292,7 +293,7 @@ public class TariffServlet extends HttpServlet {
      */
     protected void tariffAdd(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        SecurityBean.checkAccept(HTMLHelper.getUser(request));
+        SecurityBean.checkAccept(ServletHelper.getUser(request));
         
         String nameTariff = request.getParameter("name_tariff");
         String description = request.getParameter("description");
@@ -314,7 +315,7 @@ public class TariffServlet extends HttpServlet {
      */
     protected void tariffDelete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        SecurityBean.checkAccept(HTMLHelper.getUser(request));
+        SecurityBean.checkAccept(ServletHelper.getUser(request));
         int idTariff = Integer.parseInt(request.getParameter("ID_tariff"));
         tariffDao.deleteTariffList(idTariff);
         response.sendRedirect(request.getContextPath() + SELECT_ALL_TARIFF);
@@ -330,7 +331,7 @@ public class TariffServlet extends HttpServlet {
      */
     protected void tariffUpdateForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        SecurityBean.checkAccept(HTMLHelper.getUser(request));
+        SecurityBean.checkAccept(ServletHelper.getUser(request));
         Tariff tariffToUpdate = tariffDao.getTariffList(Integer.parseInt(request.getParameter("ID_tariff")));
         request.setAttribute("tariffToUpdate", tariffToUpdate);
         request.getRequestDispatcher("/WEB-INF/tariff/update.jsp").forward(request, response);
@@ -347,7 +348,7 @@ public class TariffServlet extends HttpServlet {
      */
     protected void tariffUpdate(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        SecurityBean.checkAccept(HTMLHelper.getUser(request));
+        SecurityBean.checkAccept(ServletHelper.getUser(request));
 
         String nameTariff = request.getParameter("name_tariff");
         String description = request.getParameter("description");
@@ -368,7 +369,7 @@ public class TariffServlet extends HttpServlet {
      * @param response берём из методов doGet/doPost
      */
     private void addServiceToTariff(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        SecurityBean.checkAccept(HTMLHelper.getUser(request));
+        SecurityBean.checkAccept(ServletHelper.getUser(request));
         int idTariff = Integer.parseInt(request.getParameter("ID_tariff"));
         int idService = Integer.parseInt(request.getParameter("ID_service"));
         ServiceInTariff sit = new ServiceInTariff();

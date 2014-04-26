@@ -25,6 +25,7 @@ import security.SecurityBean;
 import static pack.PathConstants.*;
 import static pack.LogManager.LOG;
 import pack.MessageBean;
+import pack.ServletHelper;
 
 /**
  * Сервлет для работы с услугами.
@@ -76,7 +77,7 @@ public class ServiceServlet extends HttpServlet {
      */
     protected void serviceAddForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        SecurityBean.checkAccept(HTMLHelper.getUser(request));
+        SecurityBean.checkAccept(ServletHelper.getUser(request));
         List<TypeService> typeServices = serviceTypeDao.getAllType();
         request.setAttribute("TypeServiceList", typeServices);
         request.getRequestDispatcher("/WEB-INF/showService/addService.jsp").forward(request, response);
@@ -93,7 +94,7 @@ public class ServiceServlet extends HttpServlet {
      */
     protected void serviceAdd(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        SecurityBean.checkAccept(HTMLHelper.getUser(request));
+        SecurityBean.checkAccept(ServletHelper.getUser(request));
         if (LOG.isDebugEnabled()) {
             LOG.debug("Имя сервиса: " + request.getParameter("name_service"));
         }
@@ -121,7 +122,7 @@ public class ServiceServlet extends HttpServlet {
      */
     protected void serviceDelete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        SecurityBean.checkAccept(HTMLHelper.getUser(request));
+        SecurityBean.checkAccept(ServletHelper.getUser(request));
         int idService = Integer.parseInt(request.getParameter("ID_Service"));
         serviceDao.deleteService(idService);
         response.sendRedirect(request.getContextPath() + SELECT_ALL_SERVICE);
@@ -138,7 +139,7 @@ public class ServiceServlet extends HttpServlet {
      */
     protected void serviceUpdateForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        SecurityBean.checkAccept(HTMLHelper.getUser(request));
+        SecurityBean.checkAccept(ServletHelper.getUser(request));
         List<TypeService> typeServices = serviceTypeDao.getAllType();
         Service serviceToUpdate = serviceDao.getService(Integer.parseInt(request.getParameter("ID_Service")));
         request.setAttribute("TypeServiceList", typeServices);
@@ -157,7 +158,7 @@ public class ServiceServlet extends HttpServlet {
      */
     protected void serviceUpdate(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        SecurityBean.checkAccept(HTMLHelper.getUser(request));
+        SecurityBean.checkAccept(ServletHelper.getUser(request));
         Service service = new Service();
         int idType = Integer.parseInt(request.getParameter("ID_type"));
         String nameService = request.getParameter("name_service");
@@ -229,7 +230,7 @@ public class ServiceServlet extends HttpServlet {
         } catch (DaoException ex)
         {
             if (LOG.isDebugEnabled()) {
-                LOG.debug("Пользователь: " + HTMLHelper.getUser(request).getUserName() 
+                LOG.debug("Пользователь: " + ServletHelper.getUser(request).getUserName() 
                         + ". Ошибка добавления услуги " + idService + " к сим-карте " + idSim + ".", ex);
             }
             request.getSession(true).setAttribute(MessageBean.ATTR_NAME, new MessageBean("Услуга уже подключена."));

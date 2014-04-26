@@ -64,15 +64,6 @@ public class HTMLHelper {
      * Путь странице автоматического выбора заголовка
      */
     public static final String CHOOSE_HEADER = HEADERS + "/chooseHeader.jsp";
-    
-    /**
-     * Получает пользователя из сессии, к которой относится запрос
-     * @param request запрос
-     * @return пользователь (может быть null, если в сессии нет юзера)
-     */
-    public static User getUser(HttpServletRequest request) {
-        return (User) request.getSession(true).getAttribute("currentUser");
-    }
     /**
      * Получаем кнопки Update и Delete
      * @param updatePath путь для update
