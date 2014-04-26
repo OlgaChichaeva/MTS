@@ -4,6 +4,7 @@
     Author     : Ivan
 --%>
 
+<%@page import="objects.Tariff"%>
 <%@page import="objects.ServiceInSim"%>
 <%@page import="security.SecurityBean"%>
 <%@page import="objects.Service"%>
@@ -39,8 +40,10 @@
             if (servInTarList.isEmpty()) {
                 out.print("Данный тариф не содержит услуг.");
                 return;
-            }%>
-            <h1>Услуги, входящие в тариф <%= servInTarList.get(0).getTariff().getNameTariff()%></h1>
+            }
+            Tariff tariff = servInTarList.get(0).getTariff();
+            %>
+            <h1>Услуги, входящие в тариф <%= tariff.getNameTariff()%></h1>
             <table class="select" border="1">
                 <th class="select" width="70%">Услуга</th>
                 <th class="select" width="30%">Действия</th>
@@ -98,5 +101,10 @@
                     }
                 %>
             </table>
+            <%if (currentUser.getIdRole() != SecurityBean.NOT_LOGGED && !acceptedToChange) {
+                %>
+                <a class="other" href="<%= ROOT%><%= CHOOSE_SIM%>?ID_tariff=<%= tariff.getIdTariff()%>">Установить тариф</a>
+                <%
+            }%>
     </body>
 </html>

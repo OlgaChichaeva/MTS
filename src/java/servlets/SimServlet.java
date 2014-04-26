@@ -17,11 +17,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import objects.PhoneNumber;
 import objects.Sim;
+import objects.Tariff;
 import objects.User;
 import pack.DaoMaster;
 import pack.HTMLHelper;
 import static pack.PathConstants.*;
 import static pack.LogManager.LOG;
+import pack.MessageBean;
 import security.SecurityBean;
 
 /**
@@ -29,7 +31,8 @@ import security.SecurityBean;
  * @author Ivan
  */
 @WebServlet(name = "SimServlet", loadOnStartup = 1, urlPatterns = {
-    CHOOSE_SIM
+    CHOOSE_SIM,
+    CHANGE_TARIFF
 })
 public class SimServlet extends HttpServlet {
     
@@ -61,7 +64,25 @@ public class SimServlet extends HttpServlet {
             }
         }
         request.setAttribute("simAndNumbers", simAndNumbers); // Кладём список всех контрактов в запрос.
-        request.getRequestDispatcher("/WEB-INF/showService/chooseSim.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/sim/chooseSim.jsp").forward(request, response);
+    }
+    
+    /**
+     * Меняет тариф на сим-карте. Затем перенаправляет на страницу с тарифом.
+     * @param request
+     * @param response 
+     */
+    private void changeTariff(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        int tariffId = Integer.parseInt(request.getParameter("ID_tariff"));
+        int simId = Integer.parseInt(request.getParameter("sim_id"));
+        Sim sim = simDao.getIdSim(simId);
+        Tariff tariff = new Tariff();
+        tariff.setIdTariff(tariffId);
+        sim.setTariff(tariff);
+        simDao.update(sim);
+        request.getSession(true).setAttribute(MessageBean.ATTR_NAME, new MessageBean("Тариф успешно изменён."));
+        response.sendRedirect(request.getContextPath() + SHOW_TARIFF + "?ID_tariff=" + tariffId);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -108,6 +129,10 @@ public class SimServlet extends HttpServlet {
         String userPath = request.getServletPath();
         response.setContentType("text/html;charset=UTF-8");
         switch(userPath) {
+            case CHANGE_TARIFF: {
+                changeTariff(request, response);
+                break;
+            }
             default: {
                 if (LOG.isDebugEnabled()) {
                     LOG.debug("Действия для пути [" + userPath + "] не определены.");

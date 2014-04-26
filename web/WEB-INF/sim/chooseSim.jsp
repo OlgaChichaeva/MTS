@@ -27,6 +27,15 @@
             if (simAndNumbers == null) {
                 return;
             }
+            String pathToGo = ROOT;
+            String hiddenId = "";
+            if (request.getParameter("ID_service") != null) {
+                pathToGo = ADD_SERVICE_TO_SIM;
+                hiddenId = "<input name=\"ID_service\" type=\"hidden\" value=\""+request.getParameter("ID_service") + "\" />";
+            } else if (request.getParameter("ID_tariff") != null) {
+                pathToGo = CHANGE_TARIFF;
+                hiddenId = "<input name=\"ID_tariff\" type=\"hidden\" value=\""+request.getParameter("ID_tariff") + "\" />";
+            }
         %>
         <table class="select" border="1">
             <th class="select" width="70%">Сим-карта</th>
@@ -41,9 +50,9 @@
                              (№ сим-карты: <%= sim.getSimId()%>)
                         </td>
                         <td class="withform">
-                            <form name="Choose Sim Form" action="<%= ROOT %><%= ADD_SERVICE_TO_SIM%>" method="POST">
+                            <form name="Choose Sim Form" action="<%= ROOT %><%= pathToGo%>" method="POST">
                                 <input name="sim_id" type="hidden" value="<%= sim.getSimId()%>" />
-                                <input name="ID_service" type="hidden" value="<%= request.getParameter("ID_service")%>" />
+                                <%= hiddenId %>
                                 <input type="submit" value="Выбрать" />
                             </form>
                         </td>

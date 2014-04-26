@@ -5,18 +5,14 @@
 package servlets;
 
 import dao.DaoException;
-import dao.PhoneNumberDAO;
 import objects.Service;
 import dao.ServiceDao;
 import dao.ServiceInSimDAO;
-import dao.SimDao;
 import objects.TypeService;
 import dao.TypeServiceDao;
 import filters.ServiceFilter;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;

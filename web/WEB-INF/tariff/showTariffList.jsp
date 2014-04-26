@@ -72,6 +72,10 @@
                 <% if (acceptedToChange) { // Показываем кнопки только тогда, когда юзер имеет права для редактирования %>
                 <%= HTMLHelper.makeUpdateAndDelete(ROOT+TARIFF_UPDATE_FORM, ROOT+TARIFF_DELETE, "ID_tariff", tariff.getIdTariff())%>
                 <%
+                    } else if (currentUser.getIdRole() != SecurityBean.NOT_LOGGED) {
+                        %>
+                        <a class="other" href="<%= ROOT%><%= CHOOSE_SIM%>?ID_tariff=<%= tariff.getIdTariff()%>">Установить тариф</a>
+                        <%
                     } else {
                         out.print("<hr>");
                     }

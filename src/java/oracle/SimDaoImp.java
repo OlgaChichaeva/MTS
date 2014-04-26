@@ -47,9 +47,10 @@ class SimDaoImp extends Abstract implements SimDao {
     @Override
     public void update(Sim sim) {
         try (Connection con = getConn()) {
-            PreparedStatement ps = con.prepareStatement("Update  Sim set(ID_tariff,account) =?,? where sim_id  = ?");
+            PreparedStatement ps = con.prepareStatement("Update  Sim set ID_tariff=?,account=? where sim_id  = ?");
             ps.setInt(1, sim.getTariffId());
             ps.setDouble(2, sim.getAccount());
+            ps.setInt(3, sim.getSimId());
             ps.executeUpdate();
         } catch (SQLException ex) {
             throw new DaoException(ex);
