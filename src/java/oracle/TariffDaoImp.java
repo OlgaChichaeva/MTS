@@ -54,10 +54,9 @@ class TariffDaoImp extends Abstract implements TariffDao {
         try (Connection con = getConn()) {
             PreparedStatement ps = con.prepareStatement("select * from tariff_list where ID_tariff=?");
             ps.setInt(1, idTariff);
-            ResultSet rs = ps.executeQuery("select * from tariff_list");
+            ResultSet rs = ps.executeQuery();
             rs.next();
             Tariff tariff = makeTariff(rs);
-
 
             return tariff;
         } catch (SQLException ex) {
@@ -68,10 +67,10 @@ class TariffDaoImp extends Abstract implements TariffDao {
     @Override
     public void updateTariffList(Tariff tariff) {
         try (Connection con = getConn()) {
-            PreparedStatement ps = con.prepareStatement("update tariff_list set ID_tariff=?,name_tariff=?,description = ? where ID_tariff = ? ");
-            ps.setInt(1, tariff.getIdTariff());
-            ps.setString(2, tariff.getNameTariff());
-            ps.setString(3, tariff.getDescription());
+            PreparedStatement ps = con.prepareStatement("update tariff_list set name_tariff=?,description = ? where ID_tariff = ? ");
+            ps.setString(1, tariff.getNameTariff());
+            ps.setString(2, tariff.getDescription());
+            ps.setInt(3, tariff.getIdTariff());
             ps.executeUpdate();
 
         } catch (SQLException ex) {
