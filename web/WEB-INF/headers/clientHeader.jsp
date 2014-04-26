@@ -25,7 +25,8 @@
                 <td width="70%">
                     <a class="headerlink" href="<%= ROOT%><%=CLIENT_HOME%>">Home</a>
                     <a class="headerlink" href="<%= ROOT%><%=SELECT_ALL_SERVICE%>">Услуги</a>                 
-                    <a class="headerlink" href="<%= ROOT%><%=SELECT_ALL_TARIFF%>">Тарифы</a>  
+                    <a class="headerlink" href="<%= ROOT%><%=SELECT_ALL_TARIFF%>">Тарифы</a>
+                    <a class="headerlink" href="<%= ROOT%><%=CHOOSE_SIM%>?forTraffic=true">История</a>
                 </td>
                 <td>
                     <p align="right">

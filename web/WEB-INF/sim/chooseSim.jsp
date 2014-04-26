@@ -27,7 +27,7 @@
             if (simAndNumbers == null) {
                 return;
             }
-            String pathToGo = ROOT;
+            String pathToGo = "";
             String hiddenId = "";
             if (request.getParameter("ID_service") != null) {
                 pathToGo = ADD_SERVICE_TO_SIM;
@@ -35,6 +35,9 @@
             } else if (request.getParameter("ID_tariff") != null) {
                 pathToGo = CHANGE_TARIFF;
                 hiddenId = "<input name=\"ID_tariff\" type=\"hidden\" value=\""+request.getParameter("ID_tariff") + "\" />";
+            } else if (request.getParameter("forTraffic") != null) {
+                pathToGo = SHOW_TRAFFIC;
+                //hiddenId = "<input name=\"ID_tariff\" type=\"hidden\" value=\""+request.getParameter("ID_tariff") + "\" />";
             }
         %>
         <table class="select" border="1">

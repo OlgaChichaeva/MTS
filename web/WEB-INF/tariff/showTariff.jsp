@@ -45,8 +45,10 @@
             %>
             <h1>Услуги, входящие в тариф <%= tariff.getNameTariff()%></h1>
             <table class="select" border="1">
+                <tr>
                 <th class="select" width="70%">Услуга</th>
                 <th class="select" width="30%">Действия</th>
+                </tr>
                 <%
                     for (ServiceInTariff sInt : servInTarList) {
                         Service service = sInt.getService();

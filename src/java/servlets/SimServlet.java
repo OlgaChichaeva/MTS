@@ -6,6 +6,7 @@ package servlets;
 
 import dao.PhoneNumberDAO;
 import dao.SimDao;
+import dao.TrafficDao;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import objects.PhoneNumber;
 import objects.Sim;
 import objects.Tariff;
+import objects.Traffic;
 import objects.User;
 import pack.DaoMaster;
 import pack.HTMLHelper;
@@ -32,12 +34,14 @@ import security.SecurityBean;
  */
 @WebServlet(name = "SimServlet", loadOnStartup = 1, urlPatterns = {
     CHOOSE_SIM,
-    CHANGE_TARIFF
+    CHANGE_TARIFF,
+    SHOW_TRAFFIC
 })
 public class SimServlet extends HttpServlet {
     
     private final SimDao simDao = DaoMaster.getSimDao();
     private final PhoneNumberDAO phoneNumberDao = DaoMaster.getPhoneNumberDao();
+    private final TrafficDao trafficDao = DaoMaster.getTrafficDao();
     
     /**
      * Загружает сим-карты и телефоны, загружает их в Map и перенаправляет на
@@ -83,6 +87,19 @@ public class SimServlet extends HttpServlet {
         simDao.update(sim);
         request.getSession(true).setAttribute(MessageBean.ATTR_NAME, new MessageBean("Тариф успешно изменён."));
         response.sendRedirect(request.getContextPath() + SHOW_TARIFF + "?ID_tariff=" + tariffId);
+    }
+    
+    /**
+     * Перенаправляет на страницу трафика для сим-карты, полученной из запроса.
+     * @param request
+     * @param response 
+     */
+    private void showTraffic(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        int simId = Integer.parseInt(request.getParameter("sim_id"));
+        List<Traffic> trafficList = trafficDao.getBySimId(simId);
+        request.setAttribute("trafficList", trafficList);
+        request.getRequestDispatcher("/WEB-INF/sim/showTraffic.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -131,6 +148,10 @@ public class SimServlet extends HttpServlet {
         switch(userPath) {
             case CHANGE_TARIFF: {
                 changeTariff(request, response);
+                break;
+            }
+            case SHOW_TRAFFIC: {
+                showTraffic(request, response);
                 break;
             }
             default: {
