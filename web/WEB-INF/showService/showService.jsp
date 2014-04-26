@@ -32,6 +32,14 @@
             String enteredIdType = HTMLHelper.fromNull(request.getParameter("ID_type"));
             String enteredCost = HTMLHelper.fromNull(request.getParameter("cost"));
             boolean acceptedToChange = !currentUser.getReadOnly();
+            
+            // Узнаём, пришли ли сюда со страницы тарифа, чтобы добавить услуги к тарифу.
+            String idTariffString = request.getParameter("ID_tariff");
+            int idTariff = -1;
+            boolean fromTariff = (idTariffString != null);
+            if (fromTariff) {
+                idTariff = Integer.parseInt(idTariffString);
+            }
         %>
         <table border=1 class="select"><tr>
                 <th class="select" width="25%">Название</th>
@@ -74,8 +82,22 @@
             %>
 
             <td class="withform">
-                <% if (acceptedToChange) { // Показываем кнопки только тогда, когда юзер имеет права для редактирования %>
-                <%= HTMLHelper.makeUpdateAndDelete(ROOT+SERVICE_UPDATE_FORM, ROOT+SERVICE_DELETE, "ID_Service", service.getIdService())%>
+                <% 
+                    if (acceptedToChange) { // Показываем кнопки только тогда, когда юзер имеет права для редактирования 
+                        int idService = service.getIdService();
+                %>
+                <%= HTMLHelper.makeUpdateAndDelete(ROOT+SERVICE_UPDATE_FORM, ROOT+SERVICE_DELETE, "ID_Service", idService)%>
+                <%
+                    if (fromTariff) {
+                        %>
+                        <form name="add service to tariff" action="<%= ROOT%><%= ADD_SERVICE_TO_TARIFF%>" method="POST">
+                            <input type="hidden" name="ID_tariff" value="<%= idTariff%>" />
+                            <input type="hidden" name="ID_service" value="<%= idService%>" />
+                            <input type="submit" value="Добавить к тарифу" />
+                        </form>
+                        <%
+                    }
+                %>
                 <%
                     // Если юзер вошёл и услуга опциональная, то дать возможность подключиться.
                     } else if (currentUser.getIdRole() != SecurityBean.NOT_LOGGED && service.isOptional()) {

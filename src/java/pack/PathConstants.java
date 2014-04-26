@@ -32,4 +32,5 @@ public interface PathConstants {
     String SERVICE_DELETE = "/ServiceDelete";
     String SERVICE_ADD = "/ServiceAdd";
     String SELECT_ALL_SERVICE = "/SelectAllService";
+    String ADD_SERVICE_TO_TARIFF = "/AddServiceToTariff";
 }

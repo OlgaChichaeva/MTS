@@ -41,7 +41,8 @@ import static pack.LogManager.LOG;
     TARIFF_ADD,
     TARIFF_DELETE,
     TARIFF_UPDATE_FORM,
-    TARIFF_UPDATE
+    TARIFF_UPDATE,
+    ADD_SERVICE_TO_TARIFF
 })
 public class TariffServlet extends HttpServlet {
 
@@ -122,6 +123,10 @@ public class TariffServlet extends HttpServlet {
             }
             case TARIFF_UPDATE: {
                 tariffUpdate(request, response);
+                break;
+            }
+            case ADD_SERVICE_TO_TARIFF: {
+                addServiceToTariff(request, response);
                 break;
             }
             default: {
@@ -353,5 +358,19 @@ public class TariffServlet extends HttpServlet {
         tariff.setNameTariff(nameTariff);
         tariffDao.updateTariffList(tariff);
         response.sendRedirect(request.getContextPath() + SELECT_ALL_TARIFF);
+    }
+
+    private void addServiceToTariff(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        SecurityBean.checkAccept(HTMLHelper.getUser(request));
+        int idTariff = Integer.parseInt(convert(request.getParameter("ID_tariff")));
+        int idService = Integer.parseInt(convert(request.getParameter("ID_service")));
+        ServiceInTariff sit = new ServiceInTariff();
+        sit.setIdService(idService);
+        sit.setIdTariff(idTariff);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("idTariff = " + idTariff + ", idService = " + idService);
+        }
+        servInTarDao.insert(sit);
+        request.getRequestDispatcher(SELECT_ALL_SERVICE + "?ID_tariff=" + idTariff).forward(request, response);
     }
 }
