@@ -41,6 +41,10 @@
                 idTariff = Integer.parseInt(idTariffString);
             }
         %>
+        <% if (acceptedToChange) {%>
+            <a class="other" href="<%= request.getContextPath()%><%= SERVICE_ADD_FORM%>">Добавить услугу</a>
+        <%}%>
+        <h1>Список услуг</h1>
         <table border=1 class="select"><tr>
                 <th class="select" width="25%">Название</th>
                 <th class="select" width="25%">Тип</th>
@@ -116,8 +120,5 @@
             %>
 
         </table>
-        <% if (acceptedToChange) {%>
-            <a href="<%= request.getContextPath()%><%= SERVICE_ADD_FORM%>">add</a>
-        <%}%>
     </body>
 </html>

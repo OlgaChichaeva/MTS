@@ -31,6 +31,10 @@
             String enteredDescription = HTMLHelper.fromNull(request.getParameter("description"));
             boolean acceptedToChange = !currentUser.getReadOnly();
         %>
+        <% if (acceptedToChange) {%>
+            <a class="other" href="<%= request.getContextPath()%><%= TARIFF_ADD_FORM%>">Добавить тариф</a>
+        <%}%>
+        <h1>Список тарифов</h1>
         <table border=1 class="select"><tr>
                 <th class="select" width="25%">Название</th>
                 <th class="select" width="50%">Описание</th>
@@ -80,8 +84,5 @@
             %>
 
         </table>
-        <% if (acceptedToChange) {%>
-            <a href="<%= request.getContextPath()%><%= TARIFF_ADD_FORM%>">add</a>
-        <%}%>
     </body>
 </html>

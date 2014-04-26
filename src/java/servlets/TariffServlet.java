@@ -26,6 +26,7 @@ import pack.HTMLHelper;
 import security.SecurityBean;
 import static pack.PathConstants.*;
 import static pack.LogManager.LOG;
+import pack.MessageBean;
 
 /**
  *
@@ -359,6 +360,13 @@ public class TariffServlet extends HttpServlet {
         response.sendRedirect(request.getContextPath() + SELECT_ALL_TARIFF);
     }
 
+    /**
+     * Добавляет выбранную услугу к тарифу. Затем перенаправляет на
+     * страницу с усгулами.
+     *
+     * @param request берём из методов doGet/doPost
+     * @param response берём из методов doGet/doPost
+     */
     private void addServiceToTariff(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         SecurityBean.checkAccept(HTMLHelper.getUser(request));
         int idTariff = Integer.parseInt(request.getParameter("ID_tariff"));
@@ -370,6 +378,7 @@ public class TariffServlet extends HttpServlet {
             LOG.debug("Добавление услуги к тарифу. idTariff = " + idTariff + ", idService = " + idService);
         }
         servInTarDao.insert(sit);
+        request.getSession(true).setAttribute(MessageBean.ATTR_NAME, new MessageBean("Услуга добавлена к тарифу."));
         response.sendRedirect(request.getContextPath() + SELECT_ALL_SERVICE + "?ID_tariff=" + idTariff);
     }
 }

@@ -1,7 +1,7 @@
 <%-- 
-    Document   : index
-    Created on : 15.03.2014, 17:43:16
-    Author     : Ольга
+    Document   : advert
+    Created on : 26.04.2014, 18:30:13
+    Author     : Ivan
 --%>
 
 <%@page import="pack.HTMLHelper"%>
@@ -10,10 +10,10 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <% String ROOT = request.getContextPath();%>
+        <%= HTMLHelper.includeCSS(ROOT) %>
     </head>
     <body>
-         <jsp:include page="<%= HTMLHelper.CHOOSE_HEADER %>" />
-        <jsp:include page="/WEB-INF/advert.jsp" />
+        <h1>Здесь может быть ваша реклама.</h1>
     </body>
 </html>

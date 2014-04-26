@@ -22,7 +22,11 @@ td {
 
 h1 {
     text-align: center;
-    font: bold 1.3em tahoma;
+    font: bold 1.4em tahoma;
+}
+
+h2 {
+    font: bold 1.1em tahoma;
 }
 
 /*

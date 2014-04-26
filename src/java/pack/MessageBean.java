@@ -13,6 +13,12 @@ public class MessageBean {
     public final static String ATTR_NAME = "message";
     
     private String message = null;
+    
+    public MessageBean() {} // Для jsp:useBean
+    
+    public MessageBean(String message) {
+        this.message = message;
+    }
 
     /**
      * @return the message

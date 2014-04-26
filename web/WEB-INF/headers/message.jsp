@@ -16,13 +16,25 @@
     </head>
     <body>
         <%
-            MessageBean message = (MessageBean) request.getAttribute(MessageBean.ATTR_NAME);
-            if (message == null) {
-                return;
+            MessageBean requestMessage = (MessageBean) request.getAttribute(MessageBean.ATTR_NAME);
+            if (requestMessage != null) {
+                %>
+                <label class="infoMessage">
+                    <%= requestMessage.getMessage()%>
+                </label>
+                <%
+            }
+            
+            MessageBean sessionMessage = (MessageBean) session.getAttribute(MessageBean.ATTR_NAME);
+            if (sessionMessage != null) {
+                %>
+                <label class="infoMessage">
+                    <%= sessionMessage.getMessage()%>
+                </label>
+                <%
+                session.setAttribute(MessageBean.ATTR_NAME, null);
             }
         %>
-        <label class="infoMessage">
-            <%= message.getMessage()%>
-        </label>
+        
     </body>
 </html>
