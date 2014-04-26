@@ -22,10 +22,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import objects.PhoneNumber;
 import objects.ServiceInSim;
-import objects.Sim;
-import objects.User;
 import pack.DaoMaster;
 import pack.HTMLHelper;
 import security.SecurityBean;
@@ -55,8 +52,6 @@ public class ServiceServlet extends HttpServlet {
 
     private final ServiceDao serviceDao = DaoMaster.getServiceDao();
     private final TypeServiceDao serviceTypeDao = DaoMaster.getTypeServiceDao();
-    private final SimDao simDao = DaoMaster.getSimDao();
-    private final PhoneNumberDAO phoneNumberDao = DaoMaster.getPhoneNumberDao();
     private final ServiceInSimDAO serviceInSimDao = DaoMaster.getServiceInSimDao();
 
     /**
@@ -221,34 +216,6 @@ public class ServiceServlet extends HttpServlet {
     }
 
     /**
-     * Загружает сим-карты и телефоны, загружает их в Map и перенаправляет на
-     * страницу выбора сим-карт.
-     *
-     * @param request берём из методов doGet/doPost
-     * @param response берём из методов doGet/doPost
-     * @throws ServletException
-     * @throws IOException
-     */
-    private void chooseSim(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        User user = HTMLHelper.getUser(request);
-        SecurityBean.checkAccept(user, SecurityBean.CLIENT, SecurityBean.LEGAL_ENTITY);
-        List<Sim> simList = null;
-        Map<Sim, PhoneNumber> simAndNumbers = null;
-        if (user.getIdRole() == SecurityBean.CLIENT) {
-            simList = simDao.getSimListByClientID(user.getIdClient());
-        }
-        if (simList != null) {
-            simAndNumbers = new HashMap<>();
-            for (Sim sim : simList) {
-                simAndNumbers.put(sim, phoneNumberDao.getNumberBySimID(sim.getSimId()));
-            }
-        }
-        request.setAttribute("simAndNumbers", simAndNumbers); // Кладём список всех контрактов в запрос.
-        request.getRequestDispatcher("/WEB-INF/showService/chooseSim.jsp").forward(request, response);
-    }
-
-    /**
      * Добавляет выбранную услугу к сим-карте.
      *
      * @param request берём из методов doGet/doPost
@@ -317,10 +284,6 @@ public class ServiceServlet extends HttpServlet {
             }
             case SERVICE_ADD_FORM: {
                 serviceAddForm(request, response);
-                break;
-            }
-            case CHOOSE_SIM: {
-                chooseSim(request, response);
                 break;
             }
             default: {
