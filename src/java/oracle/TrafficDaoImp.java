@@ -64,7 +64,6 @@ class TrafficDaoImp extends Abstract implements TrafficDao {
             ps.setDouble(3, traffic.getAmount());
             ps.setDouble(4, traffic.getCost());
             ps.setDate(5, new java.sql.Date(traffic.getDate().getTime()));
-            ResultSet rs = ps.executeQuery();
             ps.executeUpdate();
         } catch (SQLException ex) {
             throw new DaoException(ex);
@@ -77,7 +76,6 @@ class TrafficDaoImp extends Abstract implements TrafficDao {
             PreparedStatement ps = con.prepareStatement("Delete nameType where idService = ? ");
 
             ps.setInt(1, idService);
-            ResultSet rs = ps.executeQuery();
             ps.executeUpdate();
         } catch (SQLException ex) {
             throw new DaoException(ex);
@@ -92,8 +90,7 @@ class TrafficDaoImp extends Abstract implements TrafficDao {
             ps.setInt(2, traffic.getIdService());
             ps.setDouble(3, traffic.getAmount());
             ps.setDouble(4, traffic.getCost());
-            ps.setDate(5, new java.sql.Date(traffic.getDate().getTime()));
-            ResultSet rs = ps.executeQuery();
+            ps.setTimestamp(5, new java.sql.Timestamp(traffic.getDate().getTime()));
         } catch (SQLException ex) {
             throw new DaoException(ex);
         }
@@ -135,7 +132,7 @@ class TrafficDaoImp extends Abstract implements TrafficDao {
         traffic.setSim(sim);
         traffic.setAmount(rs.getDouble("amount"));
         traffic.setCost(rs.getDouble("cost"));
-        traffic.setDate(rs.getDate("time"));
+        traffic.setDate(rs.getTimestamp("time"));
         return traffic;
     }
 }

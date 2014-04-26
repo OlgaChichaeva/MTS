@@ -85,7 +85,7 @@ create table traffic(
   ON DELETE CASCADE,
   amount    number,
   cost      number,
-  time       date
+  time       timestamp
 );
 
 

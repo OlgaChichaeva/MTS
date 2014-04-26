@@ -4,6 +4,7 @@
     Author     : Ivan
 --%>
 
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="objects.Service"%>
 <%@page import="objects.Traffic"%>
 <%@page import="java.util.List"%>
@@ -26,6 +27,7 @@
                 out.print("ohh");
                 return;
             }
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy',' HH:mm:ss");
         %>
         <h1>История использования услуг.</h1>
         <table class="select" border="1">
@@ -35,14 +37,13 @@
                 <th class="select" width="35%">Количество</th>
                 <th class="select" width="10%">Стоимость</th>
             </tr>
-        </table>
         <%
             for (Traffic traffic : trafficList) {
                 Service service = traffic.getService();
                 %>
                 <tr>
                     <td class="select">
-                        <%= traffic.getDate() %>
+                        <%= dateFormat.format(traffic.getDate()) %>
                     </td>
                     <td class="select">
                         <%= service.getNameService() %>
@@ -58,5 +59,6 @@
                 <%
             }
         %>
+        </table>
     </body>
 </html>
