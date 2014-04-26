@@ -3,6 +3,7 @@
     Created on : 24.04.2014, 17:22:36
     Author     : Ivan
 --%>
+<%@page import="pack.HTMLHelper"%>
 <%--
     Сюда попадаем, если не обработано DaoException.
 --%>
@@ -13,7 +14,7 @@
     <head>
         <% String ROOT = request.getContextPath();%>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <%= HTMLHelper.includeCSS(ROOT) %>
     </head>
     <body>
         <%

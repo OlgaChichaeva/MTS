@@ -4,15 +4,17 @@
     Author     : Ivan
 --%>
 
+<%@page import="pack.HTMLHelper"%>
 <%@page contentType="text/html" pageEncoding="UTF-8" isErrorPage="true"%>
 <!DOCTYPE html>
 <html>
     <head>
+        <% String ROOT = request.getContextPath();%>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <%= HTMLHelper.includeCSS(ROOT) %>
     </head>
     <body>
         <h1>Ошибка 404. Страница отсутствует на сервере.</h1>
-        <a class="other" href="<%= request.getContextPath() %>">На главную</a>
+        <a class="other" href="<%= ROOT %>">На главную</a>
     </body>
 </html>

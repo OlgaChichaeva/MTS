@@ -3,6 +3,7 @@
     Created on : 24.04.2014, 21:36:28
     Author     : Ivan
 --%>
+<%@page import="pack.HTMLHelper"%>
 <%--
     На эту страницу происходит перенаправление,
     если исключение не отловлено и другие страницы
@@ -16,7 +17,7 @@
     <head>
         <% String ROOT = request.getContextPath();%>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <%= HTMLHelper.includeCSS(ROOT) %>
     </head>
     <body>
         <%
