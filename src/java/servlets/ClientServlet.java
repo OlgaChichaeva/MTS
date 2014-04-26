@@ -94,7 +94,10 @@ public class ClientServlet extends HttpServlet {
     private void clientHome(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         User user = ServletHelper.getUser(request);
-        SecurityBean.checkAccept(user, SecurityBean.CLIENT);
+        if (!SecurityBean.isUserAccepted(user, SecurityBean.CLIENT)) { // Если это не клиент, то выбрасываем на главную
+            response.sendRedirect(request.getContextPath());
+            return;
+        }
         Map<ClientContr, PhoneNumber> phonesMap = new HashMap<>();
         List<ClientContr> contrs = clientContrDao.getContrsByClientID(user.getIdClient());
         if (!contrs.isEmpty()) {
