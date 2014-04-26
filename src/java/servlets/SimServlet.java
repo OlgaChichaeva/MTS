@@ -26,7 +26,6 @@ import pack.HTMLHelper;
 import static pack.PathConstants.*;
 import static pack.LogManager.LOG;
 import pack.MessageBean;
-import pack.ServletHelper;
 import security.SecurityBean;
 
 /**
@@ -99,7 +98,7 @@ public class SimServlet extends HttpServlet {
     private void showTraffic(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int simId = Integer.parseInt(request.getParameter("sim_id"));
-        if (!ServletHelper.isUserAcceptedForSim(ServletHelper.getUser(request), simId)) {
+        if (!SecurityBean.isUserAcceptedForSim(ServletHelper.getUser(request), simId)) {
             SecurityBean.denyAccess();
             return;
         } 

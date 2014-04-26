@@ -4,22 +4,26 @@
  */
 package security;
 
+import dao.ClientContrDAO;
 import java.util.Collection;
 import java.util.HashSet;
+import objects.ClientContr;
 import objects.User;
+import pack.DaoMaster;
+import servlets.ServletHelper;
 
 /**
- * Класс служит для регулирования доступа к страницам.
- * Предназначен для использования в сервлетах.
- * Как пользоваться:
- * 1) Если неоходимо предоставить доступ нескольким ролям и запретить всем остальным,
- * то нужно вызвать метод checkAccept, указав роли, которым полагается доступ
- * (админу доступ предоставляется по умолчанию).
- * 2) Если нужно закрыть доступ по каким-либо собственным правилам, то
- * используйте метод denyAccess.
+ * Класс служит для регулирования доступа к страницам. Предназначен для
+ * использования в сервлетах. Как пользоваться: 1) Если неоходимо предоставить
+ * доступ нескольким ролям и запретить всем остальным, то нужно вызвать метод
+ * checkAccept, указав роли, которым полагается доступ (админу доступ
+ * предоставляется по умолчанию). 2) Если нужно закрыть доступ по каким-либо
+ * собственным правилам, то используйте метод denyAccess.
+ *
  * @author Ivan
  */
 public class SecurityBean {
+
     /**
      * ID некоторых ролей.
      */
@@ -28,55 +32,103 @@ public class SecurityBean {
     public static final int CLIENT = 2;
     public static final int LEGAL_ENTITY = 3;
     
+    private final static ClientContrDAO clientContrDao = DaoMaster.getClientContrDao();
+
+    /**
+     * Проверяет, имеет ли право пользоватеь смотреть информацию о сим-карте.
+     *
+     * @param user пользоватеь
+     * @param simId ИД сим-карты
+     * @return true, если есть право просмотра, иначе false
+     */
+    public static boolean isUserAcceptedForSim(User user, int simId) {
+        if (user == null) {
+            return false;
+        }
+        switch (user.getIdRole()) {
+            case SecurityBean.CLIENT:
+                {
+                    for (ClientContr contr : clientContrDao.getContrsByClientID(user.getIdClient())) {
+                        if (contr.getSimID() == simId) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+            case SecurityBean.LEGAL_ENTITY:
+                {
+                    break; // Временно
+                }
+            case SecurityBean.ADMIN:
+                {
+                    return true;
+                }
+        }
+        return false;
+    }
     private Collection<Integer> acceptedRoles;
-    
+
     @Deprecated
     public SecurityBean() {
         acceptedRoles = new HashSet<>();
         acceptedRoles.add(ADMIN);
     }
-    
+
     /**
      * Запрещает доступ, бросая исключение.
      */
     public static void denyAccess() {
         throw new SecurityException();
     }
-    
+
     /**
-     * Проверяет доступ юзера к странице. Если доступа нет,
-     * то бросает исключение. Если user == null, то считается, что доступа нет.
+     * Проверяет доступ юзера к странице.
      * @param user Пользователь, которого нужно проверить
-     * @param idRoles роли, которым нужно предоставить доступ.
-     * Админу доступ предоставлен по умолчанию.
+     * @param idRoles роли, которым нужно предоставить доступ. Админу доступ
+     * предоставлен по умолчанию.
+     * @return true, если доступ есть, иначе false
      */
-    public static void checkAccept(User user, int ... idRoles) {
+    public static boolean isUserAccepted(User user, int... idRoles) {
         if (user == null) {
-            denyAccess();
-            return;
+            return false;
         }
         int userRole = user.getIdRole();
         if (userRole == ADMIN) {
-            return;
+            return true;
         }
         for (int role : idRoles) {
             if (userRole == role) {
-                return;
+                return true;
             }
         }
-        denyAccess();
+        return false;
     }
-    
+
+    /**
+     * Проверяет доступ юзера к странице. Если доступа нет, то бросает
+     * исключение. Если user == null, то считается, что доступа нет.
+     *
+     * @param user Пользователь, которого нужно проверить
+     * @param idRoles роли, которым нужно предоставить доступ. Админу доступ
+     * предоставлен по умолчанию.
+     */
+    public static void checkAccept(User user, int... idRoles) {
+        if (isUserAccepted(user, idRoles)) {
+            denyAccess();
+        }
+    }
+
     /**
      * Добавить роль в список допустимых. Название метода не addRole, чтобы
      * допустить использование jsp:setProperty.
+     *
      * @param role ID роли
      */
     @Deprecated
     public void setRole(int role) {
         acceptedRoles.add(role);
     }
-    
+
     /**
      * Убрать админа из допустимых. (на всякий случай)
      */
@@ -84,9 +136,10 @@ public class SecurityBean {
     public void restrictAdmin() {
         acceptedRoles.remove(ADMIN);
     }
-    
+
     /**
      * Проверить, разрешён ли доступ данному пользователю.
+     *
      * @param user пользователь, которого нужно проверить.
      * @return true, если доступ разрешён, иначе false
      */
@@ -104,28 +157,23 @@ public class SecurityBean {
         return false;
     }
 }
-
 /**
  * Старая документация:
- * 
- * Класс служит для регулирования доступа к страницам.
- * Как использовать: сначала при помощи метода setRole
- * добавить ID всех ролей, которые должны иметь доступ
- * (админ входит по умолчанию). Затем выполнить проверку,
- * является ли роль конкретного пользователя допустимой (метод isUserAccepted).
- * 
- * Как можно использовать в jsp:
- * Сначала берём (или, в случае отсутствия, создаём новый) объект класса:
+ *
+ * Класс служит для регулирования доступа к страницам. Как использовать: сначала
+ * при помощи метода setRole добавить ID всех ролей, которые должны иметь доступ
+ * (админ входит по умолчанию). Затем выполнить проверку, является ли роль
+ * конкретного пользователя допустимой (метод isUserAccepted).
+ *
+ * Как можно использовать в jsp: Сначала берём (или, в случае отсутствия,
+ * создаём новый) объект класса:
  * <jsp:useBean id="security" class="security.SecurityBean" scope="request" />
  * Затем добавляем в него все нужные роли:
  * <jsp:setProperty name="security" property="role" value="ID оли" />
  * И наконец проверяем в скриплете:
- * <%
- *      if (!isUserAccepted(user) {
- *          // не пустить
- *      }
- * %>
- * Вместо scope="request" можно написать scope="page", если и заполнение,
- * и проверка происходят на одной странице (т.е. без jsp:include).
+ * <% if (!isUserAccepted(user) { // не пустить } %>
+ * Вместо scope="request" можно написать scope="page", если и заполнение, и
+ * проверка происходят на одной странице (т.е. без jsp:include).
+ *
  * @author Ivan
  */

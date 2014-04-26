@@ -25,7 +25,6 @@ import security.SecurityBean;
 import static pack.PathConstants.*;
 import static pack.LogManager.LOG;
 import pack.MessageBean;
-import pack.ServletHelper;
 
 /**
  * Сервлет для работы с услугами.

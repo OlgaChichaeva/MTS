@@ -4,7 +4,6 @@
  */
 package servlets;
 
-import dao.ClientContrDAO;
 import dao.ServiceInSimDAO;
 import dao.ServiceInTariffDao;
 import dao.TariffDao;
@@ -25,7 +24,6 @@ import security.SecurityBean;
 import static pack.PathConstants.*;
 import static pack.LogManager.LOG;
 import pack.MessageBean;
-import pack.ServletHelper;
 
 /**
  *
@@ -223,7 +221,7 @@ public class TariffServlet extends HttpServlet {
         // Проверяем, имеет ли юзер право смотреть услуги для этой сим-карты
         if (stringSimId != null && user != null) {
             int simID = Integer.parseInt(stringSimId);
-            boolean accept = ServletHelper.isUserAcceptedForSim(user, simID);
+            boolean accept = SecurityBean.isUserAcceptedForSim(user, simID);
             if (accept) { // Если есть право смотреть сим-карту, то загружаем
                 // подключенные к сим-карте услуги.
                 sisList = sisDao.getIdSim(simID);
