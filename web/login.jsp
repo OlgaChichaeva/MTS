@@ -21,10 +21,6 @@
         <%= HTMLHelper.includeCSS(ROOT)%>
     </head>
     <body>
- 
-            
-            <jsp:useBean id="message" class="pack.MessageBean" scope="request" />
-            <font color="red"><jsp:getProperty name="message" property="message" /></font>
             <form class="fillform" name="Login Form" action="<%= ROOT%><%= LOGIN%>" method="POST">
                 <fieldset class="fillform">
                 Логин:<br>

@@ -177,3 +177,9 @@ input.fillform {
 form.fillform {
     text-align: left;
 }
+
+label.infoMessage {
+    color: #cc0000;
+    font: normal 1em tahoma;
+    line-height: 2.5;
+}

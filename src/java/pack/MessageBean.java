@@ -10,6 +10,8 @@ package pack;
  */
 public class MessageBean {
     
+    public final static String ATTR_NAME = "message";
+    
     private String message = null;
 
     /**

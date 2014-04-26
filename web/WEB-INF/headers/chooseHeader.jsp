@@ -22,4 +22,6 @@
             break;
         }
     }
+    String messagePage = HTMLHelper.HEADERS + "/message.jsp";
 %>
+<jsp:include page="<%= messagePage%>" flush="true" />
