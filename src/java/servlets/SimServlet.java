@@ -55,6 +55,13 @@ public class SimServlet extends HttpServlet {
     private void chooseSim(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         User user = ServletHelper.getUser(request);
+        if (LOG.isDebugEnabled()) {
+            try {
+                LOG.debug("Показ сим-карты. ID_user = " + user.getIdUser() + ", ID_role = " + user.getIdRole());
+            } catch (NullPointerException ex) {
+                LOG.debug("Показ сим-карты. Юзер отсутствует в сессии.");
+            }
+        }
         SecurityBean.checkAccept(user, SecurityBean.CLIENT, SecurityBean.LEGAL_ENTITY);
         List<Sim> simList = null;
         Map<Sim, PhoneNumber> simAndNumbers = null;
