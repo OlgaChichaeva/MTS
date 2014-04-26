@@ -42,8 +42,8 @@ public class TomcatFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         if (httpRequest.getMethod().equalsIgnoreCase("POST")) {
             request.setCharacterEncoding(encoding);
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Перекодировка");
+            if (LOG.isTraceEnabled()) {
+                LOG.trace("Перекодировка");
             }
         }
         chain.doFilter(request, response);
