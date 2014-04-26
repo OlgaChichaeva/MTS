@@ -226,7 +226,7 @@ public class TariffServlet extends HttpServlet {
         // Проверяем, имеет ли юзер право смотреть услуги для этой сим-карты
         if (stringSimId != null && user != null) {
             int simID = Integer.parseInt(stringSimId);
-            boolean accept = isClientAcceptedForSim(user, simID);
+            boolean accept = ServletHelper.isUserAcceptedForSim(user, simID, clientContrDao);
             if (accept) { // Если есть право смотреть сим-карту, то загружаем
                 // подключенные к сим-карте услуги.
                 sisList = sisDao.getIdSim(simID);
@@ -239,34 +239,6 @@ public class TariffServlet extends HttpServlet {
         request.setAttribute("sisList", sisList);
 
         request.getRequestDispatcher("/WEB-INF/tariff/showTariff.jsp").forward(request, response);
-    }
-
-    /**
-     * Проверяет, имеет ли право пользоватеь смотреть информацию о сим-карте.
-     *
-     * @param user пользоватеь
-     * @param simId ИД сим-карты
-     * @return true, если есть право просмотра, иначе false
-     */
-    private boolean isClientAcceptedForSim(User user, int simId) {
-        switch (user.getIdRole()) {
-            case SecurityBean.CLIENT: {
-                // Проверяем, есть ли среди договоров клиента договор на эту сим-карту.
-                for (ClientContr contr : clientContrDao.getContrsByClientID(user.getIdClient())) {
-                    if (contr.getSimID() == simId) {
-                        return true;
-                    }
-                }
-                return false;
-            }
-            case SecurityBean.LEGAL_ENTITY: {
-                break; // Временно
-            }
-            case SecurityBean.ADMIN: {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**
