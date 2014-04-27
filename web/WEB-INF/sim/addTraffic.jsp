@@ -29,6 +29,7 @@
         <h2>Добавить трафик</h2>
         <form class="fillform" name="Data Input Form" action="<%= ROOT%><%= ADD_TRAFFIC %>" method="POST">
             <fieldset class="fillform">
+                <input type="hidden" name="sim_id" value="<%= request.getParameter("sim_id") %>" />
                 Выберите услугу:<br>
                 <select class="fillform" name="ID_service">
                     <%

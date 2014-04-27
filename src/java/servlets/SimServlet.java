@@ -10,6 +10,7 @@ import dao.ServiceInTariffDao;
 import dao.SimDao;
 import dao.TrafficDao;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.ServletException;
@@ -137,6 +138,32 @@ public class SimServlet extends HttpServlet {
         request.setAttribute("serviceInSimList", sisList);
         request.getRequestDispatcher("/WEB-INF/sim/addTraffic.jsp").forward(request, response);
     }
+    
+    /**
+     * Добавляет трафик к выбранной сим-карте
+     * @param request
+     * @param response 
+     */
+    private void addTraffic(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        SecurityBean.checkAccept(ServletHelper.getUser(request));
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Добавление трафика. sim_id = " + request.getParameter("sim_id")
+                    + ", ID_service = " + request.getParameter("ID_service")
+                    + ", amount = " + request.getParameter("amount") + ".");
+        }
+        int idSim = Integer.parseInt(request.getParameter("sim_id"));
+        int idService = Integer.parseInt(request.getParameter("ID_service"));
+        double amount = Double.parseDouble(request.getParameter("amount"));
+        Traffic traffic = new Traffic();
+        traffic.setIdSim(idSim);
+        traffic.setIdService(idService);
+        traffic.setAmount(amount);
+        traffic.setDate(new Date(System.currentTimeMillis()));
+        trafficDao.insert(traffic);
+        request.getSession(true).setAttribute(MessageBean.ATTR_NAME, new MessageBean("Трафик добавлен."));
+        response.sendRedirect(request.getContextPath() + CHOOSE_SIM + "?forTraffic=true");
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -192,6 +219,10 @@ public class SimServlet extends HttpServlet {
             }
             case SHOW_TRAFFIC: {
                 showTraffic(request, response);
+                break;
+            }
+            case ADD_TRAFFIC: {
+                addTraffic(request, response);
                 break;
             }
             default: {
