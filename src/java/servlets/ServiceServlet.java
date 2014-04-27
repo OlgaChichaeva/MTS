@@ -20,7 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import objects.ServiceInSim;
 import pack.DaoMaster;
-import pack.HTMLHelper;
 import security.SecurityBean;
 import static pack.PathConstants.*;
 import static pack.LogManager.LOG;
@@ -234,6 +233,7 @@ public class ServiceServlet extends HttpServlet {
             }
             request.getSession(true).setAttribute(MessageBean.ATTR_NAME, new MessageBean("Услуга уже подключена."));
         }
+        request.getSession(true).setAttribute(MessageBean.ATTR_NAME, new MessageBean("Услуга успешно подключена."));
         response.sendRedirect(request.getContextPath() + SELECT_ALL_SERVICE);
     }
 
@@ -250,6 +250,7 @@ public class ServiceServlet extends HttpServlet {
         sis.setIdService(idService);
         sis.setIdSim(idSim);
         serviceInSimDao.deleteConcreteServiceInSim(sis);
+        request.getSession(true).setAttribute(MessageBean.ATTR_NAME, new MessageBean("Услуга успешно отключена."));
         response.sendRedirect(request.getContextPath() + SELECT_ALL_SERVICE);
     }
 
