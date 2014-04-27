@@ -45,7 +45,7 @@ class TrafficDaoImp extends Abstract implements TrafficDao {
                     + " ORDER BY time");
             ps.setInt(1, simId);
             ResultSet rs = ps.executeQuery();
-            List<Traffic> traffics = new ArrayList<Traffic>();
+            List<Traffic> traffics = new ArrayList<>();
             while (rs.next()) {
                 Traffic traffic = makeTraffic(rs);
                 traffics.add(traffic);
@@ -86,12 +86,12 @@ class TrafficDaoImp extends Abstract implements TrafficDao {
     @Override
     public void insert(Traffic traffic) {
         try (Connection con = getConn()) {
-            PreparedStatement ps = con.prepareStatement("INSERT INto (sim_id,ID_service,amount,cost,time) values (?,?,?,?,?)");
+            PreparedStatement ps = con.prepareStatement("INSERT INTO traffic(sim_id, ID_service, amount, time) VALUES (?,?,?,?)");
             ps.setInt(1, traffic.getIdSim());
             ps.setInt(2, traffic.getIdService());
             ps.setDouble(3, traffic.getAmount());
-            ps.setDouble(4, traffic.getCost());
-            ps.setTimestamp(5, new java.sql.Timestamp(traffic.getDate().getTime()));
+            ps.setTimestamp(4, new java.sql.Timestamp(traffic.getDate().getTime()));
+            ps.executeQuery();
         } catch (SQLException ex) {
             throw new DaoException(ex);
         }
@@ -112,7 +112,7 @@ class TrafficDaoImp extends Abstract implements TrafficDao {
                     + " ORDER BY time");
             ps.setInt(1, idService);
             ResultSet rs = ps.executeQuery();
-            List<Traffic> traffics = new ArrayList<Traffic>();
+            List<Traffic> traffics = new ArrayList<>();
             while (rs.next()) {
                 Traffic traffic = makeTraffic(rs);
                 traffics.add(traffic);
