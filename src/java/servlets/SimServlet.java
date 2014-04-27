@@ -4,11 +4,10 @@
  */
 package servlets;
 
-import dao.PhoneNumberDAO;
+import dao.ClientContrDAO;
 import dao.SimDao;
 import dao.TrafficDao;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.ServletException;
@@ -16,13 +15,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import objects.ClientContr;
 import objects.PhoneNumber;
 import objects.Sim;
 import objects.Tariff;
 import objects.Traffic;
 import objects.User;
 import pack.DaoMaster;
-import pack.HTMLHelper;
 import static pack.PathConstants.*;
 import static pack.LogManager.LOG;
 import pack.MessageBean;
@@ -40,7 +39,7 @@ import security.SecurityBean;
 public class SimServlet extends HttpServlet {
     
     private final SimDao simDao = DaoMaster.getSimDao();
-    private final PhoneNumberDAO phoneNumberDao = DaoMaster.getPhoneNumberDao();
+    private final ClientContrDAO clientContrDao = DaoMaster.getClientContrDao();
     private final TrafficDao trafficDao = DaoMaster.getTrafficDao();
     
     /**
@@ -63,18 +62,8 @@ public class SimServlet extends HttpServlet {
             }
         }
         SecurityBean.checkAccept(user, SecurityBean.CLIENT, SecurityBean.LEGAL_ENTITY);
-        List<Sim> simList = null;
-        Map<Sim, PhoneNumber> simAndNumbers = null;
-        if (user.getIdRole() == SecurityBean.CLIENT) {
-            simList = simDao.getSimListByClientID(user.getIdClient());
-        }
-        if (simList != null) {
-            simAndNumbers = new HashMap<>();
-            for (Sim sim : simList) {
-                simAndNumbers.put(sim, phoneNumberDao.getNumberBySimID(sim.getSimId()));
-            }
-        }
-        request.setAttribute("simAndNumbers", simAndNumbers); // Кладём список всех контрактов в запрос.
+        Map<ClientContr, PhoneNumber> phonesMap = clientContrDao.getContrsAndNumsByClientID(user.getIdClient());
+        request.setAttribute("phonesMap", phonesMap); // Кладём список всех контрактов в запрос.
         request.getRequestDispatcher("/WEB-INF/sim/chooseSim.jsp").forward(request, response);
     }
     

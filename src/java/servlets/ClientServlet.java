@@ -7,8 +7,6 @@ package servlets;
 import dao.ClientContrDAO;
 import dao.PhoneNumberDAO;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,7 +17,6 @@ import objects.ClientContr;
 import objects.PhoneNumber;
 import objects.User;
 import pack.DaoMaster;
-import pack.HTMLHelper;
 import static pack.PathConstants.*;
 import static pack.LogManager.LOG;
 import security.SecurityBean;
@@ -33,7 +30,6 @@ import security.SecurityBean;
 public class ClientServlet extends HttpServlet {
 
     private final ClientContrDAO clientContrDao = DaoMaster.getClientContrDao();
-    private final PhoneNumberDAO phoneNumberDao = DaoMaster.getPhoneNumberDao();
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -98,17 +94,9 @@ public class ClientServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath());
             return;
         }
-        Map<ClientContr, PhoneNumber> phonesMap = new HashMap<>();
-        List<ClientContr> contrs = clientContrDao.getContrsByClientID(user.getIdClient());
-        if (!contrs.isEmpty()) {
-            // Соотносим телефонные номера с договорами.
-            for (ClientContr contr : contrs) {
-                phonesMap.put(contr, phoneNumberDao.getNumberBySimID(contr.getSimID()));
-            }
-        } else {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("У клиента №" + user.getIdClient() + " нет договоров.");
-            }
+        Map<ClientContr, PhoneNumber> phonesMap = clientContrDao.getContrsAndNumsByClientID(user.getIdClient());
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Количество контрактов клиента: " + phonesMap.size());
         }
         request.setAttribute("phonesMap", phonesMap); // Кладём список всех контрактов в запрос.
         request.getRequestDispatcher("/WEB-INF/clientHome.jsp").forward(request, response);

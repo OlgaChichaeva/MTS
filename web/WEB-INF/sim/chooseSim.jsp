@@ -4,6 +4,7 @@
     Author     : Ivan
 --%>
 
+<%@page import="objects.ClientContr"%>
 <%@page import="objects.PhoneNumber"%>
 <%@page import="java.util.Map"%>
 <%@page import="objects.Sim"%>
@@ -23,8 +24,8 @@
         <jsp:include page="<%= HTMLHelper.CHOOSE_HEADER%>" flush="true"/>
         <h1>Выберите сим-карту:</h1>
         <%
-            Map<Sim, PhoneNumber> simAndNumbers = (Map<Sim, PhoneNumber>) request.getAttribute("simAndNumbers");
-            if (simAndNumbers == null) {
+            Map<ClientContr, PhoneNumber> phonesMap = (Map<ClientContr, PhoneNumber>) request.getAttribute("phonesMap");
+            if (phonesMap == null) {
                 return;
             }
             String pathToGo = "";
@@ -44,8 +45,8 @@
             <th class="select" width="70%">Сим-карта</th>
             <th class="select" width="30%">Действия</th>
             <%
-                for (Map.Entry<Sim, PhoneNumber> entry : simAndNumbers.entrySet()) {
-                    Sim sim = entry.getKey();
+                for (Map.Entry<ClientContr, PhoneNumber> entry : phonesMap.entrySet()) {
+                    Sim sim = entry.getKey().getSim();
                     %>
                     <tr>
                         <td class="info">
