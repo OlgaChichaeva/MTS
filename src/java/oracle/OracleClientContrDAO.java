@@ -147,7 +147,8 @@ class OracleClientContrDAO extends OracleUniversalDAO<ClientContr> implements Cl
                     + " INNER JOIN sim on con.sim_id=sim.sim_id"
                     + " INNER JOIN tariff_list tar on sim.ID_tariff=tar.ID_tariff"
                     + " INNER JOIN numbers n ON n.sim_id=sim.sim_id"
-                    + " WHERE con.client_id=?");
+                    + " WHERE con.client_id=?"
+                    + " ORDER BY n.phone_number DESC");
             ps.setInt(1, clientID);
             ResultSet rs = ps.executeQuery();
             return createContrPhonesMap(rs);
@@ -166,7 +167,8 @@ class OracleClientContrDAO extends OracleUniversalDAO<ClientContr> implements Cl
                     + " INNER JOIN client cl on con.client_id=cl.client_id"
                     + " INNER JOIN sim on con.sim_id=sim.sim_id"
                     + " INNER JOIN tariff_list tar on sim.ID_tariff=tar.ID_tariff"
-                    + " INNER JOIN numbers n ON n.sim_id=sim.sim_id");
+                    + " INNER JOIN numbers n ON n.sim_id=sim.sim_id"
+                    + " ORDER BY n.phone_number DESC");
             ResultSet rs = ps.executeQuery();
             return createContrPhonesMap(rs);
         } catch (SQLException ex) {
