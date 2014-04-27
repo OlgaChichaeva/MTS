@@ -5,6 +5,8 @@
 package servlets;
 
 import dao.ClientContrDAO;
+import dao.ServiceInSimDAO;
+import dao.ServiceInTariffDao;
 import dao.SimDao;
 import dao.TrafficDao;
 import java.io.IOException;
@@ -17,6 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import objects.ClientContr;
 import objects.PhoneNumber;
+import objects.ServiceInSim;
+import objects.ServiceInTariff;
 import objects.Sim;
 import objects.Tariff;
 import objects.Traffic;
@@ -34,13 +38,17 @@ import security.SecurityBean;
 @WebServlet(name = "SimServlet", loadOnStartup = 1, urlPatterns = {
     CHOOSE_SIM,
     CHANGE_TARIFF,
-    SHOW_TRAFFIC
+    SHOW_TRAFFIC,
+    ADD_TRAFFIC_FORM,
+    ADD_TRAFFIC
 })
 public class SimServlet extends HttpServlet {
     
     private final SimDao simDao = DaoMaster.getSimDao();
     private final ClientContrDAO clientContrDao = DaoMaster.getClientContrDao();
     private final TrafficDao trafficDao = DaoMaster.getTrafficDao();
+    private final ServiceInTariffDao servInTarDao = DaoMaster.getServiceInTariffDao();
+    private final ServiceInSimDAO servInSimDao = DaoMaster.getServiceInSimDao();
     
     /**
      * Загружает сим-карты и телефоны, загружает их в Map и перенаправляет на
@@ -112,6 +120,23 @@ public class SimServlet extends HttpServlet {
         request.setAttribute("trafficList", trafficList);
         request.getRequestDispatcher("/WEB-INF/sim/showTraffic.jsp").forward(request, response);
     }
+    
+    /**
+     * Перенаправляет на страницу добавления трафика.
+     * @param request
+     * @param response 
+     */
+    private void addTrafficForm(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        SecurityBean.checkAccept(ServletHelper.getUser(request));
+        int idSim = Integer.parseInt(request.getParameter("sim_id"));
+        Sim sim = simDao.getIdSim(idSim);
+        List<ServiceInTariff> sitList = servInTarDao.getIdTariff(sim.getTariffId());
+        List<ServiceInSim> sisList = servInSimDao.getIdSim(idSim);
+        request.setAttribute("serviceInTariffList", sitList);
+        request.setAttribute("serviceInSimList", sisList);
+        request.getRequestDispatcher("/WEB-INF/sim/addTraffic.jsp").forward(request, response);
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -131,6 +156,10 @@ public class SimServlet extends HttpServlet {
         switch(userPath) {
             case CHOOSE_SIM: {
                 chooseSim(request, response);
+                break;
+            }
+            case ADD_TRAFFIC_FORM: {
+                addTrafficForm(request, response);
                 break;
             }
             default: {

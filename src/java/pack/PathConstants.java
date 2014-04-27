@@ -35,4 +35,7 @@ public interface PathConstants {
     String ADD_SERVICE_TO_TARIFF = "/AddServiceToTariff";
     String CHANGE_TARIFF = "/ChangeTariff";
     String SHOW_TRAFFIC = "/ShowTraffic";
+    String ADD_TRAFFIC_FORM = "/AddTrafficForm";
+    String ADD_TRAFFIC = "/AddTraffic";
+    
 }

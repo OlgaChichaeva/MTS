@@ -9,6 +9,7 @@
 <%@page import="objects.Traffic"%>
 <%@page import="java.util.List"%>
 <%@page import="pack.HTMLHelper"%>
+<%@page import="static pack.PathConstants.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -22,6 +23,7 @@
         <jsp:useBean id="currentUser" scope="session" class="objects.User" />
         <jsp:include page="<%= HTMLHelper.CHOOSE_HEADER%>" flush="true"/>
         <%
+            boolean acceptedToChange = !currentUser.getReadOnly();
             List<Traffic> trafficList = (List<Traffic>) request.getAttribute("trafficList");
             if (trafficList == null) {
                 out.print("ohh");
@@ -29,6 +31,9 @@
             }
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy',' HH:mm:ss");
         %>
+        <% if (acceptedToChange) {%>
+        <a class="other" href="<%= request.getContextPath()%><%= ADD_TRAFFIC_FORM %>?sim_id=<%= request.getParameter("sim_id") %>">Добавить трафик</a>
+        <%}%>
         <h1>История использования услуг.</h1>
         <table class="select" border="1">
             <tr>
