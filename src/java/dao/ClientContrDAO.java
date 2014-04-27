@@ -6,6 +6,8 @@ package dao;
 
 import objects.ClientContr;
 import java.util.List;
+import java.util.Map;
+import objects.PhoneNumber;
 
 /**
  *
@@ -19,4 +21,6 @@ public interface ClientContrDAO {
     ClientContr getContrByID(int contrID) throws DaoException;
     ClientContr getContrBySimID(int simID) throws DaoException;
     List<ClientContr> getContrsByClientID(int clientID) throws DaoException;
+    Map<ClientContr, PhoneNumber> getContrsAndNumsByClientID(int clientID) throws DaoException;
+    Map<ClientContr, PhoneNumber> getAllContrsAndNums() throws DaoException;
 }
