@@ -25,10 +25,10 @@
                 <td width="80%">
                     <a class="headerlink" href="<%= ROOT%>/">Home</a>                
                     <a class="headerlink" href="<%= ROOT%><%= SELECT_ALL_SERVICE%>">Услуги</a>                 
-                    <a class="headerlink" href="<%= ROOT%><%= SELECT_ALL_TARIFF%>">Тарифы</a>               
+                    <a class="headerlink" href="<%= ROOT%><%= SELECT_ALL_TARIFF%>">Тарифы</a> 
+                    <a class="headerlink" href="<%= ROOT%><%=CHOOSE_SIM%>?forTraffic=true">История</a>
                     <a class="headerlink" href="<%= ROOT%>/notReady.jsp">Type service</a>                 
-                    <a class="headerlink" href="<%= ROOT%>/notReady.jsp">Sim</a>                 
-                    <a class="headerlink" href="<%= ROOT%>/notReady.jsp">Traffic</a>                
+                    <a class="headerlink" href="<%= ROOT%>/notReady.jsp">Sim</a>                              
                     <a class="headerlink" href="<%= ROOT%>/notReady.jsp">Tariff List</a>                             
                     <a class="headerlink" href="<%= ROOT%>/notReady.jsp">Sim contract</a>                      
                     <a class="headerlink" href="<%= ROOT%>/notReady.jsp">Phone number</a>             

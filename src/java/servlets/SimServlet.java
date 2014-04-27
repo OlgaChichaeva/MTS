@@ -62,7 +62,17 @@ public class SimServlet extends HttpServlet {
             }
         }
         SecurityBean.checkAccept(user, SecurityBean.CLIENT, SecurityBean.LEGAL_ENTITY);
-        Map<ClientContr, PhoneNumber> phonesMap = clientContrDao.getContrsAndNumsByClientID(user.getIdClient());
+        Map<ClientContr, PhoneNumber> phonesMap = null;
+        switch (user.getIdRole()) {
+            case SecurityBean.CLIENT: {
+                phonesMap = clientContrDao.getContrsAndNumsByClientID(user.getIdClient());
+                break;
+            }
+            case SecurityBean.ADMIN: {
+                phonesMap = clientContrDao.getAllContrsAndNums();
+                break;
+            }
+        }
         request.setAttribute("phonesMap", phonesMap); // Кладём список всех контрактов в запрос.
         request.getRequestDispatcher("/WEB-INF/sim/chooseSim.jsp").forward(request, response);
     }
