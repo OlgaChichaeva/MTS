@@ -4,8 +4,8 @@
  */
 package pack;
 
-import javax.servlet.http.HttpServletRequest;
-import objects.User;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Класс для помощи в составлении HTML-страниц.
@@ -64,6 +64,10 @@ public class HTMLHelper {
      * Путь странице автоматического выбора заголовка
      */
     public static final String CHOOSE_HEADER = HEADERS + "/chooseHeader.jsp";
+    
+    private final static SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd.MM.yyyy',' HH:mm:ss");
+    private final static SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+    
     /**
      * Получаем кнопки Update и Delete
      * @param updatePath путь для update
@@ -135,5 +139,23 @@ public class HTMLHelper {
         } catch (IndexOutOfBoundsException ex) {
             return temp;
         }
+    }
+    
+    /**
+     * Преобразует дату/время в строку
+     * @param date дата для преобразования
+     * @return строку с отформатированной датой/временем
+     */
+    public static String makeDateTime(Date date) {
+        return dateTimeFormat.format(date);
+    }
+    
+    /**
+     * Преобразует дату в строку
+     * @param date дата для преобразования
+     * @return строку с отформатированной датой
+     */
+    public static String makeDate(Date date) {
+        return dateFormat.format(date);
     }
 }

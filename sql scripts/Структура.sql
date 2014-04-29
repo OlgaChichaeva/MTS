@@ -256,7 +256,7 @@ CREATE OR REPLACE TRIGGER traffic_insert_trigger
   FOR EACH ROW
   BEGIN
     SELECT calculateTrafficCost(:NEW.ID_service, :NEW.amount) INTO:NEW.cost FROM dual;
-	EXECUTE IMMEDIATE 'UPDATE sim SET account=account-'||:NEW.cost||' WHERE sim_id='||:NEW.sim_id;
+    EXECUTE IMMEDIATE 'UPDATE sim SET account=account-'||:NEW.cost||' WHERE sim_id='||:NEW.sim_id;
   END;
 /
 ---------------------------------------------------------------------------------------------------------------------------

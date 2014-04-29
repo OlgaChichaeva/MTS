@@ -55,7 +55,7 @@
                     <tr>
                         <td class="info">
                             Номер договора: <%= contr.getContrID()%><br>
-                            Дата заключения: <%= contr.getBeginDate()%><br>
+                            Дата заключения: <%= HTMLHelper.makeDate(contr.getBeginDate())%><br>
                             <a class="other" href="<%= contr.getContrDoc()%>">Скачать договор</a>
                         </td>
                         <td class="info">

@@ -29,7 +29,7 @@
                 out.print("ohh");
                 return;
             }
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy',' HH:mm:ss");
+            
         %>
         <% if (acceptedToChange) {%>
         <a class="other" href="<%= request.getContextPath()%><%= ADD_TRAFFIC_FORM %>?sim_id=<%= request.getParameter("sim_id") %>">Добавить трафик</a>
@@ -48,7 +48,7 @@
                 %>
                 <tr>
                     <td class="select">
-                        <%= dateFormat.format(traffic.getDate()) %>
+                        <%= HTMLHelper.makeDateTime(traffic.getDate()) %>
                     </td>
                     <td class="select">
                         <%= service.getNameService() %>
