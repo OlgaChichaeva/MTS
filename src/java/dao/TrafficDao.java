@@ -4,6 +4,7 @@
  */
 package dao;
 
+import java.util.Date;
 import objects.Traffic;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import java.util.List;
  */
 public interface TrafficDao {
      public List<Traffic> getBySimId(int simID) throws DaoException;
+    public List<Traffic> getBySimIdForPeriod(int simID, Date begin, Date end) throws DaoException;
     public void update(Traffic traffic) throws DaoException;
     public void delete(int idService) throws DaoException;
     public void insert(Traffic traffic) throws DaoException;

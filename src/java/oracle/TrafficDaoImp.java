@@ -16,6 +16,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.sql.DataSource;
 import pack.Abstract;
@@ -136,5 +137,33 @@ class TrafficDaoImp extends Abstract implements TrafficDao {
         traffic.setCost(rs.getDouble("cost"));
         traffic.setDate(rs.getTimestamp("time"));
         return traffic;
+    }
+
+    @Override
+    public List<Traffic> getBySimIdForPeriod(int simID, Date begin, Date end) throws DaoException {
+        try (Connection con = getConn()) {
+            PreparedStatement ps = con.prepareStatement("SELECT tr.amount, tr.cost, tr.time,"
+                    + " sim.*, serv.*, tar.name_tariff, tar.description,"
+                    + " type.name_type, type.measure"
+                    + " FROM traffic tr"
+                    + " INNER JOIN sim on tr.sim_id=sim.sim_id"
+                    + " INNER JOIN tariff_list tar on sim.id_tariff=tar.id_tariff"
+                    + " INNER JOIN service serv on tr.ID_service=serv.ID_service"
+                    + " INNER JOIN type_service type on serv.ID_type=type.ID_type"
+                    + " where tr.sim_id =? AND tr.time BETWEEN ? AND ?"
+                    + " ORDER BY time");
+            ps.setInt(1, simID);
+            ps.setDate(2, new java.sql.Date(begin.getTime()));
+            ps.setDate(3, new java.sql.Date(end.getTime()));
+            ResultSet rs = ps.executeQuery();
+            List<Traffic> traffics = new ArrayList<>();
+            while (rs.next()) {
+                Traffic traffic = makeTraffic(rs);
+                traffics.add(traffic);
+            }
+            return traffics;
+        } catch (SQLException ex) {
+            throw new DaoException(ex);
+        }
     }
 }
