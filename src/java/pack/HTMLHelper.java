@@ -4,72 +4,68 @@
  */
 package pack;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import static pack.LogManager.LOG;
 
 /**
- * Класс для помощи в составлении HTML-страниц.
- * Берёт на себя рутинную работу. Всё, что придётся
- * часто использовать в JSP-шках, желательно спрятать сюда.
+ * Класс для помощи в составлении HTML-страниц. Берёт на себя рутинную работу.
+ * Всё, что придётся часто использовать в JSP-шках, желательно спрятать сюда.
+ *
  * @author Ivan
  */
 public class HTMLHelper {
-    
-    private HTMLHelper() {}
-    
+
+    private HTMLHelper() {
+    }
     /**
      * Путь к папке с заголовочными jsp.
      */
     public static final String HEADERS = "/WEB-INF/headers";
-    
     /**
-     * Путь к папке с файлами javascript (для подключения нужно
-     * указывать корневой каталог сайта).
+     * Путь к папке с файлами javascript (для подключения нужно указывать
+     * корневой каталог сайта).
      */
     public static final String JS = "/js";
-    
     /**
-     * Путь к библиотеке jquery (для подключения нужно
-     * указывать корневой каталог сайта).
+     * Путь к библиотеке jquery (для подключения нужно указывать корневой
+     * каталог сайта).
      */
     public static final String JQUERY = JS + "/jquery-1.5.1.js";
     
+    public static final String CALENDAR = JS + "/calendar_ru.js";
     /**
-     * Путь к таблице стилей (для подключения нужно
-     * указывать корневой каталог сайта).
+     * Путь к таблице стилей (для подключения нужно указывать корневой каталог
+     * сайта).
      */
     public static final String CSS = "/css/style.css";
-    
     /**
      * Путь к заголовочной странице, используемой по умолчанию.
      */
     public static final String DEFAULT_HEADER = HEADERS + "/defaultHeader.jsp";
-    
     /**
      * Путь к заголовочной странице для клиентов.
      */
     public static final String CLIENT_HEADER = HEADERS + "/clientHeader.jsp";
-    
     /**
      * Путь к заголовочной странице для админа.
      */
     public static final String ADMIN_HEADER = HEADERS + "/adminHeader.jsp";
-    
     /**
      * Путь к заголовочной странице для юр. лиц.
      */
     public static final String LEGAL_HEADER = HEADERS + "/legalEntityHeader.jsp";
-    
     /**
      * Путь странице автоматического выбора заголовка
      */
     public static final String CHOOSE_HEADER = HEADERS + "/chooseHeader.jsp";
-    
     private final static SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd.MM.yyyy',' HH:mm:ss");
     private final static SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-    
+
     /**
      * Получаем кнопки Update и Delete
+     *
      * @param updatePath путь для update
      * @param deletePath путь для delete
      * @param name имя параметра
@@ -77,29 +73,30 @@ public class HTMLHelper {
      * @return HTML-код, содержащий две кнопки
      */
     public static String makeUpdateAndDelete(String updatePath, String deletePath, String name, int id) {
-        String buttons = 
+        String buttons =
                 "<table border=\"0\" align=\"center\">"
-                 + "<tr>"
-                        + "<td>"
-                            + "<form name=\"Data Input Form\" action=\"" + updatePath + "\" method=\"POST\">"  
-                                + "<input type=\"submit\" value=\"Редактировать\" />" 
-                                + "<input type = \"hidden\" name = \"" + name + "\" value = \"" + id + "\"/>"
-                            + "</form>"
-                        + "</td>"
-                        + "<td>"
-                            + "<form name=\"Data Input Form\" action=\"" + deletePath + "\" method=\"POST\">"  
-                                + "<input type=\"submit\" value=\"Удалить\" />" 
-                                + "<input type = \"hidden\" name = \"" + name + "\" value = \"" + id + "\"/>"
-                            + "</form>"
-                        + "</td>"
-                    + "</tr>"
+                + "<tr>"
+                + "<td>"
+                + "<form name=\"Data Input Form\" action=\"" + updatePath + "\" method=\"POST\">"
+                + "<input type=\"submit\" value=\"Редактировать\" />"
+                + "<input type = \"hidden\" name = \"" + name + "\" value = \"" + id + "\"/>"
+                + "</form>"
+                + "</td>"
+                + "<td>"
+                + "<form name=\"Data Input Form\" action=\"" + deletePath + "\" method=\"POST\">"
+                + "<input type=\"submit\" value=\"Удалить\" />"
+                + "<input type = \"hidden\" name = \"" + name + "\" value = \"" + id + "\"/>"
+                + "</form>"
+                + "</td>"
+                + "</tr>"
                 + "</table>";
-        return buttons;    
+        return buttons;
     }
-    
+
     /**
-     * Метод можно использовать, если строка может быть null и
-     * требуется выводить вместо null пустую строку ("")
+     * Метод можно использовать, если строка может быть null и требуется
+     * выводить вместо null пустую строку ("")
+     *
      * @param source исходная строка
      * @return исходную строку, если она не null, иначе ""
      */
@@ -110,21 +107,23 @@ public class HTMLHelper {
             return source;
         }
     }
-    
+
     /**
      * Возвращает строку, подключающую таблицу стилей CSS.
+     *
      * @param root корневая директория сайта
      * @return строку, подключающую css
      */
     public static String includeCSS(String root) {
         return "<link rel=\"stylesheet\" type=\"text/css\" href=\"" + root + CSS + "\" />";
     }
-    
+
     /**
      * Преобразование телефонного номера в отформатированную строку.
+     *
      * @param phone номер
-     * @return отформатированный номер в случае успеха, иначе
-     * просто строковое представление номера.
+     * @return отформатированный номер в случае успеха, иначе просто строковое
+     * представление номера.
      */
     public static String phoneToString(long phone) {
         final char SEP = '-';
@@ -140,22 +139,41 @@ public class HTMLHelper {
             return temp;
         }
     }
-    
+
     /**
      * Преобразует дату/время в строку
+     *
      * @param date дата для преобразования
      * @return строку с отформатированной датой/временем
      */
     public static String makeDateTime(Date date) {
         return dateTimeFormat.format(date);
     }
-    
+
     /**
      * Преобразует дату в строку
+     *
      * @param date дата для преобразования
      * @return строку с отформатированной датой
      */
     public static String makeDate(Date date) {
         return dateFormat.format(date);
+    }
+
+    /**
+     * преобразует строку в дату
+     *
+     * @param source строка
+     * @return дата
+     */
+    public static Date convertStringToDate(String source) {
+        try {
+            return dateFormat.parse(source);
+        } catch (ParseException ex) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Ошибка парсинга даты.", ex);
+            }
+            throw new RuntimeException(ex);
+        }
     }
 }

@@ -5,11 +5,14 @@
 package servlets;
 
 import dao.ClientContrDAO;
+import dao.PhoneNumberDAO;
 import dao.ServiceInSimDAO;
 import dao.ServiceInTariffDao;
 import dao.SimDao;
 import dao.TrafficDao;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -27,9 +30,11 @@ import objects.Tariff;
 import objects.Traffic;
 import objects.User;
 import pack.DaoMaster;
+import pack.HTMLHelper;
 import static pack.PathConstants.*;
 import static pack.LogManager.LOG;
 import pack.MessageBean;
+import pack.PDFHelper;
 import security.SecurityBean;
 
 /**
@@ -41,16 +46,18 @@ import security.SecurityBean;
     CHANGE_TARIFF,
     SHOW_TRAFFIC,
     ADD_TRAFFIC_FORM,
-    ADD_TRAFFIC
+    ADD_TRAFFIC,
+    CREATE_TRAFFIC_PDF
 })
 public class SimServlet extends HttpServlet {
-    
+
     private final SimDao simDao = DaoMaster.getSimDao();
     private final ClientContrDAO clientContrDao = DaoMaster.getClientContrDao();
     private final TrafficDao trafficDao = DaoMaster.getTrafficDao();
     private final ServiceInTariffDao servInTarDao = DaoMaster.getServiceInTariffDao();
     private final ServiceInSimDAO servInSimDao = DaoMaster.getServiceInSimDao();
-    
+    private final PhoneNumberDAO phoneNumberDao = DaoMaster.getPhoneNumberDao();
+
     /**
      * Загружает сим-карты и телефоны, загружает их в Map и перенаправляет на
      * страницу выбора сим-карт.
@@ -85,11 +92,12 @@ public class SimServlet extends HttpServlet {
         request.setAttribute("phonesMap", phonesMap); // Кладём список всех контрактов в запрос.
         request.getRequestDispatcher("/WEB-INF/sim/chooseSim.jsp").forward(request, response);
     }
-    
+
     /**
      * Меняет тариф на сим-карте. Затем перенаправляет на страницу с тарифом.
+     *
      * @param request
-     * @param response 
+     * @param response
      */
     private void changeTariff(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
@@ -103,12 +111,13 @@ public class SimServlet extends HttpServlet {
         request.getSession(true).setAttribute(MessageBean.ATTR_NAME, new MessageBean("Тариф успешно изменён."));
         response.sendRedirect(request.getContextPath() + SHOW_TARIFF + "?ID_tariff=" + tariffId);
     }
-    
+
     /**
      * Перенаправляет на страницу трафика для сим-карты, полученной из запроса.
      * Если доступ невозможен, не пускает на страницу.
+     *
      * @param request
-     * @param response 
+     * @param response
      */
     private void showTraffic(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -116,16 +125,17 @@ public class SimServlet extends HttpServlet {
         if (!SecurityBean.isUserAcceptedForSim(ServletHelper.getUser(request), simId)) {
             SecurityBean.denyAccess();
             return;
-        } 
+        }
         List<Traffic> trafficList = trafficDao.getBySimId(simId);
         request.setAttribute("trafficList", trafficList);
         request.getRequestDispatcher("/WEB-INF/sim/showTraffic.jsp").forward(request, response);
     }
-    
+
     /**
      * Перенаправляет на страницу добавления трафика.
+     *
      * @param request
-     * @param response 
+     * @param response
      */
     private void addTrafficForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -138,11 +148,12 @@ public class SimServlet extends HttpServlet {
         request.setAttribute("serviceInSimList", sisList);
         request.getRequestDispatcher("/WEB-INF/sim/addTraffic.jsp").forward(request, response);
     }
-    
+
     /**
      * Добавляет трафик к выбранной сим-карте
+     *
      * @param request
-     * @param response 
+     * @param response
      */
     private void addTraffic(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
@@ -165,6 +176,42 @@ public class SimServlet extends HttpServlet {
         response.sendRedirect(request.getContextPath() + CHOOSE_SIM + "?forTraffic=true");
     }
 
+    /**
+     * Создаёт PDF-отчёт о трафике.
+     *
+     * @param request
+     * @param response
+     */
+    private void createTrafficPDF(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException {
+        int simId = Integer.parseInt(request.getParameter("sim_id"));
+        List<Traffic> trafficList;
+        String beginDate = request.getParameter("begin_date");
+        String endDate = request.getParameter("end_date");
+        if (beginDate == null || endDate == null || beginDate.isEmpty() || endDate.isEmpty()) {
+            trafficList = trafficDao.getBySimId(simId);
+        } else {
+            trafficList = trafficDao.getBySimIdForPeriod(simId,
+                    HTMLHelper.convertStringToDate(beginDate),
+                    HTMLHelper.convertStringToDate(endDate));
+        }
+        String pdfReport = PDFHelper.createTrafficReport(phoneNumberDao.getNumberBySimID(simId), trafficList);
+        // Предоставляем файл для скачки
+        try (FileInputStream in = new FileInputStream(pdfReport)) {
+            response.setContentType("application/pdf");
+            OutputStream out = response.getOutputStream();
+            byte[] buffer = new byte[4096];
+            int length;
+            while ((length = in.read(buffer)) > 0) {
+                out.write(buffer, 0, length);
+            }
+            out.flush();
+        } catch (IOException ex) {
+            LOG.error("Ошибка при загрузке файла.", ex);
+            throw new ServletException(ex);
+        }
+    }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP
@@ -180,7 +227,7 @@ public class SimServlet extends HttpServlet {
             throws ServletException, IOException {
         String userPath = request.getServletPath();
         response.setContentType("text/html;charset=UTF-8");
-        switch(userPath) {
+        switch (userPath) {
             case CHOOSE_SIM: {
                 chooseSim(request, response);
                 break;
@@ -212,7 +259,7 @@ public class SimServlet extends HttpServlet {
             throws ServletException, IOException {
         String userPath = request.getServletPath();
         response.setContentType("text/html;charset=UTF-8");
-        switch(userPath) {
+        switch (userPath) {
             case CHANGE_TARIFF: {
                 changeTariff(request, response);
                 break;
@@ -223,6 +270,10 @@ public class SimServlet extends HttpServlet {
             }
             case ADD_TRAFFIC: {
                 addTraffic(request, response);
+                break;
+            }
+            case CREATE_TRAFFIC_PDF: {
+                createTrafficPDF(request, response);
                 break;
             }
             default: {

@@ -37,5 +37,5 @@ public interface PathConstants {
     String SHOW_TRAFFIC = "/ShowTraffic";
     String ADD_TRAFFIC_FORM = "/AddTrafficForm";
     String ADD_TRAFFIC = "/AddTraffic";
-    
+    String CREATE_TRAFFIC_PDF = "/CreateTrafficPDF";
 }

@@ -18,6 +18,7 @@
         <title>История использования услуг</title>
         <% String ROOT = request.getContextPath();%>
         <%= HTMLHelper.includeCSS(ROOT) %>
+        <script src="<%= ROOT %><%= HTMLHelper.CALENDAR %>" type="text/javascript"></script>
     </head>
     <body>
         <jsp:useBean id="currentUser" scope="session" class="objects.User" />
@@ -64,6 +65,24 @@
                 <%
             }
         %>
-        </table>
+        </table><br>
+    <center>
+            <form name="PDF" action="<%= ROOT %><%= CREATE_TRAFFIC_PDF %>" method="POST" target="_blank">
+                <fieldset class="fillform">
+                    Получить отчёт в PDF<br>
+                    <%
+                        String idSim = request.getParameter("sim_id");
+                    %>
+                    <input type="hidden" value="<%= idSim %>" name="sim_id" />
+                    Начало периода: <input class="fillform" type="text" value="" name="begin_date" 
+                                   onfocus="this.select();lcs(this);"
+                                    onclick="event.cancelBubble=true;this.select();lcs(this);" readonly/><br>
+                    Конец периода: <input class="fillform" type="text" value="" name="end_date" 
+                                   onfocus="this.select();lcs(this);"
+                                   onclick="event.cancelBubble=true;this.select();lcs(this);" readonly/><br>
+                    <input type="submit" value="Получить отчёт в PDF" /><br>
+                </fieldset>
+            </form>
+     </center>
     </body>
 </html>
