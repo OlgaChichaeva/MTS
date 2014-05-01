@@ -4,8 +4,28 @@
  */
 package pack;
 
+import com.itextpdf.text.Chapter;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Section;
+import com.itextpdf.text.pdf.CMYKColor;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FilenameFilter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import objects.PhoneNumber;
+import objects.Service;
+import objects.Traffic;
 import static pack.LogManager.LOG;
 
 /**
@@ -19,7 +39,8 @@ public class PDFHelper {
     private static String trafficReportPath = "trafficReports";
     private static boolean working = false;
     private static DeleteThread trafficReportThread;
-    private boolean started = false;
+    private static boolean started = false;
+    private final static SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd.MM.yyyy'_'HH_mm_ss");
 
     static {
         configure("123"); // пока файл не важен
@@ -41,9 +62,11 @@ public class PDFHelper {
     public static void configure(String propertiesFile) {
         // потом будет
         deleteInterval = 10000;
-        trafficReportPath = "trafficReports";
-        trafficReportThread.stopDeleteThread();
-        trafficReportThread = new DeleteThread(trafficReportPath, "Поток удаления отчётов трафика");
+        setTrafficReportPath("trafficReports");
+        if (trafficReportThread != null) {
+            trafficReportThread.stopDeleteThread();
+        }
+        trafficReportThread = new DeleteThread(getTrafficReportPath(), "Поток удаления отчётов трафика");
     }
 
     /**
@@ -59,21 +82,71 @@ public class PDFHelper {
     public static void setWorking(boolean aWorking) {
         working = aWorking;
     }
-    
+
     /**
-     * Пусть будет (чтобы не писать Class.ForName).
+     * @return the trafficReportPath
      */
-    public void start() {
-        if (!started) {
-            started = true;
+    public static String getTrafficReportPath() {
+        return trafficReportPath;
+    }
+
+    /**
+     * @param aTrafficReportPath the trafficReportPath to set
+     */
+    public static void setTrafficReportPath(String aTrafficReportPath) {
+        trafficReportPath = aTrafficReportPath;
+    }
+
+    /**
+     *
+     * @param phone
+     * @param trafficList
+     * @return
+     */
+    public static String createTrafficReport(PhoneNumber phone, List<Traffic> trafficList)
+            throws PDFException {
+        try {
+            String filename = dateTimeFormat.format(new Date(System.currentTimeMillis())) + ".pdf";
+            Document document = new Document(PageSize.A4, 50, 50, 50, 50);
+
+            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(trafficReportPath + SEP + filename));
+            document.open();
+
+            // Генерация PDF -----------------------------------
+            String title = "Отчёт использования услуг для номера " + HTMLHelper.phoneToString(phone.getNumber());
+            Paragraph PDFtitle = new Paragraph(title, FontFactory.getFont(FontFactory.HELVETICA, 18));
+            Chapter chapter = new Chapter(0);
+            Section reportSection = chapter.addSection(PDFtitle);
+            PdfPTable table = new PdfPTable(4);
+            table.setSpacingBefore(25);
+            table.setSpacingAfter(25);
+            Font headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
+            table.addCell(new Phrase("Время", headerFont));
+            table.addCell(new Phrase("Услуга", headerFont));
+            table.addCell(new Phrase("Количество", headerFont));
+            table.addCell(new Phrase("Стоимость", headerFont));
+            for (Traffic traffic : trafficList) {
+                Service service = traffic.getService();
+                table.addCell(HTMLHelper.makeDateTime(traffic.getDate()));
+                table.addCell(service.getNameService());
+                table.addCell(traffic.getAmount() + service.getTypeService().getMeasure());
+                table.addCell(Double.toString(traffic.getCost()));
+            }
+            reportSection.add(table);
+            document.add(chapter);
+            document.close();
+            // -------------------------------------------------
+
+            return filename;
+        } catch (IOException | DocumentException ex) {
+            LOG.error("Ошибка при создании PDF-файла.", ex);
+            throw new PDFException(ex);
         }
     }
 
     private PDFHelper() {
     }
 
-    
-    
     //---------------------------------------------------    
     /**
      * Поток, удаляющий все файлы из папки.
