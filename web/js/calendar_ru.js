@@ -80,9 +80,9 @@ var ccy=now.getFullYear();
 // For current selected date
 var selectedd, selectedm, selectedy;
 
-document.write('<table id="fc" style="position:absolute;border-collapse:collapse;background:#FAFAFA;border:1px solid #cbff7c;display:none;-moz-user-select:none;-khtml-user-select:none;user-select:none;" cellpadding="2">');
+document.write('<table id="fc" style="position:absolute;border-collapse:collapse;background:#FAFAFA;border:1px solid #cc0000;display:none;-moz-user-select:none;-khtml-user-select:none;user-select:none;" cellpadding="2">');
 document.write('<tr style="font:bold 0.8em tahoma" onselectstart="return false"><td style="cursor:pointer;font-size:15px" onclick="upmonth(-1)">&laquo;</td><td colspan="5" id="mns" align="center"></td><td align="right" style="cursor:pointer;font-size:15px" onclick="upmonth(1)">&raquo;</td></tr>');
-document.write('<tr style="background:#556B2F;font:bold 0.8em tahoma;color:#FFFFFF"><td align=center>П</td><td align=center>В</td><td align=center>С</td><td align=center>Ч</td><td align=center>П</td><td align=center>С</td><td align=center>В</td></tr>');
+document.write('<tr style="background:#fd3c3c;font:bold 0.8em tahoma;color:#FFFFFF"><td align=center>П</td><td align=center>В</td><td align=center>С</td><td align=center>Ч</td><td align=center>П</td><td align=center>С</td><td align=center>В</td></tr>');
 for(var kk=1;kk<=6;kk++) {
 	document.write('<tr>');
 	for(var tt=1;tt<=7;tt++) {
@@ -91,7 +91,7 @@ for(var kk=1;kk<=6;kk++) {
 	}
 	document.write('</tr>');
 }
-document.write('<tr><td colspan="7" align="center" style="cursor:pointer;font:bold 0.8em tahoma;background:#556B2F;color:#FFFFFF" onclick="today()">Сегодня: '+addnull(sccd,sccm+1,sccy)+'</td></tr>');
+document.write('<tr><td colspan="7" align="center" style="cursor:pointer;font:bold 0.8em tahoma;background:#fd3c3c;color:#FFFFFF" onclick="today()">Сегодня: '+addnull(sccd,sccm+1,sccy)+'</td></tr>');
 document.write('</table>');
 
 document.all?document.attachEvent('onclick',checkClick):document.addEventListener('click',checkClick,false);
@@ -136,7 +136,7 @@ function evtTgt(e){
 }
 function EvtObj(e){if(!e)e=window.event;return e;}
 function cs_over(e) {
-	evtTgt(EvtObj(e)).style.background='#cbff7c';
+	evtTgt(EvtObj(e)).style.background='#fcaeae';
 }
 function cs_out(e) {
 	evtTgt(EvtObj(e)).style.background='#FAFAFA';
@@ -157,26 +157,26 @@ function f_cps(obj) {
 	obj.style.color='#333333';
 	obj.style.textAlign='center';
 	obj.style.textDecoration='none';
-	obj.style.border='1px solid #cbff7c';//'1px solid #606060';
+	obj.style.border='1px solid #cc0000';//'1px solid #606060';
 	obj.style.cursor='pointer';
 }
 
 function f_cpps(obj) {
-	obj.style.background='#C4D3EA';
+	obj.style.background='#fcaeae';
 	obj.style.font='normal 0.8em tahoma';
-	obj.style.color='#FF9900';
+	obj.style.color='#fcaeae';
 	obj.style.textAlign='center';
 	obj.style.textDecoration='line-through';
-	obj.style.border='1px solid #6487AE';
+	obj.style.border='1px solid #cc0000';
 	obj.style.cursor='default';
 }
 
 function f_hds(obj) {
-	obj.style.background='#FFF799';
+	obj.style.background='#fcaeae';
 	obj.style.font='normal 0.8em tahoma';
 	obj.style.color='#333333';
 	obj.style.textAlign='center';
-	obj.style.border='1px solid #6487AE';
+	obj.style.border='1px solid #cc0000';
 	obj.style.cursor='pointer';
 }
 
@@ -206,14 +206,14 @@ function prepcalendar(hd,cm,cy) {
 			// if today
 			if (sccm == cm && sccd == (d-cd) && sccy == cy)
                             {
-				cv.style.color='#556B2F';
+				cv.style.color='#fd3c3c';
                                 cv.style.fontWeight='bold';
                             }
 
 			// if selected date
 			if (cm == selectedm && cy == selectedy && selectedd == (d-cd) )
 			{
-				cv.style.background='#cbff7c';
+				cv.style.background='#fcaeae';
 				//cv.style.color='#e0d0c0';
 				//cv.style.fontSize='1.1em';
 				//cv.style.fontStyle='italic';

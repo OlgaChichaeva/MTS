@@ -59,7 +59,7 @@ public class PDFHelper {
      */
     public static void configure(String propertiesFile) {
         // потом будет
-        deleteInterval = 120000;
+        deleteInterval = 300000;
         setTrafficReportPath("trafficReports");
         trafficReportThread = new DeleteThread(getTrafficReportPath(), "Поток удаления отчётов трафика");
     }
